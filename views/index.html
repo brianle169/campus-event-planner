@@ -8,6 +8,133 @@
     <script src="../public/js/main.js" defer></script>
   </head>
   <body>
-    <h1>Welcome to the Smart Campus Event Planner</h1>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Log in</a>
+          <a class="btn btn-primary" href="register.html">Sign up</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <span class="eyebrow">Smart Campus Event Planner</span>
+            <h1>Every campus event, workshop, and club activity in one place.</h1>
+            <p>
+              Stop hunting through emails, posters, and group chats. Discover events,
+              register in a click, and keep track of everything you're attending
+              this semester.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="register.html">Create your account</a>
+              <a class="btn btn-outline" href="about.html">Learn more</a>
+            </div>
+          </div>
+          <div class="hero-card">
+            <h3>This week on campus</h3>
+            <div class="hero-stat-grid">
+              <div class="hero-stat">
+                <strong>42</strong>
+                <span>Upcoming events</span>
+              </div>
+              <div class="hero-stat">
+                <strong>10</strong>
+                <span>Categories</span>
+              </div>
+              <div class="hero-stat">
+                <strong>1.2k</strong>
+                <span>Students registered</span>
+              </div>
+              <div class="hero-stat">
+                <strong>96%</strong>
+                <span>Avg. attendance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Why use it</span>
+            <h2>Everything you need to stay in the loop</h2>
+            <p>Built for students who want events to come to them, and organizers who need one place to manage it all.</p>
+          </div>
+          <div class="grid grid-3">
+            <div class="card">
+              <div class="card-icon">1</div>
+              <h3>Discover events</h3>
+              <p>Browse and filter campus events by category, date, location, or organizer.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">2</div>
+              <h3>Register instantly</h3>
+              <p>Reserve your spot in seconds and get a clear view of open, full, or cancelled events.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">3</div>
+              <h3>Track your schedule</h3>
+              <p>See upcoming, attended, and cancelled events in one personalized dashboard.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Browse by interest</span>
+            <h2>Explore event categories</h2>
+          </div>
+          <div class="grid grid-4">
+            <div class="card"><span class="badge">Academic</span><h3>Academic Workshops</h3><p>Skill-building sessions led by faculty and TAs.</p></div>
+            <div class="card"><span class="badge">Career</span><h3>Career Events</h3><p>Recruiter info sessions, career fairs, and resume clinics.</p></div>
+            <div class="card"><span class="badge">Clubs</span><h3>Club Activities</h3><p>Meetups and socials hosted by student clubs.</p></div>
+            <div class="card"><span class="badge">Sports</span><h3>Sports Events</h3><p>Intramurals, tournaments, and campus fitness events.</p></div>
+            <div class="card"><span class="badge">Culture</span><h3>Cultural Events</h3><p>Celebrations and showcases from campus communities.</p></div>
+            <div class="card"><span class="badge">Volunteer</span><h3>Volunteering</h3><p>Community service opportunities around campus.</p></div>
+            <div class="card"><span class="badge">Social</span><h3>Social Events</h3><p>Mixers and hangouts to meet other students.</p></div>
+            <div class="card"><span class="badge">Guest</span><h3>Guest Lectures</h3><p>Talks from industry professionals and researchers.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="cta-band">
+            <h2>Ready to find your next event?</h2>
+            <p>Create a free student account and start registering in minutes.</p>
+            <div class="hero-actions" style="justify-content: center">
+              <a class="btn" style="background: #fff; color: var(--color-primary)" href="register.html">Get started</a>
+              <a class="btn btn-outline" href="contact.html">Contact us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

@@ -1,0 +1,32 @@
+/* ---------- Contact page ---------- */
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.contact-info-item {
+  display: flex;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+  min-width: 0;
+}
+
+.contact-info-item p {
+  overflow-wrap: anywhere;
+}
+
+.contact-info-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}

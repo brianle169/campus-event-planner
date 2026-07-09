@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+
+:root {
+  --color-primary: #3a4bd8;
+  --color-primary-dark: #2c39ab;
+  --color-primary-light: #eef0ff;
+  --color-accent: #ff8a3d;
+  --color-text: #1c2130;
+  --color-text-muted: #5b6272;
+  --color-border: #e1e4ec;
+  --color-bg: #f7f8fc;
+  --color-surface: #ffffff;
+  --color-success: #1f9d55;
+  --color-danger: #d0422a;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 3px rgba(20, 24, 40, 0.08);
+  --shadow-md: 0 8px 24px rgba(20, 24, 40, 0.1);
+
+  --container-width: 1120px;
+
+  font-size: 16px;
+}

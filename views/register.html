@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up | Smart Campus Event Planner</title>
+    <link rel="stylesheet" href="../public/css/style.css" />
+    <script src="../public/js/main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Log in</a>
+          <a class="btn btn-primary" href="register.html">Sign up</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page container">
+      <div class="form-card">
+        <h1>Create your account</h1>
+        <p class="form-subtitle">Join to browse events and manage your registrations.</p>
+
+        <div id="register-status" class="form-status"></div>
+
+        <form id="register-form" novalidate>
+          <div class="form-group">
+            <label for="full-name">Full name</label>
+            <input type="text" id="full-name" name="full-name" placeholder="Jane Doe" required />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="you@concordia.ca" required />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" placeholder="At least 8 characters" required />
+              <span class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm-password">Confirm password</label>
+              <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter password" required />
+              <span class="error-message"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>I am registering as a</label>
+            <div class="role-toggle">
+              <label>
+                <input type="radio" name="role" value="student" checked />
+                <span>Student</span>
+              </label>
+              <label>
+                <input type="radio" name="role" value="organizer" />
+                <span>Organizer / Admin</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-row" style="margin-bottom: 0">
+              <input type="checkbox" id="terms" name="terms" required />
+              I agree to the terms of use
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        </form>
+
+        <p class="form-footer-link">
+          Already have an account? <a href="login.html">Log in</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

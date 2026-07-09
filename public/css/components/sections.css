@@ -1,0 +1,31 @@
+/* ---------- Generic sections ---------- */
+
+section {
+  padding-block: 3.5rem;
+}
+
+.section-heading {
+  text-align: center;
+  max-width: 60ch;
+  margin-inline: auto;
+  margin-bottom: 2.5rem;
+}
+
+.section-heading h2 {
+  font-size: 1.9rem;
+  margin-bottom: 0.6rem;
+}
+
+.section-heading p {
+  color: var(--color-text-muted);
+}
+
+.eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}

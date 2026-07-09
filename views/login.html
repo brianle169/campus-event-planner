@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In | Smart Campus Event Planner</title>
+    <link rel="stylesheet" href="../public/css/style.css" />
+    <script src="../public/js/main.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Log in</a>
+          <a class="btn btn-primary" href="register.html">Sign up</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page container">
+      <div class="form-card">
+        <h1>Welcome back</h1>
+        <p class="form-subtitle">Log in to view your events and registrations.</p>
+
+        <div id="login-status" class="form-status"></div>
+
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="you@concordia.ca" required />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; justify-content: space-between">
+            <label class="checkbox-row" style="margin-bottom: 0">
+              <input type="checkbox" id="remember" name="remember" />
+              Remember me
+            </label>
+            <a href="contact.html" style="font-size: 0.85rem">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </form>
+
+        <p class="form-footer-link">
+          Don't have an account? <a href="register.html">Sign up</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

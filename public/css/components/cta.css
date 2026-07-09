@@ -1,0 +1,27 @@
+/* ---------- CTA band ---------- */
+
+.cta-band {
+  background: var(--color-primary);
+  color: #fff;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+}
+
+.cta-band h2 {
+  margin-bottom: 0.75rem;
+}
+
+.cta-band p {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.5rem;
+}
+
+.cta-band .btn-outline {
+  border-color: #fff;
+  color: #fff;
+}
+
+.cta-band .btn-outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
