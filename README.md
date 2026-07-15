@@ -16,11 +16,8 @@ This project is done as of the requirements of the course SOEN 287: Web Programm
 
 ## Team members
 
-1. Cong Minh Le
-2. Clinton Tran
-3. Heritier Luc Minani
-4. Arda Duman
-5. Tarek Kiared
+1. Cong Minh Le - 40264100
+2. Clinton Tran - 40284879
 
 ## How to use this application
 
