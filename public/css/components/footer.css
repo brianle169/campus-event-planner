@@ -1,0 +1,33 @@
+/* ---------- Footer ---------- */
+
+.site-footer {
+  background: #171b2b;
+  color: rgba(255, 255, 255, 0.7);
+  padding-block: 2.5rem;
+  margin-top: 3rem;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.site-footer small {
+  color: rgba(255, 255, 255, 0.5);
+}
