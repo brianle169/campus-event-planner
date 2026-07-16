@@ -1,0 +1,9 @@
+.welcome {
+    font-size: 1.5em;
+    width: 50;
+    text-align: center;
+}
+
+.welcome a {
+    margin-top: 8px;
+}

@@ -1,14 +1,53 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Campus Event Planner</title>
-    <link rel="stylesheet" href="../public/css/style.css" />
-    <script src="../public/js/main.js" defer></script>
-  </head>
-  <body>
-    <h1>Welcome to the Smart Campus Event Planner</h1>
-    <button><a href="/views/login.html">Login</a></button>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Campus Event Planner</title>
+  <link rel="stylesheet" href="../public/css/style.css" />
+  <script src="../public/js/main.js" defer></script>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="nav-brand" href="index.html">Campus Event Planner</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a class="btn btn-outline" href="login.html">Log in</a>
+        <a class="btn btn-primary" href="register.html">Sign up</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h1>Welcome to the Smart Campus Event Planner</h1>
+      <p>Your only destination for unforgettable events</p>
+      <a class="btn btn-primary" href="login.html"> Get started</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+        project.</small>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>
