@@ -39,14 +39,23 @@
       </div>
       <form class="register">
         <div class="register-field">
-          <label>You are signing up as</label>
-          <div>
-            <button class="btn btn-outline" id="student-btn" type="button">
-              Student
-            </button>
-            <button class="btn btn-outline" id="organizer-btn" type="button">
-              Organizer
-            </button>
+          <span class="field-label">You are signing up as</span>
+          <div id="user-type" class="user-type">
+            <input
+              type="radio"
+              id="role-student"
+              name="role"
+              value="student"
+              checked
+              required />
+            <label for="role-student">Student</label>
+
+            <input
+              type="radio"
+              id="role-organizer"
+              name="role"
+              value="organizer" />
+            <label for="role-organizer">Organizer</label>
           </div>
         </div>
         <div class="register-field">
