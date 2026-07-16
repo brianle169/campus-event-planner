@@ -1,9 +1,31 @@
 .welcome {
-    font-size: 1.5em;
-    width: 50;
+    font-size: 1.3em;
+    width: 65vw;
+    height: 80%;
     text-align: center;
+    padding-top: 18vh;
+    padding-bottom: 23vh;
+    margin: 0 auto;
 }
 
-.welcome a {
-    margin-top: 8px;
+.buttons a {
+    margin-top: 1.5rem;
+}
+
+.learn {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0.65em;
+    color: #5648b5;
+}
+
+.all {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+h4 {
+    color: #5648b5;
 }
