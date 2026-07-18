@@ -40,10 +40,30 @@
     max-width: var(--container-width);
     margin: 0 auto;
     margin-top: 2vh;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 30px;
+    row-gap: 20px;
+}
+
+@media (max-width: 1120px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .prompt {
+        width: 770px;
+    }
+}
+
+@media (max-width: 760px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .prompt {
+        width: 450px;
+    }
 }
 
 .card {
@@ -62,16 +82,38 @@
     box-shadow: var(--shadow-md);
 }
 
+.number {
+    background-color: var(--color-bg);
+    width: 45px;
+    height: 45px;
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-dark);
+    padding: 4px;
+    margin: 5px;
+    font-weight: bold;
+}
+
 .prompt {
     padding: 40px;
     background-color: var(--color-primary-dark);
-    width: 58%;
-    min-width: 400px;
+    width: var(--container-width);
     margin: 0 auto;
     text-align: center;
     color: white;
     margin-top: 8vh;
     border-radius: var(--radius-md);
+}
+
+@media (max-width: 1120px) {
+    .prompt {
+        width: 740px;
+    }
+}
+
+@media (max-width: 760px) {
+    .prompt {
+        width: 430px;
+    }
 }
 
 .contact {
@@ -92,15 +134,4 @@
     text-decoration: none;
     background-color: white;
     color: var(--color-primary);
-}
-
-.number {
-    background-color: var(--color-bg);
-    width: 45px;
-    height: 45px;
-    border-radius: var(--radius-sm);
-    color: var(--color-primary-dark);
-    padding: 4px;
-    margin: 5px;
-    font-weight: bold;
 }
