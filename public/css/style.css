@@ -5,7 +5,9 @@
 @import url("./base/global.css");
 
 @import url("./pages/login.css");
+@import url("./pages/register.css");
 
 @import url("./components/button.css");
 @import url("./components/header.css");
 @import url("./components/footer.css");
+@import url("./components/input.css");
