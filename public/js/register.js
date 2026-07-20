@@ -1,48 +1,31 @@
-export const validateRegisterForm = () => {
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const confirmPasswordInput = document.getElementById("confirm-password");
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-  // Validate name
-  if (!validateName()) {
-    return false;
-  }
+// Each validator takes the relevant field value(s) and returns an error
+// message, or "" when the value is valid.
 
-  // Validate email:
-  if (!validateEmail()) {
-    return false;
-  }
-
-  // Validate password
-  // 1. Check if the password is at least 8 characters long
-  // 2. Check if the password contains at least one uppercase letter, one lowercase letter, one digit, and one special character
-  if (!validatePassword()) {
-    return false;
-  }
-
-  // Validate confirm password
-  if (passwordInput.value !== confirmPasswordInput.value) {
-    return false;
-  }
-
-  return true;
+export const validateName = (value) => {
+  if (!value.trim()) return "Full name is required.";
+  return "";
 };
 
-export const validateName = () => {
-  const nameInput = document.getElementById("name");
-  return nameInput.value.trim() !== "";
+export const validateEmail = (value) => {
+  if (!value.trim()) return "Email is required.";
+  if (!EMAIL_REGEX.test(value.trim())) return "Enter a valid email address.";
+  return "";
 };
 
-export const validateEmail = () => {
-  const emailInput = document.getElementById("email");
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(emailInput.value.trim());
+export const validatePassword = (value) => {
+  if (!value) return "Password is required.";
+  if (!PASSWORD_REGEX.test(value)) {
+    return "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character.";
+  }
+  return "";
 };
 
-export const validatePassword = () => {
-  const passwordInput = document.getElementById("password");
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-  return passwordRegex.test(passwordInput.value);
+export const validateConfirmPassword = (value, passwordValue) => {
+  if (!value) return "Please confirm your password.";
+  if (value !== passwordValue) return "Passwords do not match.";
+  return "";
 };

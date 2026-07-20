@@ -18,4 +18,17 @@ input[type="password"] {
     outline: none;
     border-color: var(--color-primary);
   }
+
+  &.invalid {
+    border-color: var(--color-danger);
+
+    &:focus {
+      border-color: var(--color-danger);
+    }
+  }
+}
+
+.field-error {
+  color: var(--color-danger);
+  font-size: 0.85rem;
 }
