@@ -1,0 +1,137 @@
+.welcome {
+    font-size: 1.3em;
+    width: 65vw;
+    height: 80%;
+    text-align: center;
+    padding-top: 18vh;
+    padding-bottom: 23vh;
+    margin: 0 auto;
+}
+
+.welcome h4 {
+    color: var(--color-primary-dark);
+}
+
+.buttons a {
+    margin-top: 1.5rem;
+}
+
+.all {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.why {
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.whyuse {
+    color: var(--color-primary-dark);
+}
+
+.cards {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    margin-top: 2vh;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 30px;
+    row-gap: 20px;
+}
+
+@media (max-width: 1120px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .prompt {
+        width: 770px;
+    }
+}
+
+@media (max-width: 760px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .prompt {
+        width: 450px;
+    }
+}
+
+.card {
+    width: 350px;
+    height: 220px;
+    padding: 40px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius-lg);
+    background-color: white;
+    border: var(--color-border);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.number {
+    background-color: var(--color-bg);
+    width: 45px;
+    height: 45px;
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-dark);
+    padding: 4px;
+    margin: 5px;
+    font-weight: bold;
+}
+
+.prompt {
+    padding: 40px;
+    background-color: var(--color-primary-dark);
+    width: var(--container-width);
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    margin-top: 8vh;
+    border-radius: var(--radius-md);
+}
+
+@media (max-width: 1120px) {
+    .prompt {
+        width: 740px;
+    }
+}
+
+@media (max-width: 760px) {
+    .prompt {
+        width: 430px;
+    }
+}
+
+.contact {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+    text-decoration: none;
+    background-color: white;
+    color: var(--color-primary);
+}
