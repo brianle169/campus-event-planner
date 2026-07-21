@@ -37,9 +37,10 @@ body {
 .contact {
   display: flex;
   flex-direction: column;
-  background-color: transparent;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
   padding: 3rem;
-  padding-top: 1rem;
   gap: 2rem;
 
   .contact-field {
