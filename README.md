@@ -19,7 +19,7 @@ This project is done as of the requirements of the course SOEN 287: Web Programm
 1. Cong Minh Le - 40264100
 2. Clinton Tran - 40284879
 3. Heritier Luc Minani - 40202468
-4. Arda Duman
+4. Arda Duman - 40341383
 5. Tarek Kiared
 
 ## How to use this application
