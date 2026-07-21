@@ -113,33 +113,6 @@
   flex-wrap: wrap;
 }
 
-.badge {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-.badge-open {
-  color: var(--color-success);
-  background: #e5f6ec;
-}
-
-.badge-full {
-  color: var(--color-accent);
-  background: #fff1e5;
-}
-
-.badge-cancelled {
-  color: var(--color-danger);
-  background: #fbe5e0;
-}
-
-.badge-completed {
-  color: var(--color-text-muted);
-  background: var(--color-bg);
-}
 
 .category-list {
   display: flex;
