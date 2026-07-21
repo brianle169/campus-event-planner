@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../public/css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a class="active" href="admin-dashboard.html">Dashboard</a></li>
+          <li><a href="manage-events.html">Manage Events</a></li>
+          <li><a href="create-event.html">Create Event</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Log out</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin container">
+      <section class="admin-page-header">
+        <div>
+          <h1>Welcome back, Admin</h1>
+          <p class="admin-subtitle">Here's a quick look at your events.</p>
+        </div>
+        <div class="admin-page-actions">
+          <a class="btn btn-primary" href="create-event.html">+ Create event</a>
+        </div>
+      </section>
+
+      <section class="stat-grid">
+        <article class="stat-card">
+          <span class="stat-label">Total events</span>
+          <span class="stat-value">12</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Total registrations</span>
+          <span class="stat-value">248</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Upcoming events</span>
+          <span class="stat-value">4</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Full events</span>
+          <span class="stat-value">2</span>
+        </article>
+      </section>
+
+      <section class="admin-columns">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <h2>Recent events</h2>
+            <a href="manage-events.html">View all</a>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Registered</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SOEN Career Fair</td>
+                <td>Aug 04, 2026</td>
+                <td>120 / 150</td>
+                <td><span class="badge badge-open">Open</span></td>
+                <td><a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a></td>
+              </tr>
+              <tr>
+                <td>Intro to Machine Learning</td>
+                <td>Jul 28, 2026</td>
+                <td>60 / 60</td>
+                <td><span class="badge badge-full">Full</span></td>
+                <td><a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a></td>
+              </tr>
+              <tr>
+                <td>SOEN Career Fair</td>
+                <td>Jul 10, 2026</td>
+                <td>140 / 140</td>
+                <td><span class="badge badge-completed">Completed</span></td>
+                <td><a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="admin-panel">
+          <div class="admin-panel-header">
+            <h2>Popular categories</h2>
+          </div>
+          <ul class="category-list">
+            <li><span>Academic workshops</span><span class="category-count">32%</span></li>
+            <li><span>Career events</span><span class="category-count">24%</span></li>
+            <li><span>Cultural events</span><span class="category-count">18%</span></li>
+            <li><span>Other</span><span class="category-count">26%</span></li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
