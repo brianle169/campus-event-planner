@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In</title>
     <link rel="stylesheet" href="../public/css/style.css" />
-    <script src="../public/js/main.js" defer></script>
+    <script src="../public/js/main.js" type="module" defer></script>
   </head>
   <body>
     <!-- Common Header goes here -->
@@ -40,10 +40,12 @@
         <div class="login-field">
           <label for="email">Email address</label>
           <input type="email" id="email" name="email" required />
+          <span class="field-error" id="email-error"></span>
         </div>
         <div class="login-field">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required />
+          <span class="field-error" id="password-error"></span>
         </div>
         <button class="btn btn-primary" type="submit">Sign In</button>
       </form>
