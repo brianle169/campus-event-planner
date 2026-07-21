@@ -1,3 +1,5 @@
+/* Use these badge classes to style event status indicators, on any pages*/
+/* These can be appplied by adding the class badge followed by the status class */
 .badge {
   display: inline-flex;
   align-items: center;
