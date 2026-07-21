@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../public/css/style.css" />
+    <script src="../public/js/main.js" type="module" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Log in</a>
+          <a class="btn btn-primary" href="register.html">Sign up</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="register-container">
+      <div class="register-header">
+        <h1>Create a new account</h1>
+        <p>
+          Or <a href="/views/login.html">sign in to your existing account</a>
+        </p>
+      </div>
+      <form class="register" novalidate>
+        <div class="register-field">
+          <span class="field-label">You are signing up as</span>
+          <div id="user-type" class="user-type">
+            <input
+              type="radio"
+              id="role-student"
+              name="role"
+              value="student"
+              checked
+              required />
+            <label for="role-student">Student</label>
+
+            <input
+              type="radio"
+              id="role-organizer"
+              name="role"
+              value="organizer" />
+            <label for="role-organizer">Organizer</label>
+          </div>
+        </div>
+        <div class="register-field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" required />
+          <span class="field-error" id="name-error"></span>
+        </div>
+        <div class="register-field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" required />
+          <span
+            class="field-error"
+            id="email-error"
+            style="display: none"></span>
+        </div>
+        <div class="register-field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+          <span class="field-error" id="password-error"></span>
+        </div>
+        <div class="register-field">
+          <label for="password-confirm">Confirm password</label>
+          <input
+            type="password"
+            id="password-confirm"
+            name="password-confirm"
+            required />
+          <span class="field-error" id="password-confirm-error"></span>
+        </div>
+        <button class="btn btn-primary" type="submit">Sign Up</button>
+      </form>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small
+          >&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+          project.</small
+        >
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
