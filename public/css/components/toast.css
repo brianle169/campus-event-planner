@@ -1,0 +1,27 @@
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 10px 20px;
+  background: #e5f6ec;
+  color: #145c33;
+  border: 1px solid #b7e2c6;
+  border-left: 4px solid var(--color-success);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.toast-error {
+  background: #fbe5e0;
+  color: #7a2415;
+  border-color: #f0b8ab;
+  border-left-color: var(--color-danger);
+}
