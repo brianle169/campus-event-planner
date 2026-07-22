@@ -8,9 +8,14 @@
 @import url("./pages/contact.css");
 @import url("./pages/homepage.css");
 @import url("./pages/register.css");
+@import url("./pages/admin-dashboard.css");
+@import url("./pages/event-form.css");
+@import url("./pages/manage-events.css");
 @import url("./pages/login.css");
 
 @import url("./components/button.css");
 @import url("./components/header.css");
 @import url("./components/footer.css");
 @import url("./components/input.css");
+@import url("./components/badge.css");
+@import url("./components/toast.css");

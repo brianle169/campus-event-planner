@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Events</title>
+    <link rel="stylesheet" href="../public/css/style.css" />
+    <script src="../public/js/toast.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="admin-dashboard.html">Dashboard</a></li>
+          <li><a class="active" href="manage-events.html">Manage Events</a></li>
+          <li><a href="create-event.html">Create Event</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Log out</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin container">
+      <section class="admin-page-header">
+        <div>
+          <h1>Manage events</h1>
+        </div>
+        <div class="admin-page-actions">
+          <a class="btn btn-primary" href="create-event.html">+ Create event</a>
+        </div>
+      </section>
+
+      <form class="event-filters" role="search">
+        <div class="event-filters-field event-filters-field--grow">
+          <label for="search">Search</label>
+          <input type="text" id="search" name="search" placeholder="Search by title" />
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-category">Category</label>
+          <select id="filter-category" name="category">
+            <option value="">All categories</option>
+            <option value="academic">Academic workshop</option>
+            <option value="career">Career event</option>
+            <option value="club">Club activity</option>
+            <option value="cultural">Cultural event</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-status">Status</label>
+          <select id="filter-status" name="status">
+            <option value="">All statuses</option>
+            <option value="open">Open</option>
+            <option value="full">Full</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="event-filters-actions">
+          <button class="btn btn-primary" type="submit">Apply</button>
+        </div>
+      </form>
+
+      <div class="admin-panel">
+        <div class="admin-panel-header">
+          <h2>All events</h2>
+        </div>
+        <div class="table-scroll">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Registered</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SOEN Career Fair</td>
+                <td>Career event</td>
+                <td>Aug 04, 2026</td>
+                <td>120 / 150</td>
+                <td><span class="badge badge-open">Open</span></td>
+                <td class="row-actions">
+                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
+                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Intro to Machine Learning</td>
+                <td>Academic workshop</td>
+                <td>Jul 28, 2026</td>
+                <td>60 / 60</td>
+                <td><span class="badge badge-full">Full</span></td>
+                <td class="row-actions">
+                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
+                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>SOEN Career Fair</td>
+                <td>Career event</td>
+                <td>Jul 10, 2026</td>
+                <td>140 / 140</td>
+                <td><span class="badge badge-completed">Completed</span></td>
+                <td class="row-actions">
+                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
+                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Intro to Machine Learning</td>
+                <td>Academic workshop</td>
+                <td>Jun 15, 2026</td>
+                <td>45 / 60</td>
+                <td><span class="badge badge-cancelled">Cancelled</span></td>
+                <td class="row-actions">
+                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
+                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
