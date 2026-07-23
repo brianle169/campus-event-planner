@@ -31,6 +31,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("submit", (event) => {
   const form = event.target.closest("form[data-toast]");
   if (!form) return;
+  if (form.dataset.valid === "false") return;
   event.preventDefault();
   showToast(form.dataset.toast, form.dataset.toastType || "success");
 });

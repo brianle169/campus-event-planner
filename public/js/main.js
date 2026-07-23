@@ -99,7 +99,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loginForm.addEventListener("submit", (event) => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
       if (!validateAllFields(fields)) {
+        event.preventDefault();
+        return;
+      }
+
+      // Temporary hardcoded login check for demonstration purposes, this will be removed once we have a backend
+      if (email === "admin@concordia.com" && password === "admin123") {
+        window.location.href = "admin-dashboard.html";
         event.preventDefault();
       }
     });
