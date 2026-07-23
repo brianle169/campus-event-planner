@@ -2,15 +2,15 @@ import { fetchEvents } from './api/eventsApi.js';
 import { formatDate, getBadgeClass } from './utils/eventUtils.js';
 
 const tableBody = document.querySelector('#events-table-body');
+const searchInput = document.querySelector('#search');
+const searchButton = document.querySelector('#search-button');
 
-async function renderEvents() {
-  if (!tableBody) return;
+let allEvents = [];
 
-  const events = await fetchEvents();
-
-  const rows = events.map((event) => {
-    const formattedDate = formatDate(event.date);
+function buildEventTableRows(events) {
+  return events.map((event) => {
     const badgeClass = getBadgeClass(event.status);
+    const formattedDate = formatDate(event.date);
 
     return `
       <tr>
@@ -26,8 +26,39 @@ async function renderEvents() {
       </tr>
     `;
   }).join('');
-
-  tableBody.innerHTML = rows;
 }
 
-renderEvents();
+function renderEvents() {
+  if (!tableBody) return;
+
+  const query = searchInput?.value.trim().toLowerCase() || '';
+  const filteredEvents = allEvents.filter((event) => event.title.toLowerCase().includes(query));
+
+  if (filteredEvents.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No events found</td></tr>';
+    return;
+  }
+
+  tableBody.innerHTML = buildEventTableRows(filteredEvents);
+}
+
+async function loadEvents() {
+  if (!tableBody) return;
+
+  tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading...</td></tr>';
+
+  const events = await fetchEvents();
+  allEvents = events;
+  renderEvents();
+}
+// TODO : Add event listeners for filtering the dropdowns too
+searchButton?.addEventListener('click', (event) => {
+  event.preventDefault();
+  renderEvents();
+});
+searchInput?.addEventListener('input', (event) => {
+    event.preventDefault();
+    renderEvents();
+});
+
+loadEvents();
