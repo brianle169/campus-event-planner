@@ -6,6 +6,7 @@
     <title>Manage Events</title>
     <link rel="stylesheet" href="../public/css/style.css" />
     <script src="../public/js/toast.js" defer></script>
+    <script type="module" src="../public/js/manage-events.js"></script>
   </head>
   <body>
     <header class="site-header">
@@ -86,52 +87,7 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>SOEN Career Fair</td>
-                <td>Career event</td>
-                <td>Aug 04, 2026</td>
-                <td>120 / 150</td>
-                <td><span class="badge badge-open">Open</span></td>
-                <td class="row-actions">
-                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
-                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Intro to Machine Learning</td>
-                <td>Academic workshop</td>
-                <td>Jul 28, 2026</td>
-                <td>60 / 60</td>
-                <td><span class="badge badge-full">Full</span></td>
-                <td class="row-actions">
-                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
-                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <td>SOEN Career Fair</td>
-                <td>Career event</td>
-                <td>Jul 10, 2026</td>
-                <td>140 / 140</td>
-                <td><span class="badge badge-completed">Completed</span></td>
-                <td class="row-actions">
-                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
-                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Intro to Machine Learning</td>
-                <td>Academic workshop</td>
-                <td>Jun 15, 2026</td>
-                <td>45 / 60</td>
-                <td><span class="badge badge-cancelled">Cancelled</span></td>
-                <td class="row-actions">
-                  <a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a>
-                  <button class="btn btn-danger btn-sm" type="button" data-toast="Event deleted" data-toast-type="error">Delete</button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="events-table-body"></tbody>
           </table>
         </div>
       </div>
