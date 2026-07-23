@@ -21,10 +21,16 @@ function showToast(message, type = "success") {
   }, 3000);
 }
 
-document.querySelectorAll("[data-toast]").forEach((el) => {
-  const eventName = el.tagName === "FORM" ? "submit" : "click";
-  el.addEventListener(eventName, (event) => {
-    if (eventName === "submit") event.preventDefault();
-    showToast(el.dataset.toast, el.dataset.toastType || "success");
-  });
+document.addEventListener("click", (event) => {
+  const trigger = event.target.closest("[data-toast]");
+  if (!trigger) return;
+  if (trigger.tagName === "FORM") return;
+  showToast(trigger.dataset.toast, trigger.dataset.toastType || "success");
+});
+
+document.addEventListener("submit", (event) => {
+  const form = event.target.closest("form[data-toast]");
+  if (!form) return;
+  event.preventDefault();
+  showToast(form.dataset.toast, form.dataset.toastType || "success");
 });
