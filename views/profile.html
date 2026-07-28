@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile</title>
+    <title>Sign Up</title>
     <link rel="stylesheet" href="../public/css/style.css" />
-    <script src="../public/js/main.js" type="module" defer></script>
+    <script src="../public/js/profile.js" type="module" defer></script>
 </head>
 
 <body>
@@ -17,63 +17,80 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="student-dashboard.html">Dashboard</a></li>
+                <li><a href="student-dashboard.html">My Dashboard</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="my-registrations.html">My Events</a></li>
             </ul>
             <div class="nav-actions">
                 <a class="btn btn-outline" href="profile.html">My Profile</a>
-                <a class="btn btn-primary" href="login.html">Sign Out</a>
+                <a class="btn btn-primary" href="login.html">Sign out</a>
             </div>
         </nav>
     </header>
 
     <main class="profile-main">
-        <section>
-            <div class="profile-container">
+        <aside>
+            <nav class="profile-nav">
+                <a href="#" class="nav-link active" data-tab="profile">
+                    Profile
+                </a>
+                <a href="#" class="nav-link" data-tab="password">
+                    Password
+                </a>
+            </nav>
+        </aside>
+
+        <section class="profile-content">
+
+            <!-- Profile -->
+            <div class="profile-container tab-content active" id="profile">
                 <div class="profile-header">
                     <h1>Account Information</h1>
                 </div>
+
                 <form class="profile">
                     <div class="profile-field">
                         <label for="name">Full name</label>
-                        <input type="text" id="name" name="name" required />
-                        <span class="field-error" id="name-error"></span>
+                        <input type="text" id="name">
                     </div>
+
                     <div class="profile-field">
                         <label for="email">Email address</label>
-                        <input type="email" id="email" name="email" required />
-                        <span class="field-error" id="email-error"></span>
+                        <input type="email" id="email" readonly>
                     </div>
+
                     <div class="profile-field">
-                        <label for="password">Role</label>
-                        <input type="password" id="password" name="password" required />
-                        <span class="field-error" id="password-error"></span>
+                        <label for="role">Role</label>
+                        <input type="text" id="role" readonly>
                     </div>
-                    <button class="btn btn-primary" type="submit">Save</button>
+
+                    <button class="btn btn-primary">Save</button>
                 </form>
             </div>
-        </section>
-        <section>
-            <div class="profile-container">
+
+            <!-- Password -->
+            <div class="profile-container tab-content" id="password">
                 <div class="profile-header">
                     <h1>Change Password</h1>
                 </div>
+
                 <form class="profile">
                     <div class="profile-field">
-                        <label for="name">New password</label>
-                        <input type="password" id="password" name="password" required />
-                        <span class="field-error" id="name-error"></span>
+                        <label for="new-password">New password</label>
+                        <input type="password" id="new-password">
                     </div>
+
                     <div class="profile-field">
-                        <label for="email">Confirm password</label>
-                        <input type="password" id="password" name="password" required />
-                        <span class="field-error" id="name-error"></span>
+                        <label for="confirm-password">Confirm password</label>
+                        <input type="password" id="confirm-password">
                     </div>
-                    <button class="btn btn-primary" type="submit">Save</button>
+
+                    <button class="btn btn-primary">Save</button>
                 </form>
             </div>
+
         </section>
+
     </main>
 
     <footer class="site-footer">
