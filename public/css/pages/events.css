@@ -1,3 +1,7 @@
+body {
+  justify-content: space-between;
+}
+
 .events-page {
   padding-block: 2.5rem;
 }
