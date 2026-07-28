@@ -4,6 +4,7 @@ import {
   registrations,
   getEventById,
 } from "../data/sampleData.js";
+import { isUpcoming, formatDate } from "../utils/dateHelpers.js";
 
 // Same status vocabulary as the Registrations table in the project spec.
 const REGISTRATION_BADGES = {
@@ -12,19 +13,6 @@ const REGISTRATION_BADGES = {
   missed: { label: "Missed", className: "badge-cancelled" },
   cancelled: { label: "Cancelled", className: "badge-cancelled" },
 };
-
-const isUpcoming = (dateStr) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return new Date(`${dateStr}T00:00:00`) >= today;
-};
-
-const formatDate = (dateStr) =>
-  new Date(`${dateStr}T00:00:00`).toLocaleDateString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
 
 const myRegistrations = () =>
   registrations
@@ -136,7 +124,7 @@ const renderRecommended = (myRegs) => {
         <span class="event-mini-title">${event.title}</span>
         <span class="event-mini-meta">${formatDate(event.event_date)} &middot; ${event.category}</span>
       </div>
-      <a class="btn btn-outline btn-sm" href="index.html">View</a>
+      <a class="btn btn-outline btn-sm" href="events.html">View</a>
     `;
     list.appendChild(item);
   });
