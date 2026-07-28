@@ -1,0 +1,166 @@
+import {
+  currentUser,
+  events,
+  registrations,
+  getEventById,
+} from "../data/sampleData.js";
+
+// Same status vocabulary as the Registrations table in the project spec.
+const REGISTRATION_BADGES = {
+  registered: { label: "Registered", className: "badge-open" },
+  attended: { label: "Attended", className: "badge-completed" },
+  missed: { label: "Missed", className: "badge-cancelled" },
+  cancelled: { label: "Cancelled", className: "badge-cancelled" },
+};
+
+const isUpcoming = (dateStr) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return new Date(`${dateStr}T00:00:00`) >= today;
+};
+
+const formatDate = (dateStr) =>
+  new Date(`${dateStr}T00:00:00`).toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+
+const myRegistrations = () =>
+  registrations
+    .filter((registration) => registration.user_id === currentUser.user_id)
+    .map((registration) => ({
+      ...registration,
+      event: getEventById(registration.event_id),
+    }));
+
+const computeStats = (myRegs) => ({
+  totalRegistered: myRegs.filter((r) => r.status !== "cancelled").length,
+  upcoming: myRegs.filter(
+    (r) => r.status === "registered" && isUpcoming(r.event.event_date),
+  ).length,
+  attended: myRegs.filter((r) => r.status === "attended").length,
+  cancelled: myRegs.filter((r) => r.status === "cancelled").length,
+});
+
+const renderGreeting = () => {
+  const el = document.getElementById("dashboard-greeting");
+  const nameSplit = currentUser.full_name.split(" ");
+  const firstName = nameSplit.reduce((acc, val, index, arr) => {
+    if (index === arr.length - 1 && val.length <= 3) {
+      return acc;
+    }
+    return acc + (acc ? " " : "") + val;
+  }, "");
+  if (el) el.textContent = `Welcome back, ${firstName}`;
+};
+
+const renderStats = (stats) => {
+  document.getElementById("stat-total-registered").textContent =
+    stats.totalRegistered;
+  document.getElementById("stat-upcoming").textContent = stats.upcoming;
+  document.getElementById("stat-attended").textContent = stats.attended;
+  document.getElementById("stat-cancelled").textContent = stats.cancelled;
+};
+
+const renderUpcomingTable = (myRegs) => {
+  const grid = document.getElementById("upcoming-events-body");
+  grid.innerHTML = "";
+
+  const upcoming = myRegs
+    .filter((r) => r.status === "registered" && isUpcoming(r.event.event_date))
+    .sort(
+      (a, b) => new Date(a.event.event_date) - new Date(b.event.event_date),
+    );
+
+  if (upcoming.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "upcoming-events-empty";
+    empty.textContent = "You have no upcoming registered events.";
+    grid.appendChild(empty);
+    return;
+  }
+
+  upcoming.forEach((registration) => {
+    const { event } = registration;
+    const badge = REGISTRATION_BADGES[registration.status];
+
+    const card = document.createElement("article");
+    card.className = "upcoming-event-card";
+    card.innerHTML = `
+      <div class="upcoming-event-info">
+        <h3 class="upcoming-event-title">${event.title}</h3>
+        <p class="upcoming-event-meta">${formatDate(event.event_date)} &middot; ${event.location}</p>
+      </div>
+      <div class="upcoming-event-actions">
+        <span class="badge ${badge.className}">${badge.label}</span>
+      </div>
+    `;
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "btn btn-danger btn-sm";
+    cancelBtn.type = "button";
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.addEventListener("click", () =>
+      cancelRegistration(registration.registration_id),
+    );
+    card.querySelector(".upcoming-event-actions").appendChild(cancelBtn);
+
+    grid.appendChild(card);
+  });
+};
+
+const renderRecommended = (myRegs) => {
+  const list = document.getElementById("recommended-list");
+  list.innerHTML = "";
+
+  const registeredEventIds = new Set(
+    myRegs.filter((r) => r.status !== "cancelled").map((r) => r.event_id),
+  );
+
+  const suggestions = events
+    .filter(
+      (event) =>
+        event.status === "open" &&
+        isUpcoming(event.event_date) &&
+        !registeredEventIds.has(event.event_id),
+    )
+    .sort((a, b) => new Date(a.event_date) - new Date(b.event_date))
+    .slice(0, 3);
+
+  suggestions.forEach((event) => {
+    const item = document.createElement("li");
+    item.className = "event-mini";
+    item.innerHTML = `
+      <div class="event-mini-info">
+        <span class="event-mini-title">${event.title}</span>
+        <span class="event-mini-meta">${formatDate(event.event_date)} &middot; ${event.category}</span>
+      </div>
+      <a class="btn btn-outline btn-sm" href="index.html">View</a>
+    `;
+    list.appendChild(item);
+  });
+};
+
+const cancelRegistration = (registrationId) => {
+  const registration = registrations.find(
+    (r) => r.registration_id === registrationId,
+  );
+  if (!registration) return;
+
+  registration.status = "cancelled";
+  if (typeof showToast === "function") {
+    showToast("Registration cancelled", "error");
+  }
+  renderDashboard();
+};
+
+function renderDashboard() {
+  const myRegs = myRegistrations();
+  renderGreeting();
+  renderStats(computeStats(myRegs));
+  renderUpcomingTable(myRegs);
+  renderRecommended(myRegs);
+}
+
+document.addEventListener("DOMContentLoaded", renderDashboard);

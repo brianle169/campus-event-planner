@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="../public/css/style.css" />
+    <script src="../public/js/toast.js" defer></script>
+    <script src="../public/js/pages/student-dashboard.js" type="module" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a class="active" href="student-dashboard.html">Dashboard</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Sign out</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="student-dashboard container">
+      <section class="student-hero">
+        <div>
+          <h1 id="dashboard-greeting">Welcome back</h1>
+          <p class="student-hero-subtitle">Here's what's happening with your events.</p>
+        </div>
+        <div class="student-hero-actions">
+          <a class="btn btn-primary" href="index.html">Browse events</a>
+        </div>
+      </section>
+
+      <section class="student-stats">
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="stat-total-registered">0</span>
+          <span class="student-stat-label">Total registered events</span>
+        </article>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="stat-upcoming">0</span>
+          <span class="student-stat-label">Upcoming events</span>
+        </article>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="stat-attended">0</span>
+          <span class="student-stat-label">Events attended</span>
+        </article>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="stat-cancelled">0</span>
+          <span class="student-stat-label">Cancelled registrations</span>
+        </article>
+      </section>
+
+      <section class="student-columns">
+        <div class="student-panel">
+          <div class="student-panel-header">
+            <h2>My upcoming events</h2>
+          </div>
+          <div class="upcoming-events-grid" id="upcoming-events-body"></div>
+        </div>
+
+        <aside class="student-panel">
+          <div class="student-panel-header">
+            <h2>Recommended for you</h2>
+          </div>
+          <ul class="event-mini-list" id="recommended-list"></ul>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small
+          >&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+          project.</small
+        >
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
