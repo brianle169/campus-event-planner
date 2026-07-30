@@ -48,9 +48,9 @@ This project is done as of the requirements of the course SOEN 287: Web Programm
 
 3. **Preview the frontend**
 
-   Open `views/index.html` in VS Code, right-click and choose
+   Open `views/public/index.html` in VS Code, right-click and choose
    **"Open with Live Server extension"**. The site will open at
-   `http://127.0.0.1:5500/views/index.html`.
+   `http://127.0.0.1:5500/views/public/index.html`.
 
 
 ## Contributing (team workflow)
