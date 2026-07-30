@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Registrations - Campus Event Planner</title>
+  
+  <link rel="stylesheet" href="../public/css/style.css" />
+  <link rel="stylesheet" href="../public/css/pages/my-registrations.css" />
+  <script src="../public/js/toast.js" defer></script>
+  <script src="../public/js/main.js" type="module" defer></script>
+</head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="student-dashboard.html">Dashboard</a></li>
+          <li><a href="my-registrations.html" class="active">My Registrations</a></li>
+          <li><a href="events.html">Browse events</a></li>
+          <li><a href="profile.html">Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="login.html">Sign out</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="student-dashboard container">
+      <!-- Hero Header Section -->
+      <section class="student-hero">
+        <div>
+          <h1>My Event Registrations</h1>
+          <p class="student-hero-subtitle">
+            Manage your registered campus events and view your attendance activity.
+          </p>
+        </div>
+        <div class="student-hero-actions">
+          <a class="btn btn-primary" href="events.html">Discover More Events</a>
+        </div>
+      </section>
+
+      <!-- Stat Overview Cards -->
+      <section class="student-stats">
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="stat-total-registered">3</span>
+          <span class="student-stat-label">Total Registrations</span>
+        </article>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="stat-upcoming">2</span>
+          <span class="student-stat-label">Upcoming Events</span>
+        </article>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="stat-attended">1</span>
+          <span class="student-stat-label">Events Attended</span>
+        </article>
+      </section>
+
+      <!-- Main Registrations Section -->
+      <section class="student-panel">
+        <div class="student-panel-header">
+          <h2>Registered Events</h2>
+        </div>
+
+        <div class="registration-cards-list">
+          
+          <!-- Event Item 1: Upcoming -->
+          <article class="upcoming-event-card">
+            <div class="upcoming-event-info">
+              <div class="badge-group">
+                <span class="badge category-badge">Academic Workshop</span>
+                <span class="badge status-registered">Registered</span>
+              </div>
+              <h3 class="upcoming-event-title"> Programming Hands-on WorkWebshop</h3>
+              <p class="upcoming-event-meta">
+                 August 10, 2026 | 2:00 PM - 4:00 PM <br />
+                 EV Building, Room 2.184
+              </p>
+            </div>
+            <div class="upcoming-event-actions">
+              <a href="event-details.html" class="btn btn-outline btn-sm">View Details</a>
+              <button class="btn btn-danger btn-sm" type="button">Cancel Registration</button>
+            </div>
+          </article>
+
+          <!-- Event Item 2: Upcoming -->
+          <article class="upcoming-event-card">
+            <div class="upcoming-event-info">
+              <div class="badge-group">
+                <span class="badge category-badge">Career Event</span>
+                <span class="badge status-registered">Registered</span>
+              </div>
+              <h3 class="upcoming-event-title">Engineering & Tech Career Fair</h3>
+              <p class="upcoming-event-meta">
+                 September 15, 2026 | 10:00 AM - 3:00 PM <br />
+                 MB Building 
+              </p>
+            </div>
+            <div class="upcoming-event-actions">
+              <a href="event-details.html" class="btn btn-outline btn-sm">View Details</a>
+              <button class="btn btn-danger btn-sm" type="button">Cancel Registration</button>
+            </div>
+          </article>
+
+          <!-- Event Item 3: Attended / Past -->
+          <article class="upcoming-event-card attended-card">
+            <div class="upcoming-event-info">
+              <div class="badge-group">
+                <span class="badge category-badge">Social Event</span>
+                <span class="badge status-attended">Attended</span>
+              </div>
+              <h3 class="upcoming-event-title">Summer Orientation Welcome Social</h3>
+              <p class="upcoming-event-meta">
+                 July 15, 2026 | 5:00 PM - 7:00 PM <br />
+                 Loyola Campus 
+              </p>
+            </div>
+            <div class="upcoming-event-actions">
+              <a href="event-details.html" class="btn btn-outline btn-sm">View Details</a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
