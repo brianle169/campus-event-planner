@@ -104,4 +104,38 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  const contactForm = document.querySelector("form.contact");
+  if (contactForm) {
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const messageInput = document.getElementById("text");
+
+    const fields = [
+      {
+        input: nameInput,
+        validate: () => validationRules.validateName(nameInput.value),
+      },
+      {
+        input: emailInput,
+        validate: () => validationRules.validateEmail(emailInput.value),
+      },
+      {
+        input: messageInput,
+        validate: () => validationRules.validateMessage(messageInput.value),
+      }
+    ];
+
+    fields.forEach((field) => {
+      const debouncedValidate = debounce(() => validateField(field), delay);
+      field.input.addEventListener("input", debouncedValidate);
+    });
+
+    contactForm.addEventListener("submit", (event) => {
+      if (!validateAllFields(fields)) {
+        event.preventDefault();
+      }
+    });
+  }
+
 });
