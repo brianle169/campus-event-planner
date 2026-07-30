@@ -13,6 +13,11 @@ export const validateEmail = (value) => {
   return "";
 };
 
+export const validateMessage = (value) => {
+  if (!value.trim()) return "Message is required.";
+  return "";
+};
+
 export const validatePassword = (value) => {
   if (!value) return "Password is required.";
   if (!PASSWORD_REGEX.test(value)) {
