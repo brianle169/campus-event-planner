@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Event</title>
-    <link rel="stylesheet" href="../public/css/style.css" />
-    <script src="../public/js/toast.js" defer></script>
+    <title>Create Event</title>
+    <link rel="stylesheet" href="../../public/css/style.css" />
+    <script src="../../public/js/toast.js" defer></script>
   </head>
   <body>
     <header class="site-header">
       <nav class="nav container">
-        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
         <button
           class="nav-toggle"
           type="button"
@@ -20,11 +20,11 @@
         </button>
         <ul class="nav-links">
           <li><a href="admin-dashboard.html">Dashboard</a></li>
-          <li><a class="active" href="manage-events.html">Manage Events</a></li>
-          <li><a href="create-event.html">Create Event</a></li>
+          <li><a href="manage-events.html">Manage Events</a></li>
+          <li><a class="active" href="create-event.html">Create Event</a></li>
         </ul>
         <div class="nav-actions">
-          <a class="btn btn-outline" href="login.html">Log out</a>
+          <a class="btn btn-outline" href="../public/login.html">Log out</a>
         </div>
       </nav>
     </header>
@@ -32,31 +32,29 @@
     <main class="admin container">
       <section class="admin-page-header">
         <div>
-          <h1>Edit event</h1>
-          <p class="admin-subtitle">Currently registered: 120 / 150</p>
-        </div>
-        <div class="admin-page-actions">
-          <a class="btn btn-outline" href="manage-events.html">Back</a>
+          <h1>Create a new event</h1>
+          <p class="admin-subtitle">Fill in the details below.</p>
         </div>
       </section>
 
-      <form class="event-form" data-toast="Changes saved" novalidate>
+      <form class="event-form" data-toast="Event created" novalidate>
         <div class="event-form-grid">
           <div class="event-form-field event-form-field--full">
             <label for="title">Event title</label>
-            <input type="text" id="title" name="title" value="SOEN Career Fair" required />
+            <input type="text" id="title" name="title" required />
           </div>
 
           <div class="event-form-field event-form-field--full">
             <label for="description">Description</label>
-            <textarea id="description" name="description" rows="5" required>Meet recruiters from tech companies. Bring your resume.</textarea>
+            <textarea id="description" name="description" rows="5" required></textarea>
           </div>
 
           <div class="event-form-field">
             <label for="category">Category</label>
             <select id="category" name="category" required>
+              <option value="" disabled selected>Select a category</option>
               <option value="academic">Academic workshop</option>
-              <option value="career" selected>Career event</option>
+              <option value="career">Career event</option>
               <option value="club">Club activity</option>
               <option value="sports">Sports event</option>
               <option value="cultural">Cultural event</option>
@@ -81,27 +79,27 @@
 
           <div class="event-form-field">
             <label for="date">Date</label>
-            <input type="date" id="date" name="date" value="2026-08-04" required />
+            <input type="date" id="date" name="date" required />
           </div>
 
           <div class="event-form-field">
             <label for="capacity">Capacity</label>
-            <input type="number" id="capacity" name="capacity" min="1" value="150" required />
+            <input type="number" id="capacity" name="capacity" min="1" required />
           </div>
 
           <div class="event-form-field">
             <label for="start-time">Start time</label>
-            <input type="time" id="start-time" name="start-time" value="10:00" required />
+            <input type="time" id="start-time" name="start-time" required />
           </div>
 
           <div class="event-form-field">
             <label for="end-time">End time</label>
-            <input type="time" id="end-time" name="end-time" value="16:00" required />
+            <input type="time" id="end-time" name="end-time" required />
           </div>
 
           <div class="event-form-field event-form-field--full">
             <label for="location">Location</label>
-            <input type="text" id="location" name="location" value="EV Building, Atrium" required />
+            <input type="text" id="location" name="location" required />
           </div>
 
           <div class="event-form-field event-form-field--full">
@@ -110,18 +108,9 @@
           </div>
         </div>
 
-        <div class="event-form-actions event-form-actions--edit">
-          <button
-            class="btn btn-danger"
-            type="button"
-            data-toast="Event deleted"
-            data-toast-type="error">
-            Delete event
-          </button>
-          <div class="event-form-actions-right">
-            <a class="btn btn-outline" href="manage-events.html">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save changes</button>
-          </div>
+        <div class="event-form-actions">
+          <a class="btn btn-outline" href="manage-events.html">Cancel</a>
+          <button class="btn btn-primary" type="submit">Create event</button>
         </div>
       </form>
     </main>
@@ -130,9 +119,9 @@
       <div class="container footer-inner">
         <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
         <div class="footer-links">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
+          <a href="../public/index.html">Home</a>
+          <a href="../public/about.html">About</a>
+          <a href="../public/contact.html">Contact</a>
         </div>
       </div>
     </footer>
