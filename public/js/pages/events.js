@@ -1,36 +1,24 @@
-import { Registration } from "../../../models/Registration.js";
 import {
-  currentUser,
   events,
   categories,
-  registrations,
-  getEventById,
   getUserById,
   getRegistrationCountForEvent,
 } from "../data/sampleData.js";
 import { isUpcoming, formatDate, formatTime } from "../utils/dateHelpers.js";
+import {
+  EVENT_STATUS_BADGES,
+  isRegisteredByCurrentUser,
+  isEventFull,
+  registerForEvent,
+} from "../utils/registrations.js";
 
-const EVENT_STATUS_BADGES = {
-  open: { label: "Open", className: "badge-open" },
-  full: { label: "Full", className: "badge-full" },
-  cancelled: { label: "Cancelled", className: "badge-cancelled" },
-  completed: { label: "Completed", className: "badge-completed" },
-  disabled: { label: "Disabled", className: "badge-cancelled" },
+const filters = {
+  search: "",
+  category: "",
+  location: "",
+  organizerId: "",
+  date: "",
 };
-
-const filters = { search: "", category: "", location: "", organizerId: "", date: "" };
-
-const isRegisteredByCurrentUser = (eventId) =>
-  registrations.some(
-    (r) =>
-      r.user_id === currentUser.user_id &&
-      r.event_id === eventId &&
-      r.status !== "cancelled",
-  );
-
-const isFull = (event) =>
-  event.status === "full" ||
-  getRegistrationCountForEvent(event.event_id) >= event.capacity;
 
 const populateFilterOptions = () => {
   const categorySelect = document.getElementById("filter-category");
@@ -98,14 +86,17 @@ const buildActionButton = (event) => {
       ? EVENT_STATUS_BADGES[event.status].label
       : "Past event";
     button.disabled = true;
-  } else if (isFull(event)) {
+  } else if (isEventFull(event)) {
     button.classList.add("btn-outline");
     button.textContent = "Full";
     button.disabled = true;
   } else {
     button.classList.add("btn-primary");
     button.textContent = "Register";
-    button.addEventListener("click", () => registerForEvent(event.event_id));
+    button.addEventListener("click", () => {
+      registerForEvent(event.event_id);
+      renderEvents();
+    });
   }
 
   return button;
@@ -122,7 +113,7 @@ const buildEventCard = (event) => {
       <span class="event-card-category">${event.category}</span>
       <span class="badge ${statusBadge.className}">${statusBadge.label}</span>
     </div>
-    <h3 class="event-card-title">${event.title}</h3>
+    <h3 class="event-card-title"><a href="event-details.html?id=${event.event_id}">${event.title}</a></h3>
     <p class="event-card-description">${event.description}</p>
     <ul class="event-card-meta">
       <li>${formatDate(event.event_date)} &middot; ${formatTime(event.start_time)}&ndash;${formatTime(event.end_time)}</li>
@@ -133,7 +124,9 @@ const buildEventCard = (event) => {
     <div class="event-card-actions"></div>
   `;
 
-  card.querySelector(".event-card-actions").appendChild(buildActionButton(event));
+  card
+    .querySelector(".event-card-actions")
+    .appendChild(buildActionButton(event));
 
   return card;
 };
@@ -155,26 +148,6 @@ const renderEvents = () => {
   }
 
   filtered.forEach((event) => grid.appendChild(buildEventCard(event)));
-};
-
-const registerForEvent = (eventId) => {
-  const event = getEventById(eventId);
-  const registrationDate = new Date().toISOString().slice(0, 10);
-  registrations.push(
-    new Registration(
-      `reg-${Date.now()}`,
-      currentUser.user_id,
-      eventId,
-      registrationDate,
-      "registered",
-      false,
-    ),
-  );
-
-  if (typeof showToast === "function") {
-    showToast(`Registered for ${event.title}`, "success");
-  }
-  renderEvents();
 };
 
 const readFiltersFromForm = () => {
