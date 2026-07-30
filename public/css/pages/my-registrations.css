@@ -1,0 +1,61 @@
+.registration-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.badge-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm, 4px);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.category-badge {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.status-registered {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-attended {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.attended-card {
+  opacity: 0.85;
+  border-left-color: var(--color-text-muted);
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  padding: 0.4rem 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+.btn-sm {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+}
