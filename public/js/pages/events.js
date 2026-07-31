@@ -1,36 +1,28 @@
-import { Registration } from "../../../models/Registration.js";
 import {
-  currentUser,
   events,
   categories,
-  registrations,
-  getEventById,
   getUserById,
   getRegistrationCountForEvent,
 } from "../data/sampleData.js";
 import { isUpcoming, formatDate, formatTime } from "../utils/dateHelpers.js";
+import {
+  EVENT_STATUS_BADGES,
+  isRegisteredByCurrentUser,
+  isEventFull,
+  registerForEvent,
+  cancelRegistration,
+  getMyRegistrationForEvent,
+} from "../utils/registrations.js";
+import { validateDateRange } from "../inputValidation.js";
 
-const EVENT_STATUS_BADGES = {
-  open: { label: "Open", className: "badge-open" },
-  full: { label: "Full", className: "badge-full" },
-  cancelled: { label: "Cancelled", className: "badge-cancelled" },
-  completed: { label: "Completed", className: "badge-completed" },
-  disabled: { label: "Disabled", className: "badge-cancelled" },
+const filters = {
+  search: "",
+  category: "",
+  location: "",
+  organizerId: "",
+  startDate: "",
+  endDate: "",
 };
-
-const filters = { search: "", category: "", location: "", organizerId: "", date: "" };
-
-const isRegisteredByCurrentUser = (eventId) =>
-  registrations.some(
-    (r) =>
-      r.user_id === currentUser.user_id &&
-      r.event_id === eventId &&
-      r.status !== "cancelled",
-  );
-
-const isFull = (event) =>
-  event.status === "full" ||
-  getRegistrationCountForEvent(event.event_id) >= event.capacity;
 
 const populateFilterOptions = () => {
   const categorySelect = document.getElementById("filter-category");
@@ -78,7 +70,9 @@ const getFilteredEvents = () =>
       if (filters.organizerId && event.organizer_id !== filters.organizerId) {
         return false;
       }
-      if (filters.date && event.event_date !== filters.date) return false;
+      if (filters.startDate && event.event_date < filters.startDate)
+        return false;
+      if (filters.endDate && event.event_date > filters.endDate) return false;
       return true;
     })
     .sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
@@ -88,24 +82,35 @@ const buildActionButton = (event) => {
   button.type = "button";
   button.className = "btn btn-sm";
 
-  if (isRegisteredByCurrentUser(event.event_id)) {
-    button.classList.add("btn-outline");
-    button.textContent = "Registered";
-    button.disabled = true;
+  if (
+    isRegisteredByCurrentUser(event.event_id) &&
+    isUpcoming(event.event_date)
+  ) {
+    button.classList.add("btn-danger", "btn-primary");
+    button.textContent = "Cancel";
+    button.addEventListener("click", () => {
+      cancelRegistration(
+        getMyRegistrationForEvent(event.event_id).registration_id,
+      );
+      renderEvents();
+    });
   } else if (event.status !== "open" || !isUpcoming(event.event_date)) {
     button.classList.add("btn-outline");
     button.textContent = isUpcoming(event.event_date)
       ? EVENT_STATUS_BADGES[event.status].label
       : "Past event";
     button.disabled = true;
-  } else if (isFull(event)) {
+  } else if (isEventFull(event)) {
     button.classList.add("btn-outline");
     button.textContent = "Full";
     button.disabled = true;
   } else {
     button.classList.add("btn-primary");
     button.textContent = "Register";
-    button.addEventListener("click", () => registerForEvent(event.event_id));
+    button.addEventListener("click", () => {
+      registerForEvent(event.event_id);
+      renderEvents();
+    });
   }
 
   return button;
@@ -122,7 +127,7 @@ const buildEventCard = (event) => {
       <span class="event-card-category">${event.category}</span>
       <span class="badge ${statusBadge.className}">${statusBadge.label}</span>
     </div>
-    <h3 class="event-card-title">${event.title}</h3>
+    <h3 class="event-card-title"><a href="event-details.html?id=${event.event_id}">${event.title}</a></h3>
     <p class="event-card-description">${event.description}</p>
     <ul class="event-card-meta">
       <li>${formatDate(event.event_date)} &middot; ${formatTime(event.start_time)}&ndash;${formatTime(event.end_time)}</li>
@@ -133,7 +138,9 @@ const buildEventCard = (event) => {
     <div class="event-card-actions"></div>
   `;
 
-  card.querySelector(".event-card-actions").appendChild(buildActionButton(event));
+  card
+    .querySelector(".event-card-actions")
+    .appendChild(buildActionButton(event));
 
   return card;
 };
@@ -157,32 +164,27 @@ const renderEvents = () => {
   filtered.forEach((event) => grid.appendChild(buildEventCard(event)));
 };
 
-const registerForEvent = (eventId) => {
-  const event = getEventById(eventId);
-  const registrationDate = new Date().toISOString().slice(0, 10);
-  registrations.push(
-    new Registration(
-      `reg-${Date.now()}`,
-      currentUser.user_id,
-      eventId,
-      registrationDate,
-      "registered",
-      false,
-    ),
-  );
-
-  if (typeof showToast === "function") {
-    showToast(`Registered for ${event.title}`, "success");
-  }
-  renderEvents();
+const setFieldError = (input, message) => {
+  const errorEl = document.getElementById(`${input.id}-error`);
+  input.classList.toggle("invalid", Boolean(message));
+  if (errorEl) errorEl.textContent = message;
 };
 
 const readFiltersFromForm = () => {
+  const startDateInput = document.getElementById("filter-start-date");
+  const endDateInput = document.getElementById("filter-end-date");
+  const rangeError = validateDateRange(
+    startDateInput.value,
+    endDateInput.value,
+  );
+  setFieldError(endDateInput, rangeError);
+
   filters.search = document.getElementById("filter-search").value.trim();
   filters.category = document.getElementById("filter-category").value;
   filters.location = document.getElementById("filter-location").value;
   filters.organizerId = document.getElementById("filter-organizer").value;
-  filters.date = document.getElementById("filter-date").value;
+  filters.startDate = startDateInput.value;
+  filters.endDate = rangeError ? "" : endDateInput.value;
   renderEvents();
 };
 
@@ -195,6 +197,7 @@ const attachFilterListeners = () => {
     Object.keys(filters).forEach((key) => {
       filters[key] = "";
     });
+    setFieldError(document.getElementById("filter-end-date"), "");
     setTimeout(renderEvents, 0);
   });
 };

@@ -13,6 +13,7 @@ export class Event {
     status,
     organizer_id,
     created_on,
+    registeredCount = 0,
   ) {
     this.event_id = event_id;
     this.title = title;
@@ -23,6 +24,7 @@ export class Event {
     this.end_time = end_time;
     this.location = location;
     this.capacity = capacity;
+    this.registeredCount = registeredCount;
     this.status = status;
     this.organizer_id = organizer_id;
     this.created_on = created_on;
