@@ -10,6 +10,8 @@ import {
   isRegisteredByCurrentUser,
   isEventFull,
   registerForEvent,
+  cancelRegistration,
+  getMyRegistrationForEvent,
 } from "../utils/registrations.js";
 import { validateDateRange } from "../inputValidation.js";
 
@@ -80,10 +82,18 @@ const buildActionButton = (event) => {
   button.type = "button";
   button.className = "btn btn-sm";
 
-  if (isRegisteredByCurrentUser(event.event_id)) {
-    button.classList.add("btn-outline");
-    button.textContent = "Registered";
-    button.disabled = true;
+  if (
+    isRegisteredByCurrentUser(event.event_id) &&
+    isUpcoming(event.event_date)
+  ) {
+    button.classList.add("btn-danger", "btn-primary");
+    button.textContent = "Cancel";
+    button.addEventListener("click", () => {
+      cancelRegistration(
+        getMyRegistrationForEvent(event.event_id).registration_id,
+      );
+      renderEvents();
+    });
   } else if (event.status !== "open" || !isUpcoming(event.event_date)) {
     button.classList.add("btn-outline");
     button.textContent = isUpcoming(event.event_date)
@@ -163,7 +173,10 @@ const setFieldError = (input, message) => {
 const readFiltersFromForm = () => {
   const startDateInput = document.getElementById("filter-start-date");
   const endDateInput = document.getElementById("filter-end-date");
-  const rangeError = validateDateRange(startDateInput.value, endDateInput.value);
+  const rangeError = validateDateRange(
+    startDateInput.value,
+    endDateInput.value,
+  );
   setFieldError(endDateInput, rangeError);
 
   filters.search = document.getElementById("filter-search").value.trim();
