@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Temporary hardcoded login check for demonstration purposes, this will be removed once we have a backend
       if (email === "admin@concordia.com" && password === "admin123") {
-        window.location.href = "admin-dashboard.html";
+        window.location.href = "../admin/admin-dashboard.html";
         event.preventDefault();
       }
     });
