@@ -3,18 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="../public/css/style.css" />
-    <script src="../public/js/toast.js" defer></script>
+    <title>My Registrations - Campus Event Planner</title>
+
+    <link rel="stylesheet" href="../../public/css/style.css" />
+    <link rel="stylesheet" href="../../public/css/pages/my-registrations.css" />
+    <script src="../../public/js/toast.js" defer></script>
+    <script src="../../public/js/main.js" type="module" defer></script>
     <script
-      src="../public/js/pages/student-dashboard.js"
+      src="../../public/js/pages/my-registrations.js"
       type="module"
       defer></script>
   </head>
   <body>
     <header class="site-header">
       <nav class="nav container">
-        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <a class="nav-brand" href="../public/index.html"
+          >Campus Event Planner</a
+        >
         <button
           class="nav-toggle"
           type="button"
@@ -24,61 +29,52 @@
         </button>
         <ul class="nav-links">
           <li><a href="student-dashboard.html">Dashboard</a></li>
-          <li><a href="student-dashboard.html">My events</a></li>
+          <li>
+            <a href="my-registrations.html" class="active">My events</a>
+          </li>
           <li><a href="events.html">Browse events</a></li>
         </ul>
         <div class="nav-actions">
-          <a class="btn btn-outline" href="login.html">Sign out</a>
+          <a class="btn btn-outline" href="../public/login.html">Sign out</a>
         </div>
       </nav>
     </header>
 
-    <main class="student-dashboard container">
+    <main class="student-registered-events container">
       <section class="student-hero">
         <div>
-          <h1 id="dashboard-greeting">Welcome back</h1>
+          <h1 id="dashboard-greeting">My Event Registrations</h1>
           <p class="student-hero-subtitle">
-            Here's what's happening with your events.
+            Manage your registered campus events and view your attendance
+            activity.
           </p>
         </div>
         <div class="student-hero-actions">
-          <a class="btn btn-primary" href="events.html">Browse events</a>
+          <a class="btn btn-primary" href="events.html">Discover More Events</a>
         </div>
       </section>
 
       <section class="student-stats">
         <article class="student-stat-card">
           <span class="student-stat-value" id="stat-total-registered">0</span>
-          <span class="student-stat-label">Total registered events</span>
+          <span class="student-stat-label">Total Registrations</span>
         </article>
         <article class="student-stat-card">
           <span class="student-stat-value" id="stat-upcoming">0</span>
-          <span class="student-stat-label">Upcoming events</span>
+          <span class="student-stat-label">Upcoming Events</span>
         </article>
         <article class="student-stat-card">
           <span class="student-stat-value" id="stat-attended">0</span>
-          <span class="student-stat-label">Events attended</span>
-        </article>
-        <article class="student-stat-card">
-          <span class="student-stat-value" id="stat-cancelled">0</span>
-          <span class="student-stat-label">Cancelled registrations</span>
+          <span class="student-stat-label">Events Attended</span>
         </article>
       </section>
 
-      <section class="student-columns">
-        <div class="student-panel">
-          <div class="student-panel-header">
-            <h2>My upcoming events</h2>
-          </div>
-          <div class="upcoming-events-grid" id="upcoming-events-body"></div>
+      <section class="student-panel">
+        <div class="student-panel-header">
+          <h2>Registered Events</h2>
         </div>
 
-        <aside class="student-panel">
-          <div class="student-panel-header">
-            <h2>Recommended for you</h2>
-          </div>
-          <ul class="event-mini-list" id="recommended-list"></ul>
-        </aside>
+        <div class="registration-cards-list" id="registered-events-body"></div>
       </section>
     </main>
 
@@ -89,9 +85,9 @@
           project.</small
         >
         <div class="footer-links">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
+          <a href="../public/index.html">Home</a>
+          <a href="../public/about.html">About</a>
+          <a href="../public/contact.html">Contact</a>
         </div>
       </div>
     </footer>

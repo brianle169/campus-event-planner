@@ -4,6 +4,7 @@ import {
   getEventById,
 } from "../data/sampleData.js";
 import { formatDate } from "../utils/dateHelpers.js";
+import { cancelRegistration } from "../utils/registrations.js";
 
 // Badge CSS mappings matching project spec
 const REGISTRATION_BADGES = {
@@ -42,7 +43,7 @@ const renderStats = (stats) => {
 
 // Render registered event cards in my-registrations.html
 const renderRegistrationsList = (myRegs) => {
-  const container = document.getElementById("upcoming-events-body");
+  const container = document.getElementById("registered-events-body");
   if (!container) return;
 
   container.innerHTML = "";
@@ -51,7 +52,7 @@ const renderRegistrationsList = (myRegs) => {
   const activeRegs = myRegs
     .filter((r) => r.status !== "cancelled")
     .sort(
-      (a, b) => new Date(a.event.event_date) - new Date(b.event.event_date)
+      (a, b) => new Date(a.event.event_date) - new Date(b.event.event_date),
     );
 
   if (activeRegs.length === 0) {
@@ -102,30 +103,15 @@ const renderRegistrationsList = (myRegs) => {
       cancelBtn.className = "btn btn-danger btn-sm";
       cancelBtn.type = "button";
       cancelBtn.textContent = "Cancel Registration";
-      cancelBtn.addEventListener("click", () =>
-        cancelRegistration(registration.registration_id)
-      );
+      cancelBtn.addEventListener("click", () => {
+        (cancelRegistration(registration.registration_id),
+          renderRegistrationsList(getMyRegistrations()));
+      });
       card.querySelector(".upcoming-event-actions").appendChild(cancelBtn);
     }
 
     container.appendChild(card);
   });
-};
-
-// Handle registration cancellation
-const cancelRegistration = (registrationId) => {
-  const registration = registrations.find(
-    (r) => r.registration_id === registrationId
-  );
-  if (!registration) return;
-
-  registration.status = "cancelled";
-
-  if (typeof window.showToast === "function") {
-    window.showToast("Registration cancelled", "error");
-  }
-
-  renderMyRegistrationsPage();
 };
 
 // Primary render function

@@ -5,14 +5,10 @@ import {
   getEventById,
 } from "../data/sampleData.js";
 import { isUpcoming, formatDate } from "../utils/dateHelpers.js";
-
-// Same status vocabulary as the Registrations table in the project spec.
-const REGISTRATION_BADGES = {
-  registered: { label: "Registered", className: "badge-open" },
-  attended: { label: "Attended", className: "badge-completed" },
-  missed: { label: "Missed", className: "badge-cancelled" },
-  cancelled: { label: "Cancelled", className: "badge-cancelled" },
-};
+import {
+  REGISTRATION_STATUS_BADGES,
+  cancelRegistration as cancelRegistrationById,
+} from "../utils/registrations.js";
 
 const myRegistrations = () =>
   registrations
@@ -71,13 +67,15 @@ const renderUpcomingTable = (myRegs) => {
 
   upcoming.forEach((registration) => {
     const { event } = registration;
-    const badge = REGISTRATION_BADGES[registration.status];
+    const badge = REGISTRATION_STATUS_BADGES[registration.status];
 
     const card = document.createElement("article");
     card.className = "upcoming-event-card";
     card.innerHTML = `
       <div class="upcoming-event-info">
-        <h3 class="upcoming-event-title">${event.title}</h3>
+        <h3 class="upcoming-event-title">
+          <a href="event-details.html?id=${event.event_id}">${event.title}</a>
+        </h3>
         <p class="upcoming-event-meta">${formatDate(event.event_date)} &middot; ${event.location}</p>
       </div>
       <div class="upcoming-event-actions">
@@ -89,9 +87,10 @@ const renderUpcomingTable = (myRegs) => {
     cancelBtn.className = "btn btn-danger btn-sm";
     cancelBtn.type = "button";
     cancelBtn.textContent = "Cancel";
-    cancelBtn.addEventListener("click", () =>
-      cancelRegistration(registration.registration_id),
-    );
+    cancelBtn.addEventListener("click", () => {
+      cancelRegistrationById(registration.registration_id);
+      renderDashboard();
+    });
     card.querySelector(".upcoming-event-actions").appendChild(cancelBtn);
 
     grid.appendChild(card);
@@ -124,23 +123,10 @@ const renderRecommended = (myRegs) => {
         <span class="event-mini-title">${event.title}</span>
         <span class="event-mini-meta">${formatDate(event.event_date)} &middot; ${event.category}</span>
       </div>
-      <a class="btn btn-outline btn-sm" href="events.html">View</a>
+      <a class="btn btn-outline btn-sm" href="event-details.html?id=${event.event_id}">View</a>
     `;
     list.appendChild(item);
   });
-};
-
-const cancelRegistration = (registrationId) => {
-  const registration = registrations.find(
-    (r) => r.registration_id === registrationId,
-  );
-  if (!registration) return;
-
-  registration.status = "cancelled";
-  if (typeof showToast === "function") {
-    showToast("Registration cancelled", "error");
-  }
-  renderDashboard();
 };
 
 function renderDashboard() {
