@@ -18,6 +18,19 @@ export const categories = [
   new Category("cat-10", "Other", "Anything that doesn't fit the categories above."),
 ];
 
+export const categoryOptions = categories.map((category) => ({
+  value: category.category_name,
+  label: category.category_name,
+}));
+
+// Utility function to format category values for display
+export function formatCategoryValue(category) {
+  const normalizedCategory = String(category || "").trim().toLowerCase();
+  const match = categories.find((item) => item.category_name.toLowerCase() === normalizedCategory);
+
+  return match ? match.category_name : 'Other';
+}
+
 // Named after the project's actual contributors (see README.md "Team members").
 export const users = [
   new User("u-1001", "Cong Minh Le", "cong.le@mymail.concordia.ca", null, "student", "2026-01-15"),
@@ -43,6 +56,7 @@ export const events = [
     "open",
     "u-2001",
     "2026-06-01",
+    120,
   ),
   new Event(
     "evt-2",
@@ -57,6 +71,7 @@ export const events = [
     "full",
     "u-2002",
     "2026-06-05",
+    60,
   ),
   new Event(
     "evt-3",
@@ -71,6 +86,7 @@ export const events = [
     "open",
     "u-2003",
     "2026-06-10",
+    146,
   ),
   new Event(
     "evt-4",
@@ -85,6 +101,7 @@ export const events = [
     "open",
     "u-2004",
     "2026-06-12",
+    88,
   ),
   new Event(
     "evt-5",
@@ -99,6 +116,7 @@ export const events = [
     "open",
     "u-2001",
     "2026-06-15",
+    24,
   ),
   new Event(
     "evt-6",
@@ -113,12 +131,13 @@ export const events = [
     "open",
     "u-2002",
     "2026-06-18",
+    41,
   ),
   new Event(
     "evt-7",
     "Orientation Mixer",
     "A welcome mixer for new and returning students.",
-    "Social event",
+    "Other",
     "2026-07-15",
     "16:00",
     "18:00",
@@ -127,20 +146,22 @@ export const events = [
     "completed",
     "u-2003",
     "2026-05-20",
+    115,
   ),
   new Event(
     "evt-8",
     "Volunteer Cleanup Day",
     "Help clean up and green the Loyola campus grounds.",
-    "Volunteering event",
+    "Other",
     "2026-07-30",
     "09:00",
     "12:00",
     "Loyola Campus",
     40,
-    "open",
+    "cancelled",
     "u-2004",
     "2026-06-20",
+    28,
   ),
 ];
 

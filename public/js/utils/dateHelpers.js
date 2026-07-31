@@ -12,9 +12,11 @@ export const formatDate = (dateStr) =>
   });
 
 export const formatTime = (timeStr) => {
-  const [hourStr, minute] = timeStr.split(":");
+  if (!timeStr) return '';
+
+  const [hourStr = '0', minute = '0'] = timeStr.split(":");
   const hour24 = parseInt(hourStr, 10);
   const period = hour24 >= 12 ? "PM" : "AM";
   const hour12 = hour24 % 12 || 12;
-  return `${hour12}:${minute} ${period}`;
+  return `${hour12}:${String(minute).padStart(2, '0')} ${period}`;
 };
