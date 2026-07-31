@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../../public/css/style.css" />
+    <script type="module" src="../../public/js/admin-dashboard.js"></script>
   </head>
   <body>
     <header class="site-header">
@@ -20,6 +21,7 @@
         <ul class="nav-links">
           <li><a class="active" href="admin-dashboard.html">Dashboard</a></li>
           <li><a href="manage-events.html">Manage Events</a></li>
+          <li><a href="event-registrations.html">Registrations</a></li>
           <li><a href="create-event.html">Create Event</a></li>
         </ul>
         <div class="nav-actions">
@@ -40,21 +42,25 @@
       </section>
 
       <section class="stat-grid">
-        <article class="stat-card">
-          <span class="stat-label">Total events</span>
-          <span class="stat-value">12</span>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="total-events-value">0</span>
+          <span class="student-stat-label">Total events</span>
         </article>
-        <article class="stat-card">
-          <span class="stat-label">Total registrations</span>
-          <span class="stat-value">248</span>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="total-registrations-value">0</span>
+          <span class="student-stat-label">Total registrations</span>
         </article>
-        <article class="stat-card">
-          <span class="stat-label">Upcoming events</span>
-          <span class="stat-value">4</span>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="upcoming-events-value">0</span>
+          <span class="student-stat-label">Upcoming events</span>
         </article>
-        <article class="stat-card">
-          <span class="stat-label">Full events</span>
-          <span class="stat-value">2</span>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="full-events-value">0</span>
+          <span class="student-stat-label">Full events</span>
+        </article>
+        <article class="student-stat-card">
+          <span class="student-stat-value" id="total-attendance-value">0</span>
+          <span class="student-stat-label">Total attendance</span>
         </article>
       </section>
 
@@ -69,34 +75,13 @@
               <tr>
                 <th>Title</th>
                 <th>Date</th>
-                <th>Registered</th>
+                <th style="min-width: 120px;">Registered</th>
+                <th>% Capacity</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>SOEN Career Fair</td>
-                <td>Aug 04, 2026</td>
-                <td>120 / 150</td>
-                <td><span class="badge badge-open">Open</span></td>
-                <td><a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a></td>
-              </tr>
-              <tr>
-                <td>Intro to Machine Learning</td>
-                <td>Jul 28, 2026</td>
-                <td>60 / 60</td>
-                <td><span class="badge badge-full">Full</span></td>
-                <td><a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a></td>
-              </tr>
-              <tr>
-                <td>SOEN Career Fair</td>
-                <td>Jul 10, 2026</td>
-                <td>140 / 140</td>
-                <td><span class="badge badge-completed">Completed</span></td>
-                <td><a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a></td>
-              </tr>
-            </tbody>
+            <tbody id="recent-events-body"></tbody>
           </table>
         </div>
 
@@ -104,12 +89,7 @@
           <div class="admin-panel-header">
             <h2>Popular categories</h2>
           </div>
-          <ul class="category-list">
-            <li><span>Academic workshops</span><span class="category-count">32%</span></li>
-            <li><span>Career events</span><span class="category-count">24%</span></li>
-            <li><span>Cultural events</span><span class="category-count">18%</span></li>
-            <li><span>Other</span><span class="category-count">26%</span></li>
-          </ul>
+          <ul class="category-list" id="category-list"></ul>
         </aside>
       </section>
     </main>

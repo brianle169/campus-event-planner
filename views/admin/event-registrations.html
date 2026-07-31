@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manage Events</title>
+    <title>Event Registrations</title>
     <link rel="stylesheet" href="../../public/css/style.css" />
     <script src="../../public/js/toast.js" defer></script>
-    <script type="module" src="../../public/js/manage-events.js"></script>
+    <script type="module" src="../../public/js/event-registrations.js"></script>
   </head>
   <body>
     <header class="site-header">
@@ -21,8 +21,8 @@
         </button>
         <ul class="nav-links">
           <li><a href="admin-dashboard.html">Dashboard</a></li>
-          <li><a class="active" href="manage-events.html">Manage Events</a></li>
-          <li><a href="event-registrations.html">Registrations</a></li>
+          <li><a href="manage-events.html">Manage Events</a></li>
+          <li><a class="active" href="event-registrations.html">Registrations</a></li>
           <li><a href="create-event.html">Create Event</a></li>
         </ul>
         <div class="nav-actions">
@@ -34,57 +34,37 @@
     <main class="admin container">
       <section class="admin-page-header">
         <div>
-          <h1>Manage events</h1>
-        </div>
-        <div class="admin-page-actions">
-          <a class="btn btn-primary" href="create-event.html">+ Create event</a>
+          <h1 id="page-title">Event Registrations</h1>
+          <p class="admin-subtitle">Manage attendance across events.</p>
         </div>
       </section>
 
-      <form class="event-filters" role="search">
+      <form class="event-filters" role="search" id="registration-filters">
         <div class="event-filters-field event-filters-field--grow">
-          <label for="search">Search</label>
-          <input type="text" id="search" name="search" placeholder="Search by title" autocomplete="off" />
-        </div>
-        <div class="event-filters-field">
-          <label for="filter-category">Category</label>
-          <select id="filter-category" name="category">
-            <option value="">All categories</option>
+          <label for="filter-event">Filter by Event</label>
+          <select id="filter-event" name="event">
+            <option value="">All events</option>
           </select>
-        </div>
-        <div class="event-filters-field">
-          <label for="filter-status">Status</label>
-          <select id="filter-status" name="status">
-            <option value="">All statuses</option>
-            <option value="open">Open</option>
-            <option value="full">Full</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
-        <div class="event-filters-actions">
-          <button class="btn btn-outline" type="reset">Clear</button>
         </div>
       </form>
 
       <div class="admin-panel">
         <div class="admin-panel-header">
-          <h2>All events</h2>
+          <h2 id="event-title">Registrations</h2>
         </div>
         <div class="table-scroll">
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th style="min-width: 120px;">Registered</th>
-                <th>% Capacity</th>
+                <th>Event</th>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Registration Date</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th>Attendance</th>
               </tr>
             </thead>
-            <tbody id="events-table-body"></tbody>
+            <tbody id="registrations-table-body"></tbody>
           </table>
         </div>
       </div>
