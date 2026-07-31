@@ -10,14 +10,18 @@ import {
   isRegisteredByCurrentUser,
   isEventFull,
   registerForEvent,
+  cancelRegistration,
+  getMyRegistrationForEvent,
 } from "../utils/registrations.js";
+import { validateDateRange } from "../inputValidation.js";
 
 const filters = {
   search: "",
   category: "",
   location: "",
   organizerId: "",
-  date: "",
+  startDate: "",
+  endDate: "",
 };
 
 const populateFilterOptions = () => {
@@ -66,7 +70,9 @@ const getFilteredEvents = () =>
       if (filters.organizerId && event.organizer_id !== filters.organizerId) {
         return false;
       }
-      if (filters.date && event.event_date !== filters.date) return false;
+      if (filters.startDate && event.event_date < filters.startDate)
+        return false;
+      if (filters.endDate && event.event_date > filters.endDate) return false;
       return true;
     })
     .sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
@@ -76,10 +82,18 @@ const buildActionButton = (event) => {
   button.type = "button";
   button.className = "btn btn-sm";
 
-  if (isRegisteredByCurrentUser(event.event_id)) {
-    button.classList.add("btn-outline");
-    button.textContent = "Registered";
-    button.disabled = true;
+  if (
+    isRegisteredByCurrentUser(event.event_id) &&
+    isUpcoming(event.event_date)
+  ) {
+    button.classList.add("btn-danger", "btn-primary");
+    button.textContent = "Cancel";
+    button.addEventListener("click", () => {
+      cancelRegistration(
+        getMyRegistrationForEvent(event.event_id).registration_id,
+      );
+      renderEvents();
+    });
   } else if (event.status !== "open" || !isUpcoming(event.event_date)) {
     button.classList.add("btn-outline");
     button.textContent = isUpcoming(event.event_date)
@@ -150,12 +164,27 @@ const renderEvents = () => {
   filtered.forEach((event) => grid.appendChild(buildEventCard(event)));
 };
 
+const setFieldError = (input, message) => {
+  const errorEl = document.getElementById(`${input.id}-error`);
+  input.classList.toggle("invalid", Boolean(message));
+  if (errorEl) errorEl.textContent = message;
+};
+
 const readFiltersFromForm = () => {
+  const startDateInput = document.getElementById("filter-start-date");
+  const endDateInput = document.getElementById("filter-end-date");
+  const rangeError = validateDateRange(
+    startDateInput.value,
+    endDateInput.value,
+  );
+  setFieldError(endDateInput, rangeError);
+
   filters.search = document.getElementById("filter-search").value.trim();
   filters.category = document.getElementById("filter-category").value;
   filters.location = document.getElementById("filter-location").value;
   filters.organizerId = document.getElementById("filter-organizer").value;
-  filters.date = document.getElementById("filter-date").value;
+  filters.startDate = startDateInput.value;
+  filters.endDate = rangeError ? "" : endDateInput.value;
   renderEvents();
 };
 
@@ -168,6 +197,7 @@ const attachFilterListeners = () => {
     Object.keys(filters).forEach((key) => {
       filters[key] = "";
     });
+    setFieldError(document.getElementById("filter-end-date"), "");
     setTimeout(renderEvents, 0);
   });
 };

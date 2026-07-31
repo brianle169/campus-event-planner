@@ -36,3 +36,9 @@ export const validateSignInPassword = (value) => {
   if (!value) return "Password is required.";
   return "";
 };
+
+export const validateDateRange = (startValue, endValue) => {
+  if (!startValue || !endValue) return "";
+  if (startValue > endValue) return "End date must be on or after the start date.";
+  return "";
+};

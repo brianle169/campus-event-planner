@@ -47,6 +47,7 @@
             type="text"
             id="filter-search"
             name="search"
+            maxlength="100"
             placeholder="Search by title" />
         </div>
         <div class="event-filters-field">
@@ -68,8 +69,14 @@
           </select>
         </div>
         <div class="event-filters-field">
-          <label for="filter-date">Date</label>
-          <input type="date" id="filter-date" name="date" />
+          <label for="filter-start-date">Start date</label>
+          <input type="date" id="filter-start-date" name="start-date" />
+          <span class="field-error" id="filter-start-date-error"></span>
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-end-date">End date</label>
+          <input type="date" id="filter-end-date" name="end-date" />
+          <span class="field-error" id="filter-end-date-error"></span>
         </div>
         <div class="event-filters-actions">
           <button class="btn btn-outline" type="reset">Clear</button>
