@@ -112,6 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "../admin/admin-dashboard.html";
         event.preventDefault();
       }
+
+      if (email === "student@concordia.com" && password === "student123") {
+        window.location.href = "../student/student-dashboard.html";
+        event.preventDefault();
+      }
     });
   }
 
@@ -133,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         input: messageInput,
         validate: () => validationRules.validateMessage(messageInput.value),
-      }
+      },
     ];
 
     fields.forEach((field) => {
@@ -147,5 +152,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
 });
