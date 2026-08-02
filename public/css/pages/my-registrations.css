@@ -1,3 +1,7 @@
+.student-registered-events {
+  padding-block: 2.5rem;
+}
+
 .registration-cards-list {
   display: flex;
   flex-direction: column;
