@@ -1,103 +1,102 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Details</title>
-    <link rel="stylesheet" href="../../public/css/style.css" />
-    <script src="../../public/js/toast.js" defer></script>
-    <script
-      src="../../public/js/pages/event-details.js"
-      type="module"
-      defer></script>
-  </head>
-  <body>
-    <header class="site-header">
-      <nav class="nav container">
-        <a class="nav-brand" href="../public/index.html"
-          >Campus Event Planner</a
-        >
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-        <ul class="nav-links">
-          <li><a href="student-dashboard.html">Dashboard</a></li>
-          <li><a href="my-registrations.html">My events</a></li>
-          <li><a href="events.html">Browse events</a></li>
-          <li><a href="student-profile.html">Profile</a></li>
-        </ul>
-        <div class="nav-actions">
-          <a class="btn btn-outline" href="../public/login.html">Sign out</a>
-        </div>
-      </nav>
-    </header>
 
-    <main class="event-details-page container" id="event-details-page">
-      <a class="event-details-back" href="events.html"
-        >&larr; Back to all events</a
-      >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Details</title>
+  <link rel="stylesheet" href="../../public/css/style.css" />
+  <script src="../../public/js/toast.js" defer></script>
+  <script src="../../public/js/pages/event-details.js" type="module" defer></script>
+  <script src="../../public/js/main.js" type="module" defer></script>
+</head>
 
-      <section class="event-details-header">
-        <div>
-          <span class="event-details-category" id="detail-category"></span>
-          <h1 id="detail-title"></h1>
-        </div>
-        <span class="badge" id="detail-status-badge"></span>
-      </section>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="student-dashboard.html">Dashboard</a></li>
+        <li><a href="my-registrations.html">My events</a></li>
+        <li><a href="events.html">Browse events</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a class="btn btn-outline" href="student-profile.html">My profile</a>
+        <a class="btn btn-primary" href="#" id="signOutLink">Sign out</a>
+        <div class="modal" id="logoutModal">
+          <div class="modal-content">
+            <p>Are you sure you want to sign out?</p>
 
-      <div class="event-details-columns">
-        <div class="event-details-panel">
-          <h2>About this event</h2>
-          <p id="detail-description"></p>
-        </div>
-
-        <aside class="event-details-panel">
-          <dl class="event-details-facts">
-            <div>
-              <dt>Date</dt>
-              <dd id="detail-date"></dd>
+            <div class="modal-buttons">
+              <a href="../public/login.html" class="btn btn-primary">Yes</a>
+              <a href="#" class="btn btn-outline" id="noButton">No</a>
             </div>
-            <div>
-              <dt>Time</dt>
-              <dd id="detail-time"></dd>
-            </div>
-            <div>
-              <dt>Location</dt>
-              <dd id="detail-location"></dd>
-            </div>
-            <div>
-              <dt>Organizer</dt>
-              <dd id="detail-organizer"></dd>
-            </div>
-            <div>
-              <dt>Seats</dt>
-              <dd id="detail-seats"></dd>
-            </div>
-          </dl>
-          <div
-            class="event-details-registration"
-            id="detail-registration-status"></div>
-          <div class="event-details-actions" id="detail-actions"></div>
-        </aside>
-      </div>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <small
-          >&copy; 2026 Smart Campus Event Planner. SOEN 287 course
-          project.</small
-        >
-        <div class="footer-links">
-          <a href="../public/index.html">Home</a>
-          <a href="../public/about.html">About</a>
-          <a href="../public/contact.html">Contact</a>
+          </div>
         </div>
       </div>
-    </footer>
-  </body>
+    </nav>
+  </header>
+
+  <main class="event-details-page container" id="event-details-page">
+    <a class="event-details-back" href="events.html">&larr; Back to all events</a>
+
+    <section class="event-details-header">
+      <div>
+        <span class="event-details-category" id="detail-category"></span>
+        <h1 id="detail-title"></h1>
+      </div>
+      <span class="badge" id="detail-status-badge"></span>
+    </section>
+
+    <div class="event-details-columns">
+      <div class="event-details-panel">
+        <h2>About this event</h2>
+        <p id="detail-description"></p>
+      </div>
+
+      <aside class="event-details-panel">
+        <dl class="event-details-facts">
+          <div>
+            <dt>Date</dt>
+            <dd id="detail-date"></dd>
+          </div>
+          <div>
+            <dt>Time</dt>
+            <dd id="detail-time"></dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd id="detail-location"></dd>
+          </div>
+          <div>
+            <dt>Organizer</dt>
+            <dd id="detail-organizer"></dd>
+          </div>
+          <div>
+            <dt>Seats</dt>
+            <dd id="detail-seats"></dd>
+          </div>
+        </dl>
+        <div class="event-details-registration" id="detail-registration-status"></div>
+        <div class="event-details-actions" id="detail-actions"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+        project.</small>
+      <div class="footer-links">
+        <a href="../public/index.html">Home</a>
+        <a href="../public/about.html">About</a>
+        <a href="../public/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>

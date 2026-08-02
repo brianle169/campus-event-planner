@@ -1,84 +1,94 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Registrations</title>
-    <link rel="stylesheet" href="../../public/css/style.css" />
-    <script src="../../public/js/toast.js" defer></script>
-    <script type="module" src="../../public/js/event-registrations.js"></script>
-  </head>
-  <body>
-    <header class="site-header">
-      <nav class="nav container">
-        <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-        <ul class="nav-links">
-          <li><a href="admin-dashboard.html">Dashboard</a></li>
-          <li><a href="manage-events.html">Manage Events</a></li>
-          <li><a class="active" href="event-registrations.html">Registrations</a></li>
-          <li><a href="create-event.html">Create Event</a></li>
-        </ul>
-        <div class="nav-actions">
-          <a class="btn btn-outline" href="../public/login.html">Log out</a>
-        </div>
-      </nav>
-    </header>
 
-    <main class="admin container">
-      <section class="admin-page-header">
-        <div>
-          <h1 id="page-title">Event Registrations</h1>
-          <p class="admin-subtitle">Manage attendance across events.</p>
-        </div>
-      </section>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Registrations</title>
+  <link rel="stylesheet" href="../../public/css/style.css" />
+  <script src="../../public/js/toast.js" defer></script>
+  <script type="module" src="../../public/js/event-registrations.js"></script>
+  <script src="../../public/js/main.js" type="module" defer></script>
+</head>
 
-      <form class="event-filters" role="search" id="registration-filters">
-        <div class="event-filters-field event-filters-field--grow">
-          <label for="filter-event">Filter by Event</label>
-          <select id="filter-event" name="event">
-            <option value="">All events</option>
-          </select>
-        </div>
-      </form>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="admin-dashboard.html">Dashboard</a></li>
+        <li><a href="manage-events.html">Manage Events</a></li>
+        <li><a class="active" href="event-registrations.html">Registrations</a></li>
+        <li><a href="create-event.html">Create Event</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a class="btn btn-outline" href="#" id="signOutLink">Sign out</a>
+        <div class="modal" id="logoutModal">
+          <div class="modal-content">
+            <p>Are you sure you want to sign out?</p>
 
-      <div class="admin-panel">
-        <div class="admin-panel-header">
-          <h2 id="event-title">Registrations</h2>
-        </div>
-        <div class="table-scroll">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Student Name</th>
-                <th>Email</th>
-                <th>Registration Date</th>
-                <th>Status</th>
-                <th>Attendance</th>
-              </tr>
-            </thead>
-            <tbody id="registrations-table-body"></tbody>
-          </table>
+            <div class="modal-buttons">
+              <a href="../public/login.html" class="btn btn-primary">Yes</a>
+              <a href="#" class="btn btn-outline" id="noButton">No</a>
+            </div>
+          </div>
         </div>
       </div>
-    </main>
+    </nav>
+  </header>
 
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
-        <div class="footer-links">
-          <a href="../public/index.html">Home</a>
-          <a href="../public/about.html">About</a>
-          <a href="../public/contact.html">Contact</a>
-        </div>
+  <main class="admin container">
+    <section class="admin-page-header">
+      <div>
+        <h1 id="page-title">Event Registrations</h1>
+        <p class="admin-subtitle">Manage attendance across events.</p>
       </div>
-    </footer>
-  </body>
+    </section>
+
+    <form class="event-filters" role="search" id="registration-filters">
+      <div class="event-filters-field event-filters-field--grow">
+        <label for="filter-event">Filter by Event</label>
+        <select id="filter-event" name="event">
+          <option value="">All events</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="admin-panel">
+      <div class="admin-panel-header">
+        <h2 id="event-title">Registrations</h2>
+      </div>
+      <div class="table-scroll">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Student Name</th>
+              <th>Email</th>
+              <th>Registration Date</th>
+              <th>Status</th>
+              <th>Attendance</th>
+            </tr>
+          </thead>
+          <tbody id="registrations-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+      <div class="footer-links">
+        <a href="../public/index.html">Home</a>
+        <a href="../public/about.html">About</a>
+        <a href="../public/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>

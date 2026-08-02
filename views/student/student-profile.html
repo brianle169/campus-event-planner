@@ -1,172 +1,157 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Profile | Smart Campus Event Planner</title>
-    <link rel="stylesheet" href="../../public/css/style.css" />
-    <script
-      src="../../public/js/pages/student-profile.js"
-      type="module"
-      defer></script>
-  </head>
- 
-  <body>
-    <header class="site-header">
-      <nav class="nav container">
-        <a class="nav-brand" href="../public/index.html"
-          >Campus Event Planner</a
-        >
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-        <ul class="nav-links">
-          <li><a href="student-dashboard.html">Dashboard</a></li>
-          <li><a href="my-registrations.html">My events</a></li>
-          <li><a href="events.html">Browse events</a></li>
-          <li><a class="active" href="student-profile.html">Profile</a></li>
-        </ul>
-        <div class="nav-actions">
-          <a class="btn btn-outline" href="../public/login.html">Sign out</a>
-        </div>
-      </nav>
-    </header>
- 
-    <main class="profile container">
-      <section class="profile-card">
-        <div class="profile-identity">
-          <h1 id="profile-heading-name"></h1>
-          <div class="profile-meta">
-            <span class="badge badge-open" id="profile-role-badge"></span>
-            <span class="profile-member-since" id="profile-member-since"></span>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile | Smart Campus Event Planner</title>
+  <link rel="stylesheet" href="../../public/css/style.css" />
+  <script src="../../public/js/pages/student-profile.js" type="module" defer></script>
+  <script src="../../public/js/main.js" type="module" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="student-dashboard.html">Dashboard</a></li>
+        <li><a href="my-registrations.html">My events</a></li>
+        <li><a href="events.html">Browse events</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a class="btn btn-outline" href="student-profile.html">My profile</a>
+        <a class="btn btn-primary" href="#" id="signOutLink">Sign out</a>
+        <div class="modal" id="logoutModal">
+          <div class="modal-content">
+            <p>Are you sure you want to sign out?</p>
+
+            <div class="modal-buttons">
+              <a href="../public/login.html" class="btn btn-primary">Yes</a>
+              <a href="#" class="btn btn-outline" id="noButton">No</a>
+            </div>
           </div>
         </div>
-      </section>
-
-      <!-- This section is where you can see your personal information and will be able to save changes for the deliverable 2. -->
- 
-      <div class="profile-grid">
-        <section class="admin-panel">
-          <div class="admin-panel-header">
-            <h2>Personal information</h2>
-          </div>
-          <p class="profile-panel-hint">Update your display name.</p>
- 
-          <form id="profile-info-form" class="profile-form" novalidate>
-            <div class="event-form-field">
-              <label for="profile-name">Full name</label>
-              <input
-                type="text"
-                id="profile-name"
-                name="full-name"
-                required />
-              <span class="field-error" id="profile-name-error"></span>
-            </div>
- 
-            <div class="profile-static-field">
-              <span class="profile-static-label">Email address</span>
-              <span class="profile-static-value" id="profile-email-value"></span>
-            </div>
-
-            <div class="profile-static-field">
-              <span class="profile-static-label">Role</span>
-              <span class="profile-static-value" id="profile-role-value"></span>
-            </div>
- 
-            <div class="event-form-actions">
-              <button class="btn btn-outline" type="reset">Discard</button>
-              <button class="btn btn-primary" type="submit">
-                Save changes
-              </button>
-            </div>
-          </form>
-        </section>
-
-        <!-- This section is for changing your password and this will be functional for deliverable 2c-->
- 
-        <section class="admin-panel">
-          <div class="admin-panel-header">
-            <h2>Change password</h2>
-          </div>
-          <p class="profile-panel-hint">
-            Choose a new password for your account.
-          </p>
- 
-          <form id="password-form" class="profile-form" novalidate>
-            <div class="event-form-field">
-              <label for="current-password">Current password</label>
-              <input
-                type="password"
-                id="current-password"
-                name="current-password"
-                autocomplete="current-password"
-                required />
-              <span class="field-error" id="current-password-error"></span>
-            </div>
- 
-            <div class="event-form-field">
-              <label for="new-password">New password</label>
-              <input
-                type="password"
-                id="new-password"
-                name="new-password"
-                autocomplete="new-password"
-                required />
-              <span class="field-error" id="new-password-error"></span>
-            </div>
- 
-            <div class="event-form-field">
-              <label for="confirm-new-password">Confirm new password</label>
-              <input
-                type="password"
-                id="confirm-new-password"
-                name="confirm-new-password"
-                autocomplete="new-password"
-                required />
-              <span class="field-error" id="confirm-new-password-error"></span>
-            </div>
- 
-            <div class="event-form-actions">
-              <button class="btn btn-primary" type="submit">
-                Update password
-              </button>
-            </div>
-          </form>
-        </section>
       </div>
+    </nav>
+  </header>
 
-      <!-- This section is for delete the user's account permanently. -->
- 
-      <section class="admin-panel danger-zone">
+  <main class="profile container">
+    <section class="profile-card">
+      <div class="profile-identity">
+        <h1 id="profile-heading-name"></h1>
+        <div class="profile-meta">
+          <span class="badge badge-open" id="profile-role-badge"></span>
+          <span class="profile-member-since" id="profile-member-since"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- This section is where you can see your personal information and will be able to save changes for the deliverable 2. -->
+
+    <div class="profile-grid">
+      <section class="admin-panel">
         <div class="admin-panel-header">
-          <h2>Delete account</h2>
+          <h2>Personal information</h2>
         </div>
-        <div class="danger-zone-body">
-          <p class="profile-panel-hint">
-            Permanently delete your account and all of your registration
-            records. This action cannot be undone.
-          </p>
-          <button class="btn btn-danger" type="button">Delete account</button>
-        </div>
+        <p class="profile-panel-hint">Update your display name.</p>
+
+        <form id="profile-info-form" class="profile-form" novalidate>
+          <div class="event-form-field">
+            <label for="profile-name">Full name</label>
+            <input type="text" id="profile-name" name="full-name" required />
+            <span class="field-error" id="profile-name-error"></span>
+          </div>
+
+          <div class="profile-static-field">
+            <span class="profile-static-label">Email address</span>
+            <span class="profile-static-value" id="profile-email-value"></span>
+          </div>
+
+          <div class="profile-static-field">
+            <span class="profile-static-label">Role</span>
+            <span class="profile-static-value" id="profile-role-value"></span>
+          </div>
+
+          <div class="event-form-actions">
+            <button class="btn btn-outline" type="reset">Discard</button>
+            <button class="btn btn-primary" type="submit">
+              Save changes
+            </button>
+          </div>
+        </form>
       </section>
-    </main>
- 
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <small
-          >&copy; 2026 Smart Campus Event Planner. SOEN 287 course
-          project.</small
-        >
-        <div class="footer-links">
-          <a href="../public/index.html">Home</a>
-          <a href="../public/about.html">About</a>
-          <a href="../public/contact.html">Contact</a>
+
+      <!-- This section is for changing your password and this will be functional for deliverable 2c-->
+
+      <section class="admin-panel">
+        <div class="admin-panel-header">
+          <h2>Change password</h2>
         </div>
+        <p class="profile-panel-hint">
+          Choose a new password for your account.
+        </p>
+
+        <form id="password-form" class="profile-form" novalidate>
+          <div class="event-form-field">
+            <label for="current-password">Current password</label>
+            <input type="password" id="current-password" name="current-password" autocomplete="current-password"
+              required />
+            <span class="field-error" id="current-password-error"></span>
+          </div>
+
+          <div class="event-form-field">
+            <label for="new-password">New password</label>
+            <input type="password" id="new-password" name="new-password" autocomplete="new-password" required />
+            <span class="field-error" id="new-password-error"></span>
+          </div>
+
+          <div class="event-form-field">
+            <label for="confirm-new-password">Confirm new password</label>
+            <input type="password" id="confirm-new-password" name="confirm-new-password" autocomplete="new-password"
+              required />
+            <span class="field-error" id="confirm-new-password-error"></span>
+          </div>
+
+          <div class="event-form-actions">
+            <button class="btn btn-primary" type="submit">
+              Update password
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- This section is for delete the user's account permanently. -->
+
+    <section class="admin-panel danger-zone">
+      <div class="admin-panel-header">
+        <h2>Delete account</h2>
       </div>
-    </footer>
-  </body>
+      <div class="danger-zone-body">
+        <p class="profile-panel-hint">
+          Permanently delete your account and all of your registration
+          records. This action cannot be undone.
+        </p>
+        <button class="btn btn-danger" type="button">Delete account</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+        project.</small>
+      <div class="footer-links">
+        <a href="../public/index.html">Home</a>
+        <a href="../public/about.html">About</a>
+        <a href="../public/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>

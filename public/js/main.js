@@ -153,3 +153,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+//This is for the sign out function of the nav to work
+const signOutLink = document.getElementById("signOutLink");
+console.log(signOutLink);
+const logoutModal = document.getElementById("logoutModal");
+const noButton = document.getElementById("noButton");
+
+signOutLink.addEventListener("click", function (event) {
+  console.log("hello");
+  event.preventDefault(); // Stops the link from changing the page
+  logoutModal.style.display = "flex";
+});
+
+noButton.addEventListener("click", function (event) {
+  event.preventDefault(); // Stops the # from appearing in the URL
+  logoutModal.style.display = "none";
+});
+
+window.addEventListener("pageshow", function () {
+  logoutModal.style.display = "none";
+});
