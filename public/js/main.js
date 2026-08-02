@@ -99,6 +99,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loginForm.addEventListener("submit", (event) => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!validateAllFields(fields)) {
+        event.preventDefault();
+        return;
+      }
+
+      // Temporary hardcoded login check for demonstration purposes, this will be removed once we have a backend
+      if (email === "admin@concordia.com" && password === "admin123") {
+        window.location.href = "../admin/admin-dashboard.html";
+        event.preventDefault();
+      }
+
+      if (email === "student@concordia.com" && password === "student123") {
+        window.location.href = "../student/student-dashboard.html";
+        event.preventDefault();
+      }
+    });
+  }
+
+  const contactForm = document.querySelector("form.contact");
+  if (contactForm) {
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const messageInput = document.getElementById("text");
+
+    const fields = [
+      {
+        input: nameInput,
+        validate: () => validationRules.validateName(nameInput.value),
+      },
+      {
+        input: emailInput,
+        validate: () => validationRules.validateEmail(emailInput.value),
+      },
+      {
+        input: messageInput,
+        validate: () => validationRules.validateMessage(messageInput.value),
+      },
+    ];
+
+    fields.forEach((field) => {
+      const debouncedValidate = debounce(() => validateField(field), delay);
+      field.input.addEventListener("input", debouncedValidate);
+    });
+
+    contactForm.addEventListener("submit", (event) => {
       if (!validateAllFields(fields)) {
         event.preventDefault();
       }

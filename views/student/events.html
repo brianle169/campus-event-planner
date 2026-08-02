@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Events</title>
+    <link rel="stylesheet" href="../../public/css/style.css" />
+    <script src="../../public/js/toast.js" defer></script>
+    <script src="../../public/js/pages/events.js" type="module" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="../public/index.html"
+          >Campus Event Planner</a
+        >
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="student-dashboard.html">Dashboard</a></li>
+          <li><a href="my-registrations.html">My events</a></li>
+          <li><a class="active" href="events.html">Browse events</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="../public/login.html">Sign out</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="events-page container">
+      <section class="events-page-header">
+        <h1>Browse campus events</h1>
+        <p class="events-page-subtitle">
+          Find upcoming events by category, date, location, or organizer.
+        </p>
+      </section>
+
+      <form class="event-filters" id="event-filters-form" role="search">
+        <div class="event-filters-field event-filters-field--grow">
+          <label for="filter-search">Search</label>
+          <input
+            type="text"
+            id="filter-search"
+            name="search"
+            maxlength="100"
+            placeholder="Search by title" />
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-category">Category</label>
+          <select id="filter-category" name="category">
+            <option value="">All categories</option>
+          </select>
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-location">Location</label>
+          <select id="filter-location" name="location">
+            <option value="">All locations</option>
+          </select>
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-organizer">Organizer</label>
+          <select id="filter-organizer" name="organizer">
+            <option value="">All organizers</option>
+          </select>
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-start-date">Start date</label>
+          <input type="date" id="filter-start-date" name="start-date" />
+          <span class="field-error" id="filter-start-date-error"></span>
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-end-date">End date</label>
+          <input type="date" id="filter-end-date" name="end-date" />
+          <span class="field-error" id="filter-end-date-error"></span>
+        </div>
+        <div class="event-filters-actions">
+          <button class="btn btn-outline" type="reset">Clear</button>
+        </div>
+      </form>
+
+      <p class="events-count" id="events-count"></p>
+
+      <div class="events-grid" id="events-grid"></div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small
+          >&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+          project.</small
+        >
+        <div class="footer-links">
+          <a href="../public/index.html">Home</a>
+          <a href="../public/about.html">About</a>
+          <a href="../public/contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

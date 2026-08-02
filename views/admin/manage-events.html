@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Events</title>
+    <link rel="stylesheet" href="../../public/css/style.css" />
+    <script src="../../public/js/toast.js" defer></script>
+    <script type="module" src="../../public/js/manage-events.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="admin-dashboard.html">Dashboard</a></li>
+          <li><a class="active" href="manage-events.html">Manage Events</a></li>
+          <li><a href="event-registrations.html">Registrations</a></li>
+          <li><a href="create-event.html">Create Event</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a class="btn btn-outline" href="../public/login.html">Log out</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin container">
+      <section class="admin-page-header">
+        <div>
+          <h1>Manage events</h1>
+        </div>
+        <div class="admin-page-actions">
+          <a class="btn btn-primary" href="create-event.html">+ Create event</a>
+        </div>
+      </section>
+
+      <form class="event-filters" role="search">
+        <div class="event-filters-field event-filters-field--grow">
+          <label for="search">Search</label>
+          <input type="text" id="search" name="search" placeholder="Search by title" autocomplete="off" />
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-category">Category</label>
+          <select id="filter-category" name="category">
+            <option value="">All categories</option>
+          </select>
+        </div>
+        <div class="event-filters-field">
+          <label for="filter-status">Status</label>
+          <select id="filter-status" name="status">
+            <option value="">All statuses</option>
+            <option value="open">Open</option>
+            <option value="full">Full</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="event-filters-actions">
+          <button class="btn btn-outline" type="reset">Clear</button>
+        </div>
+      </form>
+
+      <div class="admin-panel">
+        <div class="admin-panel-header">
+          <h2>All events</h2>
+        </div>
+        <div class="table-scroll">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th style="min-width: 120px;">Registered</th>
+                <th>% Capacity</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="events-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course project.</small>
+        <div class="footer-links">
+          <a href="../public/index.html">Home</a>
+          <a href="../public/about.html">About</a>
+          <a href="../public/contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
