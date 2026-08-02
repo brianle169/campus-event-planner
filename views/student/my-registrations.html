@@ -1,96 +1,98 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Registrations - Campus Event Planner</title>
 
-    <link rel="stylesheet" href="../../public/css/style.css" />
-    <link rel="stylesheet" href="../../public/css/pages/my-registrations.css" />
-    <script src="../../public/js/toast.js" defer></script>
-    <script src="../../public/js/main.js" type="module" defer></script>
-    <script
-      src="../../public/js/pages/my-registrations.js"
-      type="module"
-      defer></script>
-  </head>
-  <body>
-    <header class="site-header">
-      <nav class="nav container">
-        <a class="nav-brand" href="../public/index.html"
-          >Campus Event Planner</a
-        >
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-        <ul class="nav-links">
-          <li><a href="student-dashboard.html">Dashboard</a></li>
-          <li>
-            <a href="my-registrations.html" class="active">My events</a>
-          </li>
-          <li><a href="events.html">Browse events</a></li>
-          <li><a href="student-profile.html">Profile</a></li>
-        </ul>
-        <div class="nav-actions">
-          <a class="btn btn-outline" href="../public/login.html">Sign out</a>
-        </div>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Registrations - Campus Event Planner</title>
 
-    <main class="student-registered-events container">
-      <section class="student-hero">
-        <div>
-          <h1 id="dashboard-greeting">My Event Registrations</h1>
-          <p class="student-hero-subtitle">
-            Manage your registered campus events and view your attendance
-            activity.
-          </p>
-        </div>
-        <div class="student-hero-actions">
-          <a class="btn btn-primary" href="events.html">Discover More Events</a>
-        </div>
-      </section>
+  <link rel="stylesheet" href="../../public/css/style.css" />
+  <link rel="stylesheet" href="../../public/css/pages/my-registrations.css" />
+  <script src="../../public/js/toast.js" defer></script>
+  <script src="../../public/js/main.js" type="module" defer></script>
+  <script src="../../public/js/pages/my-registrations.js" type="module" defer></script>
+</head>
 
-      <section class="student-stats">
-        <article class="student-stat-card">
-          <span class="student-stat-value" id="stat-total-registered">0</span>
-          <span class="student-stat-label">Total Registrations</span>
-        </article>
-        <article class="student-stat-card">
-          <span class="student-stat-value" id="stat-upcoming">0</span>
-          <span class="student-stat-label">Upcoming Events</span>
-        </article>
-        <article class="student-stat-card">
-          <span class="student-stat-value" id="stat-attended">0</span>
-          <span class="student-stat-label">Events Attended</span>
-        </article>
-      </section>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="student-dashboard.html">Dashboard</a></li>
+        <li>
+          <a href="my-registrations.html" class="active">My events</a>
+        </li>
+        <li><a href="events.html">Browse events</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a class="btn btn-outline" href="student-profile.html">My profile</a>
+        <a class="btn btn-primary" href="#" id="signOutLink">Sign out</a>
+        <div class="modal" id="logoutModal">
+          <div class="modal-content">
+            <p>Are you sure you want to sign out?</p>
 
-      <section class="student-panel">
-        <div class="student-panel-header">
-          <h2>Registered Events</h2>
-        </div>
-
-        <div class="registration-cards-list" id="registered-events-body"></div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <small
-          >&copy; 2026 Smart Campus Event Planner. SOEN 287 course
-          project.</small
-        >
-        <div class="footer-links">
-          <a href="../public/index.html">Home</a>
-          <a href="../public/about.html">About</a>
-          <a href="../public/contact.html">Contact</a>
+            <div class="modal-buttons">
+              <a href="../public/login.html" class="btn btn-primary">Yes</a>
+              <a href="#" class="btn btn-outline" id="noButton">No</a>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
-  </body>
+    </nav>
+  </header>
+
+  <main class="student-registered-events container">
+    <section class="student-hero">
+      <div>
+        <h1 id="dashboard-greeting">My Event Registrations</h1>
+        <p class="student-hero-subtitle">
+          Manage your registered campus events and view your attendance
+          activity.
+        </p>
+      </div>
+      <div class="student-hero-actions">
+        <a class="btn btn-primary" href="events.html">Discover More Events</a>
+      </div>
+    </section>
+
+    <section class="student-stats">
+      <article class="student-stat-card">
+        <span class="student-stat-value" id="stat-total-registered">0</span>
+        <span class="student-stat-label">Total Registrations</span>
+      </article>
+      <article class="student-stat-card">
+        <span class="student-stat-value" id="stat-upcoming">0</span>
+        <span class="student-stat-label">Upcoming Events</span>
+      </article>
+      <article class="student-stat-card">
+        <span class="student-stat-value" id="stat-attended">0</span>
+        <span class="student-stat-label">Events Attended</span>
+      </article>
+    </section>
+
+    <section class="student-panel">
+      <div class="student-panel-header">
+        <h2>Registered Events</h2>
+      </div>
+
+      <div class="registration-cards-list" id="registered-events-body"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+        project.</small>
+      <div class="footer-links">
+        <a href="../public/index.html">Home</a>
+        <a href="../public/about.html">About</a>
+        <a href="../public/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>
