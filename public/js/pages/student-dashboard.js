@@ -129,12 +129,64 @@ const renderRecommended = (myRegs) => {
   });
 };
 
+const computeTopCategories = (myRegs, limit = 3) => {
+  const counts = new Map();
+
+  myRegs
+    .filter((r) => r.status !== "cancelled")
+    .forEach((r) => {
+      const category = r.event.category || "Other";
+      counts.set(category, (counts.get(category) || 0) + 1);
+    });
+
+  return [...counts.entries()]
+    .map(([category, count]) => ({ category, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, limit);
+};
+
+const renderCategoryStats = (myRegs) => {
+  const list = document.getElementById("category-stats-list");
+  if (!list) return;
+  list.innerHTML = "";
+
+  const topCategories = computeTopCategories(myRegs);
+
+  if (topCategories.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "category-stats-empty";
+    empty.textContent = "Register for events to see your top categories.";
+    list.appendChild(empty);
+    return;
+  }
+
+  const maxCount = topCategories[0].count;
+
+  topCategories.forEach((entry, index) => {
+    const percent = Math.round((entry.count / maxCount) * 100);
+
+    const item = document.createElement("li");
+    item.className = "category-stat-item";
+    item.innerHTML = `
+      <span class="category-stat-rank">${index + 1}</span>
+      <div class="category-stat-info">
+        <span class="category-stat-name">
+          ${entry.category}
+          <span class="category-stat-count">${entry.count} event${entry.count === 1 ? "" : "s"}</span>
+        </span>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+};
+
 function renderDashboard() {
   const myRegs = myRegistrations();
   renderGreeting();
   renderStats(computeStats(myRegs));
   renderUpcomingTable(myRegs);
   renderRecommended(myRegs);
+  renderCategoryStats(myRegs);
 }
 
 document.addEventListener("DOMContentLoaded", renderDashboard);

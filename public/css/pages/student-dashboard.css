@@ -84,6 +84,12 @@
   box-shadow: var(--shadow-sm);
 }
 
+.student-side-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .student-panel-header {
   display: flex;
   align-items: center;
@@ -102,8 +108,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 0.75rem;
-  max-height: 275px;
-  overflow-y: auto;
+  max-height: 450px;
+  overflow-y: scroll;
 }
 
 .upcoming-event-card {
@@ -183,6 +189,57 @@
 .event-mini-meta {
   color: var(--color-text-muted);
   font-size: 0.85rem;
+}
+
+.category-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding-left: 0;
+}
+
+.category-stat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.category-stat-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.category-stat-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-stat-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.category-stat-count {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.category-stats-empty {
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 900px) {
