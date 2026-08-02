@@ -4,13 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile | Smart Campus Event Planner</title>
-    <link rel="stylesheet" href="../public/css/style.css" />
+    <link rel="stylesheet" href="../../public/css/style.css" />
+    <script
+      src="../../public/js/pages/student-profile.js"
+      type="module"
+      defer></script>
   </head>
  
   <body>
     <header class="site-header">
       <nav class="nav container">
-        <a class="nav-brand" href="index.html">Campus Event Planner</a>
+        <a class="nav-brand" href="../public/index.html"
+          >Campus Event Planner</a
+        >
         <button
           class="nav-toggle"
           type="button"
@@ -20,12 +26,12 @@
         </button>
         <ul class="nav-links">
           <li><a href="student-dashboard.html">Dashboard</a></li>
-          <li><a href="events.html">Events</a></li>
-          <li><a href="my-registrations.html">My Registrations</a></li>
+          <li><a href="my-registrations.html">My events</a></li>
+          <li><a href="events.html">Browse events</a></li>
           <li><a class="active" href="student-profile.html">Profile</a></li>
         </ul>
         <div class="nav-actions">
-          <a class="btn btn-outline" href="login.html">Log out</a>
+          <a class="btn btn-outline" href="../public/login.html">Sign out</a>
         </div>
       </nav>
     </header>
@@ -33,33 +39,12 @@
     <main class="profile container">
       <section class="profile-card">
         <div class="profile-identity">
-          <h1>Arda Duman</h1>
+          <h1 id="profile-heading-name"></h1>
           <div class="profile-meta">
-            <span class="badge badge-open">Student</span>
-            <span class="profile-member-since">Member since May 2026</span>
+            <span class="badge badge-open" id="profile-role-badge"></span>
+            <span class="profile-member-since" id="profile-member-since"></span>
           </div>
         </div>
-      </section>
-
-      <!-- This section is where you can see an overview of the student's registrations. -->
-
-      <section class="stat-grid" aria-label="Account overview">
-        <article class="stat-card">
-          <span class="stat-label">Registered Events</span>
-          <span class="stat-value">x</span>
-        </article>
-        <article class="stat-card">
-          <span class="stat-label">Events Attended</span>
-          <span class="stat-value">x</span>
-        </article>
-        <article class="stat-card">
-          <span class="stat-label">Upcoming Events</span>
-          <span class="stat-value">x</span>
-        </article>
-        <article class="stat-card">
-          <span class="stat-label">Cancelled registrations</span>
-          <span class="stat-value">x</span>
-        </article>
       </section>
 
       <!-- This section is where you can see your personal information and will be able to save changes for the deliverable 2. -->
@@ -69,7 +54,7 @@
           <div class="admin-panel-header">
             <h2>Personal information</h2>
           </div>
-          <p class="profile-panel-hint">Update your name and email address.</p>
+          <p class="profile-panel-hint">Update your display name.</p>
  
           <form id="profile-info-form" class="profile-form" novalidate>
             <div class="event-form-field">
@@ -78,25 +63,18 @@
                 type="text"
                 id="profile-name"
                 name="full-name"
-                value="Arda Duman"
                 required />
+              <span class="field-error" id="profile-name-error"></span>
             </div>
  
-            <div class="event-form-field">
+            <div class="profile-static-field">
+              <span class="profile-static-label">Email address</span>
+              <span class="profile-static-value" id="profile-email-value"></span>
+            </div>
 
-              <label for="profile-email">Email address</label>
-              <input
-                type="email"
-                id="profile-email"
-                name="email"
-                value="arda.duman@mail.concordia.ca"
-                required />
-              
-            </div>
- 
-            <div class="event-form-field">
-              <label for="profile-role">Role</label>
-              <input type="text" id="profile-role" value="Student" readonly />
+            <div class="profile-static-field">
+              <span class="profile-static-label">Role</span>
+              <span class="profile-static-value" id="profile-role-value"></span>
             </div>
  
             <div class="event-form-actions">
@@ -127,6 +105,7 @@
                 name="current-password"
                 autocomplete="current-password"
                 required />
+              <span class="field-error" id="current-password-error"></span>
             </div>
  
             <div class="event-form-field">
@@ -137,6 +116,7 @@
                 name="new-password"
                 autocomplete="new-password"
                 required />
+              <span class="field-error" id="new-password-error"></span>
             </div>
  
             <div class="event-form-field">
@@ -147,6 +127,7 @@
                 name="confirm-new-password"
                 autocomplete="new-password"
                 required />
+              <span class="field-error" id="confirm-new-password-error"></span>
             </div>
  
             <div class="event-form-actions">
@@ -181,9 +162,9 @@
           project.</small
         >
         <div class="footer-links">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
+          <a href="../public/index.html">Home</a>
+          <a href="../public/about.html">About</a>
+          <a href="../public/contact.html">Contact</a>
         </div>
       </div>
     </footer>

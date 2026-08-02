@@ -37,8 +37,8 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
-  align-items: start;
   margin-bottom: 1.5rem;
+  align-items: start;
 }
 
 .profile-panel-hint {
@@ -82,4 +82,24 @@
   .profile-grid {
     grid-template-columns: 1fr;
   }
+}
+/* Read-only account details shown as plain text (not editable fields) */
+.profile-static-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.profile-static-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.profile-static-value {
+  color: var(--color-text-muted);
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="password"] {
+  padding-left: 0.25rem;
 }
