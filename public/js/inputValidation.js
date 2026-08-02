@@ -1,9 +1,12 @@
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+const NAME_REGEX = /^[\p{L}\s'-]+$/u;
 
 export const validateName = (value) => {
   if (!value.trim()) return "Full name is required.";
+  if (!NAME_REGEX.test(value.trim()))
+    return "Full name can only contain letters, spaces, hyphens, and apostrophes.";
   return "";
 };
 
