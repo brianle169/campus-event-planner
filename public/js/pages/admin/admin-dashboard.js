@@ -1,6 +1,6 @@
-import { fetchEvents } from "./api/eventsApi.js";
-import { formatDate, getBadgeClass } from "./utils/eventUtils.js";
-import { getEventById } from "./data/sampleData.js";
+import { fetchEvents, fetchRegistrations } from "../../api/eventsApi.js";
+import { formatDate, getBadgeClass } from "../../utils/eventUtils.js";
+import { getEventById } from "../../data/sampleData.js";
 
 const tableBody = document.querySelector("#recent-events-body");
 const totalEventsValue = document.querySelector("#total-events-value");
@@ -67,7 +67,6 @@ function renderSummaryCards(events) {
 }
 
 const totalAttendanceValue = document.querySelector("#total-attendance-value");
-import { fetchRegistrations } from "./api/eventsApi.js";
 
 async function renderAttendanceStat() {
   const registrations = await fetchRegistrations();

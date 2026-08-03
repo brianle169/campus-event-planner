@@ -3,12 +3,12 @@ import {
   events,
   registrations,
   getEventById,
-} from "../data/sampleData.js";
-import { isUpcoming, formatDate } from "../utils/dateHelpers.js";
+} from "../../data/sampleData.js";
+import { isUpcoming, formatDate } from "../../utils/dateHelpers.js";
 import {
   REGISTRATION_STATUS_BADGES,
   cancelRegistration as cancelRegistrationById,
-} from "../utils/registrations.js";
+} from "../../utils/registrations.js";
 
 const myRegistrations = () =>
   registrations

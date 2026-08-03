@@ -1,6 +1,6 @@
-import { fetchEvents } from './api/eventsApi.js';
-import { categoryOptions } from './data/sampleData.js';
-import { formatCategory, formatDate, getBadgeClass } from './utils/eventUtils.js';
+import { fetchEvents } from '../../api/eventsApi.js';
+import { categoryOptions } from '../../data/sampleData.js';
+import { formatCategory, formatDate, getBadgeClass } from '../../utils/eventUtils.js';
 
 const tableBody = document.querySelector('#events-table-body');
 const searchInput = document.querySelector('#search');

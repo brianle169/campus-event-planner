@@ -3,8 +3,8 @@ import {
   categories,
   getUserById,
   getRegistrationCountForEvent,
-} from "../data/sampleData.js";
-import { isUpcoming, formatDate, formatTime } from "../utils/dateHelpers.js";
+} from "../../data/sampleData.js";
+import { isUpcoming, formatDate, formatTime } from "../../utils/dateHelpers.js";
 import {
   EVENT_STATUS_BADGES,
   isRegisteredByCurrentUser,
@@ -12,8 +12,8 @@ import {
   registerForEvent,
   cancelRegistration,
   getMyRegistrationForEvent,
-} from "../utils/registrations.js";
-import { validateDateRange } from "../inputValidation.js";
+} from "../../utils/registrations.js";
+import { validateDateRange } from "../../utils/inputValidation.js";
 
 const filters = {
   search: "",

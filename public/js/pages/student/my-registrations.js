@@ -2,9 +2,9 @@ import {
   currentUser,
   registrations,
   getEventById,
-} from "../data/sampleData.js";
-import { formatDate } from "../utils/dateHelpers.js";
-import { cancelRegistration } from "../utils/registrations.js";
+} from "../../data/sampleData.js";
+import { formatDate } from "../../utils/dateHelpers.js";
+import { cancelRegistration } from "../../utils/registrations.js";
 
 // Badge CSS mappings matching project spec
 const REGISTRATION_BADGES = {

@@ -1,5 +1,5 @@
-import { getEventById, getUserById, getRegistrationCountForEvent } from "../data/sampleData.js";
-import { isUpcoming, formatDate, formatTime } from "../utils/dateHelpers.js";
+import { getEventById, getUserById, getRegistrationCountForEvent } from "../../data/sampleData.js";
+import { isUpcoming, formatDate, formatTime } from "../../utils/dateHelpers.js";
 import {
   EVENT_STATUS_BADGES,
   REGISTRATION_STATUS_BADGES,
@@ -7,7 +7,7 @@ import {
   isEventFull,
   registerForEvent,
   cancelRegistration,
-} from "../utils/registrations.js";
+} from "../../utils/registrations.js";
 
 const getEventIdFromUrl = () => new URLSearchParams(window.location.search).get("id");
 

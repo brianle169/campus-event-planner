@@ -1,6 +1,6 @@
-import * as validationRules from "../inputValidation.js";
-import { currentUser } from "../data/sampleData.js";
-import { formatDate } from "../utils/dateHelpers.js";
+import * as validationRules from "../../utils/inputValidation.js";
+import { currentUser } from "../../data/sampleData.js";
+import { formatDate } from "../../utils/dateHelpers.js";
 
 const delay = 300; // delay in milliseconds for debouncing input validation
 
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fields.forEach((field) => {
       const debouncedValidate = debounce(() => validateField(field), delay);
       field.input.addEventListener("input", debouncedValidate);
-    });lk
+    });
 
     // Re-check the confirmation field when the new password itself changes,
     // otherwise a stale "Passwords do not match" error can linger.

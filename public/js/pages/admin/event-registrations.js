@@ -1,6 +1,6 @@
-import { fetchRegistrations, fetchEvents } from './api/eventsApi.js';
-import { formatDate } from './utils/eventUtils.js';
-import { getUserById } from './data/sampleData.js';
+import { fetchRegistrations, fetchEvents } from '../../api/eventsApi.js';
+import { formatDate } from '../../utils/eventUtils.js';
+import { getUserById } from '../../data/sampleData.js';
 
 const tableBody = document.querySelector('#registrations-table-body');
 const eventTitle = document.querySelector('#event-title');

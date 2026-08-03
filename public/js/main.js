@@ -1,6 +1,6 @@
 // import * as registerValidation from "./register.js";
 // import * as loginValidation from "./login.js";
-import * as validationRules from "./inputValidation.js";
+import * as validationRules from "./utils/inputValidation.js";
 
 // Mobile nav toggle, shared by every page's header
 document.querySelectorAll(".nav-toggle").forEach((toggle) => {
