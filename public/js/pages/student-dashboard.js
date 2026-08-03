@@ -163,8 +163,6 @@ const renderCategoryStats = (myRegs) => {
   const maxCount = topCategories[0].count;
 
   topCategories.forEach((entry, index) => {
-    const percent = Math.round((entry.count / maxCount) * 100);
-
     const item = document.createElement("li");
     item.className = "category-stat-item";
     item.innerHTML = `

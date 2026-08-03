@@ -27,18 +27,18 @@
 
 .nav-toggle {
   display: none;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.4rem;
 }
 
-.nav-toggle span {
+.nav-toggle-icon {
+  display: block;
   width: 24px;
-  height: 2px;
-  background: var(--color-text);
+  height: 24px;
 }
 
 .nav-links {
@@ -62,6 +62,45 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .nav {
+    flex-wrap: wrap;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links,
+  .nav-actions {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    flex-basis: 100%;
+    gap: 1rem;
+  }
+
+  .nav-links {
+    padding-block: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .nav-actions {
+    padding-bottom: 1rem;
+    gap: 0.75rem;
+  }
+
+  .nav-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav.is-open .nav-links,
+  .nav.is-open .nav-actions {
+    display: flex;
+  }
 }
 
 .modal {

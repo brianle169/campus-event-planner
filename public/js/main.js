@@ -2,6 +2,24 @@
 // import * as loginValidation from "./login.js";
 import * as validationRules from "./inputValidation.js";
 
+// Mobile nav toggle, shared by every page's header
+document.querySelectorAll(".nav-toggle").forEach((toggle) => {
+  const nav = toggle.closest(".nav");
+  const navLinks = nav.querySelectorAll(".nav-links a, .nav-actions a");
+
+  toggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-open");
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+});
+
 const delay = 300; // delay in milliseconds for debouncing input validation
 
 const debounce = (fn, delayMs) => {
@@ -156,21 +174,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //This is for the sign out function of the nav to work
 const signOutLink = document.getElementById("signOutLink");
-console.log(signOutLink);
 const logoutModal = document.getElementById("logoutModal");
 const noButton = document.getElementById("noButton");
 
-signOutLink.addEventListener("click", function (event) {
-  console.log("hello");
-  event.preventDefault(); // Stops the link from changing the page
-  logoutModal.style.display = "flex";
-});
+if (signOutLink && logoutModal && noButton) {
+  signOutLink.addEventListener("click", function (event) {
+    event.preventDefault(); // Stops the link from changing the page
+    logoutModal.style.display = "flex";
+  });
 
-noButton.addEventListener("click", function (event) {
-  event.preventDefault(); // Stops the # from appearing in the URL
-  logoutModal.style.display = "none";
-});
+  noButton.addEventListener("click", function (event) {
+    event.preventDefault(); // Stops the # from appearing in the URL
+    logoutModal.style.display = "none";
+  });
 
-window.addEventListener("pageshow", function () {
-  logoutModal.style.display = "none";
-});
+  window.addEventListener("pageshow", function () {
+    logoutModal.style.display = "none";
+  });
+}
