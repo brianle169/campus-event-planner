@@ -18,7 +18,7 @@
     "test": "npm run test",
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "db:setup": "node db/setup.js",
+    "db:setup": "node db/migrate.js",
     "db:seed": "node db/seed.js",
     "db:reset": "node db/reset.js"
   },
