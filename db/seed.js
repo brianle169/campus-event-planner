@@ -1,8 +1,5 @@
 // This file seeds the database with initial data for development and
-// testing purposes. Safe to re-run — every insert uses INSERT OR IGNORE
-// keyed on a unique column (category_name, email), so running it twice
-// doesn't create duplicates or throw.
-//
+// testing purposes.
 // Seeded data:
 // - Categories (10)
 // - Demo admin account
@@ -63,8 +60,6 @@ const insertUser = db.prepare(
 );
 
 for (const account of demoAccounts) {
-  // bcrypt's synchronous API keeps this script sync top-to-bottom, matching
-  // better-sqlite3's own synchronous style — no async/await needed here.
   const salt = bcrypt.genSaltSync(10);
   const passwordHash = bcrypt.hashSync(account.password, salt);
   insertUser.run(account.full_name, account.email, passwordHash, account.role);
@@ -75,16 +70,11 @@ for (const account of demoAccounts) {
   console.log(`  - ${account.role}: ${account.email} / ${account.password}`);
 }
 
-// Sample events — organizer is always the demo admin, looked up by email
-// rather than hardcoded so this still resolves correctly even if
-// INSERT OR IGNORE skipped account creation on a re-run.
+// Events
 const adminId = db
   .prepare("SELECT user_id FROM users WHERE email = ?")
   .get("admin@concordia.ca").user_id;
 
-// [title, description, category, event_date, start_time, end_time, location, capacity, status]
-// Covers all 5 status values so there's real data to test each branch of
-// event/registration logic against.
 const events = [
   [
     "SOEN Career Fair",

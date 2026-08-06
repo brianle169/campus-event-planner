@@ -12,11 +12,5 @@ if (existsSync(config.dbPath)) {
   console.log("No existing database file to delete.");
 }
 
-// Dynamic imports (not static ones at the top of the file) are deliberate:
-// db/connection.js opens its Database handle the moment it's first
-// imported, so migrate.js's import of it must happen *after* the deletion
-// above, not before. A static top-level import would run before any of
-// this file's own code, which would reopen the old file right before we
-// delete it.
 await import("./migrate.js");
 await import("./seed.js");
