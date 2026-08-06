@@ -31,6 +31,7 @@ const config = Object.freeze({
   nodeEnv: process.env.NODE_ENV || "development",
   isProduction: process.env.NODE_ENV === "production",
   dbPath: process.env.DB_PATH || join(projectRoot, "data", "campus_planner.db"),
+  projectRoot: projectRoot,
 });
 
 export default config;
