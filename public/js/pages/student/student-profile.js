@@ -36,7 +36,7 @@ const wireLiveValidation = (fields) => {
 
 // Fill the page with the signed-in user's details from the sample data.
 const renderProfile = () => {
-  const roleLabel = currentUser.role === "student" ? "Student" : "Organizer";
+  const roleLabel = currentUser.role === "student" ? "Student" : "Admin";
 
   const headingName = document.getElementById("profile-heading-name");
   if (headingName) headingName.textContent = currentUser.full_name;
