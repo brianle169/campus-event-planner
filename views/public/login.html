@@ -1,88 +1,79 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign In</title>
-    <link rel="stylesheet" href="../../public/css/style.css" />
-    <script src="../../public/js/main.js" type="module" defer></script>
-  </head>
-  <body>
-    <!-- Common Header goes here -->
-    <header class="site-header">
-      <nav class="nav container">
-        <a class="nav-brand" href="index.html">Campus Event Planner</a>
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded="false">
-          <img src="../../public/images/menu-svgrepo-com.png" alt="" class="nav-toggle-icon" />
-        </button>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <div class="nav-actions">
-          <a class="btn btn-outline" href="login.html">Log in</a>
-          <a class="btn btn-primary" href="register.html">Sign up</a>
-        </div>
-      </nav>
-    </header>
 
-    <div class="login-container">
-      <div class="login-header">
-        <h1>Sign in to your account</h1>
-        <p>Or <a href="register.html">sign up for a new account</a></p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In</title>
+  <link rel="stylesheet" href="../../public/css/style.css" />
+  <script src="../../public/js/main.js" type="module" defer></script>
+</head>
+
+<body>
+  <!-- Common Header goes here -->
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="nav-brand" href="/">Campus Event Planner</a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <img src="../../public/images/menu-svgrepo-com.png" alt="" class="nav-toggle-icon" />
+      </button>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a class="btn btn-outline" href="/login">Log in</a>
+        <a class="btn btn-primary" href="/register">Sign up</a>
       </div>
-      <form class="login">
-        <div class="login-field">
-          <label for="email">Email address</label>
-          <input type="email" id="email" name="email" required />
-          <span class="field-error" id="email-error"></span>
-        </div>
-        <div class="login-field">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
-          <span class="field-error" id="password-error"></span>
-        </div>
-        <button class="btn btn-primary" type="submit">Sign In</button>
-        <p style="margin-top: 0.75rem; font-size: 0.65rem; color: #4b5563">
-          Tip: use <strong>admin@concordia.com</strong> /
-          <strong>admin123</strong> to access the admin page.
-          <a
-            href="../admin/admin-dashboard.html"
-            style="color: #2563eb; text-decoration: underline"
-            >Or skip login and go to admin page</a
-          >
-        </p>
-        <p style="margin-top: 0.75rem; font-size: 0.65rem; color: #4b5563">
-          Tip: use <strong>student@concordia.com</strong> /
-          <strong>student123</strong> to access the student page.
-          <a
-            href="../student/student-dashboard.html"
-            style="color: #2563eb; text-decoration: underline"
-            >Or skip login and go to student page</a
-          >
-        </p>
-        <p style="margin-top: 0.25rem; font-size: 0.7rem"></p>
-      </form>
+    </nav>
+  </header>
+
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Sign in to your account</h1>
+      <p>Or <a href="/register">sign up for a new account</a></p>
     </div>
-
-    <!-- Common Footer goes here -->
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <small
-          >&copy; 2026 Smart Campus Event Planner. SOEN 287 course
-          project.</small
-        >
-        <div class="footer-links">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-        </div>
+    <form class="login">
+      <div class="login-field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required />
+        <span class="field-error" id="email-error"></span>
       </div>
-    </footer>
-  </body>
+      <div class="login-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+        <span class="field-error" id="password-error"></span>
+      </div>
+      <button class="btn btn-primary" type="submit">Sign In</button>
+      <p style="margin-top: 0.75rem; font-size: 0.65rem; color: #4b5563">
+        Tip: use <strong>admin@concordia.com</strong> /
+        <strong>admin123</strong> to access the admin page.
+        <a href="../admin/admin-dashboard.html" style="color: #2563eb; text-decoration: underline">Or skip login and go
+          to admin page</a>
+      </p>
+      <p style="margin-top: 0.75rem; font-size: 0.65rem; color: #4b5563">
+        Tip: use <strong>student@concordia.com</strong> /
+        <strong>student123</strong> to access the student page.
+        <a href="../student/student-dashboard.html" style="color: #2563eb; text-decoration: underline">Or skip login and
+          go to student page</a>
+      </p>
+      <p style="margin-top: 0.25rem; font-size: 0.7rem"></p>
+    </form>
+  </div>
+
+  <!-- Common Footer goes here -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course
+        project.</small>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>
