@@ -1,6 +1,7 @@
 import express from "express";
 import session from "express-session";
-import { join } from "node:path";
+import path, { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import config from "./config/env.js";
 import authRoutes from "./routes/authRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
@@ -8,6 +9,8 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
@@ -22,7 +25,23 @@ app.use(express.static(join(config.projectRoot, "views")));
 app.use("/models", express.static(join(config.projectRoot, "models")));
 
 app.get("/", (req, res) => {
-  res.redirect("/public/index.html");
+  res.sendFile(path.join(__dirname, "views/public/index.html"));
+});
+
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/public/about.html"));
+});
+
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/public/contact.html"));
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/public/login.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/public/register.html"));
 });
 
 app.use(
