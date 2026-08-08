@@ -1,4 +1,4 @@
-import { authenticate } from "../services/authServices.js";
+import { authenticate, dashboardFor } from "../services/authServices.js";
 
 export function userLogIn(req, res, next) {
   // Get the email and password from body
@@ -17,11 +17,7 @@ export function userLogIn(req, res, next) {
 
   req.session.save((err) => {
     if (err) return next(err);
-    res.json({
-      user,
-      redirect:
-        user.role === "student" ? "/student/dashboard" : "/admin/dashboard",
-    });
+    res.json({ user, redirect: dashboardFor(user.role) });
   });
 }
 

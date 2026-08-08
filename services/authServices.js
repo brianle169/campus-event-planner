@@ -19,6 +19,12 @@ function toUserObject(repoResult) {
   };
 }
 
+// Where a signed-in user belongs, by role. Shared by the login controller and
+// the page guards so the mapping only lives in one place.
+export function dashboardFor(role) {
+  return role === "admin" ? "/admin/dashboard" : "/student/dashboard";
+}
+
 // Authenticate the credentials
 export function authenticate(email, password) {
   if (!email || !password) throw httpError("Insufficient data.", 400);

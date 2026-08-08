@@ -11,7 +11,7 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
-import { requireAuth, requireRole } from "./middleware/auth.js";
+import { requirePage, redirectIfAuthed } from "./middleware/auth.js";
 
 const SqliteStore = SqliteStoreFactory(session);
 
@@ -59,22 +59,37 @@ app.get("/contact", (req, res) => {
   res.sendFile(join(config.projectRoot, "views/public/contact.html"));
 });
 
-app.get("/login", (req, res) => {
+app.get("/login", redirectIfAuthed, (req, res) => {
   res.sendFile(join(config.projectRoot, "views/public/login.html"));
 });
 
-app.get("/register", (req, res) => {
+app.get("/register", redirectIfAuthed, (req, res) => {
   res.sendFile(join(config.projectRoot, "views/public/register.html"));
 });
 
-app.get("/student/dashboard", requireRole("student"), (req, res) => {
-  res.set("Cache-Control", "no-store");
+// Gate every page under these prefixes in one place, so a page added later is
+// protected by default rather than by remembering to add a guard to it.
+// requirePage redirects; requireRole (JSON) stays on the /api/* routes below.
+app.use("/student", requirePage("student"));
+app.use("/admin", requirePage("admin"));
+
+// TEMPORARY: serve these views by filename, because the views and the page
+// scripts still link to each other relatively ("events.html",
+// "edit-event.html?id=3"). Replace with one explicit route per page — like the
+// public pages above — once those links move to clean URLs. Deferred for now so
+// the rename doesn't collide with the page work in flight on other branches.
+// Note this serves *any* file placed in these directories, not just the pages
+// listed below; the guards above are what keep it role-restricted.
+app.use("/student", express.static(join(config.projectRoot, "views/student")));
+app.use("/admin", express.static(join(config.projectRoot, "views/admin")));
+
+app.get("/student/dashboard", (req, res) => {
   res.sendFile(
     join(config.projectRoot, "views/student/student-dashboard.html"),
   );
 });
 
-app.get("/admin/dashboard", requireRole("admin"), (req, res) => {
+app.get("/admin/dashboard", (req, res) => {
   res.sendFile(join(config.projectRoot, "views/admin/admin-dashboard.html"));
 });
 
