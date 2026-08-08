@@ -1,6 +1,7 @@
 // import * as registerValidation from "./register.js";
 // import * as loginValidation from "./login.js";
 import * as validationRules from "./utils/inputValidation.js";
+import { wireLogout } from "./utils/logout.js";
 
 // Mobile nav toggle, shared by every page's header
 document.querySelectorAll(".nav-toggle").forEach((toggle) => {
@@ -180,27 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // const confirmLogOutButton = document.getElementById("confirm-sign-out");
-  // confirmLogOutButton.addEventListener("click", async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const res = await fetch("/api/auth/logout", {
-  //       method: "POST",
-  //     });
-
-  //     if (!res.ok) {
-  //       const { error } = await res.json();
-  //       console.log(error);
-  //       return;
-  //     }
-
-  //     const { redirect } = await res.json();
-  //     window.location.href = redirect;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // });
 });
 
 //This is for the sign out function of the nav to work
@@ -224,22 +204,4 @@ if (signOutLink && logoutModal && noButton) {
   });
 }
 
-export const confirmLogOutButtonEvent = async (event) => {
-  event.preventDefault();
-  try {
-    const res = await fetch("/api/auth/logout", {
-      method: "POST",
-    });
-
-    if (!res.ok) {
-      const { error } = await res.json();
-      console.log(error);
-      return;
-    }
-
-    const { redirect } = await res.json();
-    window.location.href = redirect;
-  } catch (error) {
-    console.log(error);
-  }
-};
+wireLogout();

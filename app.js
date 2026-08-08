@@ -68,6 +68,7 @@ app.get("/register", (req, res) => {
 });
 
 app.get("/student/dashboard", requireRole("student"), (req, res) => {
+  res.set("Cache-Control", "no-store");
   res.sendFile(
     join(config.projectRoot, "views/student/student-dashboard.html"),
   );

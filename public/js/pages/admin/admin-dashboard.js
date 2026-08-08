@@ -128,27 +128,6 @@ const renderPopularCategories = (registrations) => {
   });
 };
 
-const confirmLogOutButton = document.getElementById("confirm-sign-out");
-confirmLogOutButton.addEventListener("click", async (event) => {
-  event.preventDefault();
-  try {
-    const res = await fetch("/api/auth/logout", {
-      method: "POST",
-    });
-
-    if (!res.ok) {
-      const { error } = await res.json();
-      console.log(error);
-      return;
-    }
-
-    const { redirect } = await res.json();
-    window.location.href = redirect;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 async function renderDashboard() {
   if (!tableBody) return;
 
