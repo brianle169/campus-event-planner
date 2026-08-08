@@ -10,10 +10,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const app = express();
-
 app.use(express.json());
 
 // Static assets and pages never touch req.session, so these are mounted
@@ -25,23 +22,23 @@ app.use(express.static(join(config.projectRoot, "views")));
 app.use("/models", express.static(join(config.projectRoot, "models")));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/public/index.html"));
+  res.sendFile(join(config.projectRoot, "views/public/index.html"));
 });
 
 app.get("/about", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/public/about.html"));
+  res.sendFile(join(config.projectRoot, "views/public/about.html"));
 });
 
 app.get("/contact", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/public/contact.html"));
+  res.sendFile(join(config.projectRoot, "views/public/contact.html"));
 });
 
 app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/public/login.html"));
+  res.sendFile(join(config.projectRoot, "views/public/login.html"));
 });
 
 app.get("/register", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/public/register.html"));
+  res.sendFile(join(config.projectRoot, "views/public/register.html"));
 });
 
 app.use(
