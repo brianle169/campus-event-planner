@@ -16,9 +16,10 @@ const SqliteStore = SqliteStoreFactory(session);
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/public", express.static(join(config.projectRoot, "public")));
-app.use(express.static(join(config.projectRoot, "views")));
+// app.use(express.static(join(config.projectRoot, "views")));
 // This will be removed once the sampleData.js is no longer needed
 app.use("/models", express.static(join(config.projectRoot, "models")));
 
@@ -63,6 +64,16 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.sendFile(join(config.projectRoot, "views/public/register.html"));
+});
+
+app.get("/student/dashboard", (req, res) => {
+  res.sendFile(
+    join(config.projectRoot, "views/student/student-dashboard.html"),
+  );
+});
+
+app.get("/admin/dashboard", (req, res) => {
+  res.sendFile(join(config.projectRoot, "views/admin/admin-dashboard.html"));
 });
 
 // Map the corresponding routes to the API paths

@@ -116,7 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
       field.input.addEventListener("input", debouncedValidate);
     });
 
-    loginForm.addEventListener("submit", (event) => {
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
 
@@ -125,15 +126,24 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Temporary hardcoded login check for demonstration purposes, this will be removed once we have a backend
-      if (email === "admin@concordia.com" && password === "admin123") {
-        window.location.href = "../admin/admin-dashboard.html";
-        event.preventDefault();
-      }
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
 
-      if (email === "student@concordia.com" && password === "student123") {
-        window.location.href = "../student/student-dashboard.html";
-        event.preventDefault();
+        if (!res.ok) {
+          const { error } = await res.json();
+          setFieldError(emailInput, error);
+          setFieldError(passwordInput, error);
+          return;
+        }
+
+        const { redirect } = await res.json();
+        window.location.href = redirect;
+      } catch (e) {
+        console.error(e);
       }
     });
   }
