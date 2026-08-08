@@ -24,3 +24,11 @@ export function userLogIn(req, res, next) {
     });
   });
 }
+
+export function userLogOut(req, res, next) {
+  req.session.destroy((err) => {
+    if (err) return next(err);
+    res.clearCookie("connect.sid");
+    res.json({ redirect: "/" });
+  });
+}
