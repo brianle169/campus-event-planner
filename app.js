@@ -11,6 +11,7 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
+import { requireAuth, requireRole } from "./middleware/auth.js";
 
 const SqliteStore = SqliteStoreFactory(session);
 
@@ -66,13 +67,13 @@ app.get("/register", (req, res) => {
   res.sendFile(join(config.projectRoot, "views/public/register.html"));
 });
 
-app.get("/student/dashboard", (req, res) => {
+app.get("/student/dashboard", requireRole("student"), (req, res) => {
   res.sendFile(
     join(config.projectRoot, "views/student/student-dashboard.html"),
   );
 });
 
-app.get("/admin/dashboard", (req, res) => {
+app.get("/admin/dashboard", requireRole("admin"), (req, res) => {
   res.sendFile(join(config.projectRoot, "views/admin/admin-dashboard.html"));
 });
 
