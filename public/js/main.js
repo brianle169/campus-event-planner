@@ -199,8 +199,12 @@ if (signOutLink && logoutModal && noButton) {
     logoutModal.style.display = "none";
   });
 
-  window.addEventListener("pageshow", function () {
+  window.addEventListener("pageshow", function (event) {
     logoutModal.style.display = "none";
+
+    // Restored from the bfcache: the page came back from memory without any
+    // request reaching the server, so no auth guard ran. Force a real one.
+    if (event.persisted) window.location.reload();
   });
 }
 
