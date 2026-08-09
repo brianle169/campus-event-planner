@@ -1,6 +1,14 @@
 // import * as registerValidation from "./register.js";
 // import * as loginValidation from "./login.js";
 import * as validationRules from "./utils/inputValidation.js";
+import { wireLogout } from "./utils/logout.js";
+import { syncNav } from "./utils/nav.js";
+import {
+  notifyError,
+  flashSuccess,
+  showFlash,
+  NETWORK_ERROR,
+} from "./utils/notify.js";
 
 // Mobile nav toggle, shared by every page's header
 document.querySelectorAll(".nav-toggle").forEach((toggle) => {
@@ -87,9 +95,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }, delay);
     passwordInput.addEventListener("input", debouncedRevalidateConfirm);
 
-    registerForm.addEventListener("submit", (event) => {
-      if (!validateAllFields(fields)) {
-        event.preventDefault();
+    registerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validateAllFields(fields)) return;
+
+      const role = document.querySelector('input[name="role"]:checked')?.value;
+
+      // Clear anything left from a previous attempt
+      [nameInput, emailInput, passwordInput].forEach((input) =>
+        setFieldError(input, ""),
+      );
+
+      try {
+        const res = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            full_name: nameInput.value,
+            email: emailInput.value,
+            password: passwordInput.value,
+            role,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          flashSuccess("Account created. Please sign in.");
+          window.location.href = data.redirect;
+          return;
+        }
+
+        if (res.status === 409) {
+          setFieldError(emailInput, data.error);
+        } else if (res.status === 400 && data.fields) {
+          const inputs = {
+            full_name: nameInput,
+            email: emailInput,
+            password: passwordInput,
+          };
+          Object.entries(data.fields).forEach(([field, message]) => {
+            if (inputs[field]) setFieldError(inputs[field], message);
+          });
+        } else {
+          notifyError(data.error ?? "Something went wrong, please try again.");
+        }
+      } catch (err) {
+        console.error(err);
+        notifyError(NETWORK_ERROR);
       }
     });
   }
@@ -116,24 +169,48 @@ document.addEventListener("DOMContentLoaded", () => {
       field.input.addEventListener("input", debouncedValidate);
     });
 
-    loginForm.addEventListener("submit", (event) => {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validateAllFields(fields)) return;
 
-      if (!validateAllFields(fields)) {
-        event.preventDefault();
-        return;
-      }
+      // Clear anything left from a previous attempt
+      setFieldError(emailInput, "");
+      setFieldError(passwordInput, "");
 
-      // Temporary hardcoded login check for demonstration purposes, this will be removed once we have a backend
-      if (email === "admin@concordia.com" && password === "admin123") {
-        window.location.href = "../admin/admin-dashboard.html";
-        event.preventDefault();
-      }
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: emailInput.value,
+            password: passwordInput.value,
+          }),
+        });
 
-      if (email === "student@concordia.com" && password === "student123") {
-        window.location.href = "../student/student-dashboard.html";
-        event.preventDefault();
+        const data = await res.json();
+
+        if (res.ok) {
+          const firstName = data.user?.full_name?.split(" ")[0];
+          flashSuccess(
+            firstName ? `Welcome back, ${firstName}.` : "Signed in.",
+          );
+          window.location.href = data.redirect;
+          return;
+        }
+
+        if (res.status === 400 && data.fields) {
+          const inputs = { email: emailInput, password: passwordInput };
+          Object.entries(data.fields).forEach(([field, message]) => {
+            if (inputs[field]) setFieldError(inputs[field], message);
+          });
+        } else if (res.status === 401) {
+          setFieldError(passwordInput, data.error ?? "Invalid credentials.");
+        } else {
+          notifyError(data.error ?? "Something went wrong. Please try again.");
+        }
+      } catch (e) {
+        console.error(e);
+        notifyError(NETWORK_ERROR);
       }
     });
   }
@@ -188,7 +265,15 @@ if (signOutLink && logoutModal && noButton) {
     logoutModal.style.display = "none";
   });
 
-  window.addEventListener("pageshow", function () {
+  window.addEventListener("pageshow", function (event) {
     logoutModal.style.display = "none";
+    if (!event.persisted) return;
+
+    if (document.querySelector("[data-auth]")) syncNav();
+    else window.location.reload();
   });
 }
+
+wireLogout();
+syncNav();
+showFlash();
