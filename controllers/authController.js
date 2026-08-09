@@ -6,9 +6,7 @@ import {
 import { getUserById } from "../db/repositories/userRepository.js";
 
 export function userLogIn(req, res, next) {
-  // Get the email and password from body
-  if (!req.body) next(new Error("Request body is empty."));
-
+  // validateBody has already guaranteed both fields are present and normalized.
   const { email, password } = req.body;
   const user = authenticate(email, password);
 
@@ -47,8 +45,8 @@ export function userLogOut(req, res, next) {
 }
 
 export function userRegister(req, res, next) {
-  // validate body first
-  const { name, email, password, role } = req.body;
-  const newUser = userRegister(name, email, password, role);
+  // validateBody has already checked and normalized these, role included.
+  const { full_name, email, password, role } = req.body;
+  const newUser = addNewUser(full_name, email, password, role);
   res.json({ user: newUser, redirect: "/login" });
 }

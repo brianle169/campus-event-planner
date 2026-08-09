@@ -16,7 +16,7 @@ export function getUserById(userId) {
 
 // Insert
 export function addUser(full_name, email, password_hash, role) {
-  const operation = db
+  return db
     .prepare(
       `INSERT INTO users (full_name, email, password_hash, role) VALUES (?, ?, ?, ?)
       RETURNING user_id, full_name, email, role`,

@@ -1,4 +1,5 @@
 import { getUserByEmail, addUser } from "../db/repositories/userRepository.js";
+import { ROLES } from "../middleware/validate.js";
 import bcrypt from "bcrypt";
 
 // Create an HTTP Error object
@@ -18,12 +19,6 @@ function toUserObject(repoResult) {
   };
 }
 
-function normalizeStrings(str) {
-  return String(str ?? "")
-    .trim()
-    .toLowerCase();
-}
-
 // Where a signed-in user belongs, by role. Shared by the login controller and
 // the page guards so the mapping only lives in one place.
 export function dashboardFor(role) {
@@ -32,8 +27,6 @@ export function dashboardFor(role) {
 
 // Authenticate the credentials
 export function authenticate(email, password) {
-  if (!email || !password) throw httpError("Insufficient data.", 400);
-
   const user = getUserByEmail(email);
   if (!user || !bcrypt.compareSync(password, user.password_hash)) {
     throw httpError("Invalid credentials.", 401);
@@ -44,28 +37,17 @@ export function authenticate(email, password) {
 
 // Sign-up a new user
 export function addNewUser(full_name, email, password, role) {
-  if (!full_name || !email || !password || !role)
-    throw httpError("Insufficient data.", 400);
+  if (!ROLES.includes(role)) throw httpError("Choose an account type.", 400);
 
-  // Check for duplicated email
-  if (getUserByEmail(normalizeStrings(email))) {
+  if (getUserByEmail(email)) {
     throw httpError("There exists an account associated to this email.", 409);
   }
 
-  // Hash password
   const salt = bcrypt.genSaltSync(10);
   const password_hash = bcrypt.hashSync(password, salt);
 
-  // Send to repository
   try {
-    return toUserObject(
-      addUser(
-        normalizeStrings(full_name),
-        normalizeStrings(email),
-        password_hash,
-        role,
-      ),
-    );
+    return toUserObject(addUser(full_name, email, password_hash, role));
   } catch (err) {
     if (err.code === "SQLITE_CONSTRAINT_UNIQUE") {
       throw httpError("There exists an account associated to this email.", 409);
