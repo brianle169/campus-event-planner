@@ -1,6 +1,8 @@
 // Every authenticated view ships the same sign-out confirmation modal, so the
 // request lives here instead of being copied into each page module.
 
+import { notifyError, flashSuccess, NETWORK_ERROR } from "./notify.js";
+
 export function wireLogout() {
   const confirmButton = document.getElementById("confirm-sign-out");
   if (!confirmButton) return;
@@ -12,16 +14,19 @@ export function wireLogout() {
         method: "POST",
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const { error } = await res.json();
-        console.log(error);
+        console.error(data.error);
+        notifyError(data.error ?? "Couldn't sign you out. Please try again.");
         return;
       }
 
-      const { redirect } = await res.json();
-      window.location.href = redirect;
+      flashSuccess("You've been signed out.");
+      window.location.href = data.redirect;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      notifyError(NETWORK_ERROR);
     }
   });
 }

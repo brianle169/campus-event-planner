@@ -8,6 +8,8 @@
 //
 // This script relies on `defer` so the DOM is ready when it runs.
 
+// Published on window on purpose: this file is loaded as a classic script, so
+// ES modules can't import it. See utils/notify.js for the module-side wrapper.
 function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `toast toast-${type}`;
@@ -20,6 +22,8 @@ function showToast(message, type = "success") {
     setTimeout(() => toast.remove(), 300);
   }, 3000);
 }
+
+window.showToast = showToast;
 
 document.addEventListener("click", (event) => {
   const trigger = event.target.closest("[data-toast]");

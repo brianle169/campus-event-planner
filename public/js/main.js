@@ -3,6 +3,12 @@
 import * as validationRules from "./utils/inputValidation.js";
 import { wireLogout } from "./utils/logout.js";
 import { syncNav } from "./utils/nav.js";
+import {
+  notifyError,
+  flashSuccess,
+  showFlash,
+  NETWORK_ERROR,
+} from "./utils/notify.js";
 
 // Mobile nav toggle, shared by every page's header
 document.querySelectorAll(".nav-toggle").forEach((toggle) => {
@@ -115,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (res.ok) {
+          flashSuccess("Account created. Please sign in.");
           window.location.href = data.redirect;
           return;
         }
@@ -130,13 +137,12 @@ document.addEventListener("DOMContentLoaded", () => {
           Object.entries(data.fields).forEach(([field, message]) => {
             if (inputs[field]) setFieldError(inputs[field], message);
           });
-        } else
-          setFieldError(
-            emailInput,
-            data.error ?? "Something went wrong, please try again.",
-          );
+        } else {
+          notifyError(data.error ?? "Something went wrong, please try again.");
+        }
       } catch (err) {
-        console.log(err);
+        console.error(err);
+        notifyError(NETWORK_ERROR);
       }
     });
   }
@@ -184,6 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (res.ok) {
+          const firstName = data.user?.full_name?.split(" ")[0];
+          flashSuccess(
+            firstName ? `Welcome back, ${firstName}.` : "Signed in.",
+          );
           window.location.href = data.redirect;
           return;
         }
@@ -193,14 +203,14 @@ document.addEventListener("DOMContentLoaded", () => {
           Object.entries(data.fields).forEach(([field, message]) => {
             if (inputs[field]) setFieldError(inputs[field], message);
           });
+        } else if (res.status === 401) {
+          setFieldError(passwordInput, data.error ?? "Invalid credentials.");
         } else {
-          setFieldError(
-            passwordInput,
-            data.error ?? "Something went wrong. Please try again.",
-          );
+          notifyError(data.error ?? "Something went wrong. Please try again.");
         }
       } catch (e) {
         console.error(e);
+        notifyError(NETWORK_ERROR);
       }
     });
   }
@@ -266,3 +276,4 @@ if (signOutLink && logoutModal && noButton) {
 
 wireLogout();
 syncNav();
+showFlash();
