@@ -16,11 +16,11 @@ export function userLogIn(req, res, next) {
 
     req.session.user_id = user.user_id;
     req.session.role = user.role;
-  });
 
-  req.session.save((err) => {
-    if (err) return next(err);
-    res.json({ user, redirect: dashboardFor(user.role) });
+    req.session.save((err) => {
+      if (err) return next(err);
+      res.json({ user, redirect: dashboardFor(user.role) });
+    });
   });
 }
 

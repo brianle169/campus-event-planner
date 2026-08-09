@@ -1,59 +1,59 @@
-// Request-shape validation: is the body there, are the fields present, do they
-// meet the format rules. Anything that needs a database lookup (is this email
-// taken, do these credentials match) stays in the service layer.
-
+// Input validation middleware. This will go in most routes.
 import {
-  validateName,
-  validateEmail,
-  validatePassword,
-  validateSignInPassword,
+  EMAIL_REGEX,
+  PASSWORD_REGEX,
+  NAME_REGEX,
 } from "../public/js/utils/inputValidation.js";
-
-const normalizers = {
-  full_name: (value) => value.trim(),
-  email: (value) => value.trim().toLowerCase(),
-  role: (value) => value.trim().toLowerCase(),
-};
+import { body, validationResult } from "express-validator";
 
 const ROLES = ["student", "admin"];
-const validateRole = (value) =>
-  ROLES.includes(value) ? "" : "Choose an account type.";
 
-export function validateBody(checks) {
-  return (req, res, next) => {
-    if (!req.body || typeof req.body !== "object") {
-      return res.status(400).json({ error: "Request body is required." });
-    }
-
-    for (const field of Object.keys(checks)) {
-      const raw = String(req.body[field] ?? "");
-      req.body[field] = normalizers[field] ? normalizers[field](raw) : raw;
-    }
-
-    const fields = {};
-    for (const [field, check] of Object.entries(checks)) {
-      const message = check(req.body[field], req.body);
-      if (message) fields[field] = message;
-    }
-
-    if (Object.keys(fields).length > 0) {
-      // Keyed by field name so the client can fill the .field-error spans that
-      // are already in the markup, instead of showing one generic message.
-      return res
-        .status(400)
-        .json({ error: "Please fix the highlighted fields.", fields });
-    }
-
-    next();
-  };
-}
-
-export const check = {
-  full_name: validateName,
-  email: validateEmail,
-  password: validatePassword,
-  signInPassword: validateSignInPassword,
-  role: validateRole,
+export const validationRules = {
+  full_name: body("full_name")
+    .trim()
+    .notEmpty()
+    .withMessage("Full name required.")
+    .bail()
+    .matches(NAME_REGEX)
+    .withMessage(
+      "Full name must have only letters, spaces, hyphens and apostrophies.",
+    ),
+  email: body("email")
+    .trim()
+    .toLowerCase()
+    .notEmpty()
+    .withMessage("Email required.")
+    .bail()
+    .matches(EMAIL_REGEX)
+    .withMessage("Invalid email address."),
+  password: body("password")
+    .notEmpty()
+    .withMessage("Password cannot be empty.")
+    .bail()
+    .matches(PASSWORD_REGEX)
+    .withMessage(
+      "Password must contain at least 8 characters, at least one upper-case letter and lower-case letter, at least a number, and a special character.",
+    ),
+  signInPassword: body("password")
+    .notEmpty()
+    .withMessage("Password cannot be empty."),
+  role: body("role")
+    .trim()
+    .toLowerCase()
+    .isIn(ROLES)
+    .withMessage("Choose an account type"),
 };
 
-export { ROLES };
+export function handleValidation(req, res, next) {
+  const result = validationResult(req);
+  if (result.isEmpty()) return next(); // all good and dandy
+
+  const fields = {};
+  for (const [field, err] of Object.entries(result.mapped())) {
+    fields[field] = err.msg;
+  }
+
+  return res.status(400).json({ error: "Invalid inputs.", fields });
+}
+
+export const validate = (...chains) => [...chains, handleValidation];

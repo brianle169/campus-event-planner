@@ -1,7 +1,7 @@
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PASSWORD_REGEX =
+export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-const NAME_REGEX = /^[\p{L}\s'-]+$/u;
+export const NAME_REGEX = /^[\p{L}\s'-]+$/u;
 
 export const validateName = (value) => {
   if (!value.trim()) return "Full name is required.";
@@ -42,6 +42,7 @@ export const validateSignInPassword = (value) => {
 
 export const validateDateRange = (startValue, endValue) => {
   if (!startValue || !endValue) return "";
-  if (startValue > endValue) return "End date must be on or after the start date.";
+  if (startValue > endValue)
+    return "End date must be on or after the start date.";
   return "";
 };
