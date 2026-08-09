@@ -52,16 +52,19 @@ function getRuntimeStatus(event, registrationCount) {
 }
 
 function isRegistrable(event, registrationCount, user) {
+    if (!user.id) {
+        return false;
+    }
 
     if (user.role === "admin") {
         return false;
     }
 
-    if (registrationCount == event.capacity) {
+    if (event.status !== "open") {
         return false;
     }
 
-    if (event.status === "cancelled") {
+    if (registrationCount >= event.capacity) {
         return false;
     }
 
@@ -70,7 +73,7 @@ function isRegistrable(event, registrationCount, user) {
     }
 
     return !isAlreadyRegistered(
-        user.user_id,
+        user.id,
         event.event_id
     );
 

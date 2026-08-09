@@ -32,7 +32,7 @@ export function findAll(filters = {}) {
         values.push(filters.location);
     }
 
-    if (filters.organizer_id) {
+    if (filters.organizer_id !== undefined) {
         query += " AND organizer_id = ?";
         values.push(filters.organizer_id);
     }

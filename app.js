@@ -95,7 +95,6 @@ app.get("/admin/dashboard", (req, res) => {
 
 // Map the corresponding routes to the API paths.
 app.use("/api/auth", authRoutes);
-//app.use("/api/events", eventRoutes);
 app.use("/api/categories", categoryRoutes);
 
 // Managing your own account. Reads stay on GET /api/auth/me.

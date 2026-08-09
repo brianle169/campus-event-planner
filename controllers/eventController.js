@@ -19,6 +19,12 @@ export function getEvent(req, res) {
     const eventId = Number(req.params.id);
     const event = checkStatus(user, eventId);
 
+    if (!event) {
+        return res.status(404).json({
+            error: "Event not found."
+        });
+    }
+
     res.status(200).json({ event });
 }
 
@@ -29,24 +35,52 @@ export function createEvent(req, res) {
     };
 
     const eventCreated = createEventService(data);
+
+    if (!eventCreated) {
+        return res.status(400).json({
+            error: "Event could not be created."
+        });
+    }
+
     res.status(201).json({ eventCreated });
 }
 
 export function updateEvent(req, res) {
     const eventId = Number(req.params.id);
     const eventUpdated = updateEventService(eventId, req.body);
+
+    if (!eventUpdated) {
+        return res.status(400).json({
+            error: "Event could not be updated."
+        });
+    }
+
     res.status(200).json({ eventUpdated });
 }
 
 export function changeStatus(req, res) {
     const eventId = Number(req.params.id);
     const { status } = req.body;
-    const eventStatusChange = changeEventStatus(eventId, req.body);
+    const eventStatusChange = changeEventStatus(eventId, status);
+
+    if (!eventStatusChange) {
+        return res.status(400).json({
+            error: "Event status could not be changed."
+        });
+    }
+
     res.status(200).json({ eventStatusChange });
 }
 
 export function deleteEvent(req, res) {
     const eventId = Number(req.params.id);
     const eventDeleted = deleteEventService(eventId);
+
+    if (!eventDeleted) {
+        return res.status(400).json({
+            error: "Event could not be deleted."
+        });
+    }
+
     res.status(204).json({ eventDeleted });
 }
