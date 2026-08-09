@@ -89,9 +89,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }, delay);
     passwordInput.addEventListener("input", debouncedRevalidateConfirm);
 
-    registerForm.addEventListener("submit", (event) => {
-      if (!validateAllFields(fields)) {
-        event.preventDefault();
+    registerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validateAllFields(fields)) return;
+
+      const role = document.querySelector('input[name="role"]:checked')?.value;
+
+      // Clear anything left from a previous attempt
+      [nameInput, emailInput, passwordInput].forEach((input) =>
+        setFieldError(input, ""),
+      );
+
+      try {
+        const res = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            full_name: nameInput.value,
+            email: emailInput.value,
+            password: passwordInput.value,
+            role,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          window.location.href = data.redirect;
+          return;
+        }
+
+        if (res.status === 409) {
+          setFieldError(emailInput, data.error);
+        } else if (res.status === 400 && data.fields) {
+          const inputs = {
+            full_name: nameInput,
+            email: emailInput,
+            password: passwordInput,
+          };
+          Object.entries(data.fields).forEach(([field, message]) => {
+            if (inputs[field]) setFieldError(inputs[field], message);
+          });
+        } else
+          setFieldError(
+            emailInput,
+            data.error ?? "Something went wrong, please try again.",
+          );
+      } catch (err) {
+        console.log(err);
       }
     });
   }
@@ -120,30 +165,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loginForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
+      if (!validateAllFields(fields)) return;
 
-      if (!validateAllFields(fields)) {
-        event.preventDefault();
-        return;
-      }
+      // Clear anything left from a previous attempt
+      setFieldError(emailInput, "");
+      setFieldError(passwordInput, "");
 
       try {
         const res = await fetch("/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({
+            email: emailInput.value,
+            password: passwordInput.value,
+          }),
         });
 
-        if (!res.ok) {
-          const { error } = await res.json();
-          setFieldError(emailInput, error);
-          setFieldError(passwordInput, error);
+        const data = await res.json();
+
+        if (res.ok) {
+          window.location.href = data.redirect;
           return;
         }
 
-        const { redirect } = await res.json();
-        window.location.href = redirect;
+        if (res.status === 400 && data.fields) {
+          const inputs = { email: emailInput, password: passwordInput };
+          Object.entries(data.fields).forEach(([field, message]) => {
+            if (inputs[field]) setFieldError(inputs[field], message);
+          });
+        } else {
+          setFieldError(
+            passwordInput,
+            data.error ?? "Something went wrong. Please try again.",
+          );
+        }
       } catch (e) {
         console.error(e);
       }

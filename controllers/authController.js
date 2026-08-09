@@ -33,7 +33,7 @@ export function getCurrentUser(req, res) {
   if (!row) return res.json({ user: null });
 
   const { password_hash, ...user } = row;
-  res.json({ user, dashboard: dashboardFor(user.role) });
+  res.status(200).json({ user, dashboard: dashboardFor(user.role) });
 }
 
 export function userLogOut(req, res, next) {
@@ -48,5 +48,5 @@ export function userRegister(req, res, next) {
   // validateBody has already checked and normalized these, role included.
   const { full_name, email, password, role } = req.body;
   const newUser = addNewUser(full_name, email, password, role);
-  res.json({ user: newUser, redirect: "/login" });
+  res.status(200).json({ user: newUser, redirect: "/login" });
 }
