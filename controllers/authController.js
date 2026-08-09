@@ -1,4 +1,8 @@
-import { authenticate, dashboardFor } from "../services/authServices.js";
+import {
+  authenticate,
+  dashboardFor,
+  addNewUser,
+} from "../services/authServices.js";
 import { getUserById } from "../db/repositories/userRepository.js";
 
 export function userLogIn(req, res, next) {
@@ -40,4 +44,11 @@ export function userLogOut(req, res, next) {
     res.clearCookie("connect.sid");
     res.json({ redirect: "/" });
   });
+}
+
+export function userRegister(req, res, next) {
+  // validate body first
+  const { name, email, password, role } = req.body;
+  const newUser = userRegister(name, email, password, role);
+  res.json({ user: newUser, redirect: "/login" });
 }
