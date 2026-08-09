@@ -1,4 +1,5 @@
 import { authenticate, dashboardFor } from "../services/authServices.js";
+import { getUserById } from "../db/repositories/userRepository.js";
 
 export function userLogIn(req, res, next) {
   // Get the email and password from body
@@ -19,6 +20,18 @@ export function userLogIn(req, res, next) {
     if (err) return next(err);
     res.json({ user, redirect: dashboardFor(user.role) });
   });
+}
+
+export function getCurrentUser(req, res) {
+  res.set("Cache-Control", "no-store");
+
+  if (!req.session.user_id) return res.json({ user: null });
+
+  const row = getUserById(req.session.user_id);
+  if (!row) return res.json({ user: null });
+
+  const { password_hash, ...user } = row;
+  res.json({ user, dashboard: dashboardFor(user.role) });
 }
 
 export function userLogOut(req, res, next) {

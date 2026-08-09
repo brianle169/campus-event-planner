@@ -2,6 +2,7 @@
 // import * as loginValidation from "./login.js";
 import * as validationRules from "./utils/inputValidation.js";
 import { wireLogout } from "./utils/logout.js";
+import { syncNav } from "./utils/nav.js";
 
 // Mobile nav toggle, shared by every page's header
 document.querySelectorAll(".nav-toggle").forEach((toggle) => {
@@ -201,11 +202,12 @@ if (signOutLink && logoutModal && noButton) {
 
   window.addEventListener("pageshow", function (event) {
     logoutModal.style.display = "none";
+    if (!event.persisted) return;
 
-    // Restored from the bfcache: the page came back from memory without any
-    // request reaching the server, so no auth guard ran. Force a real one.
-    if (event.persisted) window.location.reload();
+    if (document.querySelector("[data-auth]")) syncNav();
+    else window.location.reload();
   });
 }
 
 wireLogout();
+syncNav();

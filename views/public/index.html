@@ -22,10 +22,22 @@
         <li><a href="/contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <a class="btn btn-outline" href="/login">Log in</a>
-        <a class="btn btn-primary" href="/register">Sign up</a>
+        <a class="btn btn-outline" href="/login" data-auth="anon">Log in</a>
+        <a class="btn btn-primary" href="/register" data-auth="anon">Sign up</a>
+        <a class="btn btn-outline" href="/login" data-auth="user" data-dashboard hidden>My dashboard</a>
+        <a class="btn btn-primary" href="#" id="signOutLink" data-auth="user" hidden>Sign out</a>
       </div>
     </nav>
+    <div class="modal" id="logoutModal">
+      <div class="modal-content">
+        <p>Are you sure you want to sign out?</p>
+
+        <div class="modal-buttons">
+          <a href="#" class="btn btn-primary" id="confirm-sign-out">Yes</a>
+          <a href="#" class="btn btn-outline" id="noButton">No</a>
+        </div>
+      </div>
+    </div>
   </header>
 
   <main class="all">
