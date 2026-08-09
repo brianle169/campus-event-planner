@@ -11,7 +11,7 @@ const authRoutes = Router();
 
 authRoutes.post(
   "/login",
-  validate(validationRules.full_name, validationRules.signInPassword),
+  validate(validationRules.email, validationRules.signInPassword),
   userLogIn,
 );
 authRoutes.post("/logout", userLogOut);
