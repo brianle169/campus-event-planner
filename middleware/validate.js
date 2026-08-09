@@ -8,6 +8,10 @@ import { body, validationResult } from "express-validator";
 
 const ROLES = ["student", "admin"];
 
+// Shared so sign-up and the profile page's password change state the same rule.
+const PASSWORD_POLICY =
+  "Password must contain at least 8 characters, at least one upper-case letter and lower-case letter, at least a number, and a special character.";
+
 export const validationRules = {
   full_name: body("full_name")
     .trim()
@@ -31,9 +35,7 @@ export const validationRules = {
     .withMessage("Password cannot be empty.")
     .bail()
     .matches(PASSWORD_REGEX)
-    .withMessage(
-      "Password must contain at least 8 characters, at least one upper-case letter and lower-case letter, at least a number, and a special character.",
-    ),
+    .withMessage(PASSWORD_POLICY),
   signInPassword: body("password")
     .notEmpty()
     .withMessage("Password cannot be empty."),
@@ -42,6 +44,21 @@ export const validationRules = {
     .toLowerCase()
     .isIn(ROLES)
     .withMessage("Choose an account type"),
+  currentPassword: body("current_password")
+    .notEmpty()
+    .withMessage("Current password cannot be empty."),
+  newPassword: body("new_password")
+    .notEmpty()
+    .withMessage("New password cannot be empty.")
+    .bail()
+    .matches(PASSWORD_REGEX)
+    .withMessage(PASSWORD_POLICY),
+  confirmNewPassword: body("confirm_new_password")
+    .notEmpty()
+    .withMessage("Please confirm your new password.")
+    .bail()
+    .custom((value, { req }) => value === req.body.new_password)
+    .withMessage("Passwords do not match."),
 };
 
 export function handleValidation(req, res, next) {

@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import config from "./config/env.js";
 import db from "./db/connection.js";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
@@ -95,6 +96,9 @@ app.get("/admin/dashboard", (req, res) => {
 // Map the corresponding routes to the API paths.
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+
+// Managing your own account. Reads stay on GET /api/auth/me.
+app.use("/api/users", requireAuth, userRoutes);
 
 // GET /api/events can be public, in case we want to display events on public pages
 app.use("/api/events", (req, res, next) => {
