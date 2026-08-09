@@ -32,9 +32,9 @@ app.use(
       config.nodeEnv === "test"
         ? undefined
         : new SqliteStore({
-            client: db,
-            expired: { clear: true, intervalMs: 900000 }, // 15 min
-          }),
+          client: db,
+          expired: { clear: true, intervalMs: 900000 }, // 15 min
+        }),
     secret: config.sessionSecret,
     resave: false,
     saveUninitialized: false,
@@ -95,7 +95,7 @@ app.get("/admin/dashboard", (req, res) => {
 
 // Map the corresponding routes to the API paths
 app.use("/api/auth", authRoutes);
-// app.use("/api/events", eventRoutes);
+//app.use("/api/events", eventRoutes);
 app.use("/api/categories", categoryRoutes);
 // app.use("/api/admin", adminRoutes);
 // app.use("/api/registrations", registrationRoutes);
