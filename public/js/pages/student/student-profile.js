@@ -1,8 +1,16 @@
 import * as validationRules from "../../utils/inputValidation.js";
-import { currentUser } from "../../data/sampleData.js";
 import { formatDate } from "../../utils/dateHelpers.js";
+import {
+  notifySuccess,
+  notifyError,
+  NETWORK_ERROR,
+} from "../../utils/notify.js";
 
 const delay = 300; // delay in milliseconds for debouncing input validation
+
+// The signed-in user, as the server last confirmed it. Replaced on every
+// successful save so "Discard" reverts to what was actually stored.
+let profile = null;
 
 const debounce = (fn, delayMs) => {
   let timer;
@@ -34,32 +42,75 @@ const wireLiveValidation = (fields) => {
   });
 };
 
-// Fill the page with the signed-in user's details from the sample data.
-const renderProfile = () => {
-  const roleLabel = currentUser.role === "student" ? "Student" : "Admin";
+// The API names fields as the database does; the form ids are hyphenated.
+const inputIdFor = {
+  full_name: "profile-name",
+  current_password: "current-password",
+  new_password: "new-password",
+  confirm_new_password: "confirm-new-password",
+};
+
+// Validation errors and rule failures the server can only detect against the
+// database (a wrong current password) arrive in the same `fields` shape.
+const showServerErrors = (fields) => {
+  Object.entries(fields).forEach(([field, message]) => {
+    const input = document.getElementById(inputIdFor[field]);
+    if (input) setFieldError(input, message);
+  });
+};
+
+const sendJson = async (method, url, payload) => {
+  const response = await fetch(url, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json().catch(() => ({}));
+  return { response, data };
+};
+
+// Fill the page with the signed-in user's details.
+const renderProfile = (user) => {
+  const roleLabel = user.role === "student" ? "Student" : "Admin";
 
   const headingName = document.getElementById("profile-heading-name");
-  if (headingName) headingName.textContent = currentUser.full_name;
+  if (headingName) headingName.textContent = user.full_name;
 
   const roleBadge = document.getElementById("profile-role-badge");
   if (roleBadge) roleBadge.textContent = roleLabel;
 
   const memberSince = document.getElementById("profile-member-since");
+  // SQLite stores "YYYY-MM-DD HH:MM:SS"; formatDate wants the date alone.
   if (memberSince)
-    memberSince.textContent = `Member since ${formatDate(currentUser.created_at)}`;
+    memberSince.textContent = `Member since ${formatDate(String(user.created_at).slice(0, 10))}`;
 
   const nameInput = document.getElementById("profile-name");
-  if (nameInput) nameInput.value = currentUser.full_name;
+  if (nameInput) nameInput.value = user.full_name;
 
   const emailValue = document.getElementById("profile-email-value");
-  if (emailValue) emailValue.textContent = currentUser.email;
+  if (emailValue) emailValue.textContent = user.email;
 
   const roleValue = document.getElementById("profile-role-value");
   if (roleValue) roleValue.textContent = roleLabel;
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderProfile();
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const { user } = await (await fetch("/api/auth/me")).json();
+    // requirePage already redirects an anonymous visitor, so this only fires
+    // if the session expired between the page load and this request.
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+    profile = user;
+  } catch (error) {
+    console.error(error);
+    notifyError(NETWORK_ERROR);
+    return;
+  }
+
+  renderProfile(profile);
   // ----- Personal information form (only the name is editable) -----
   const profileInfoForm = document.getElementById("profile-info-form");
   if (profileInfoForm) {
@@ -74,14 +125,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wireLiveValidation(fields);
 
-    profileInfoForm.addEventListener("submit", (event) => {
-      event.preventDefault(); // No backend yet (Deliverable 1).
-      validateAllFields(fields);
+    profileInfoForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validateAllFields(fields)) return;
+
+      setFieldError(nameInput, "");
+
+      try {
+        const { response, data } = await sendJson("PATCH", "/api/users/me", {
+          full_name: nameInput.value,
+        });
+
+        if (response.ok) {
+          profile = data.user;
+          renderProfile(profile);
+          notifySuccess("Profile updated.");
+          return;
+        }
+
+        if (response.status === 401) {
+          window.location.href = "/login";
+        } else if (data.fields) {
+          showServerErrors(data.fields);
+        } else {
+          notifyError(data.error ?? "Something went wrong. Please try again.");
+        }
+      } catch (error) {
+        console.error(error);
+        notifyError(NETWORK_ERROR);
+      }
     });
 
     profileInfoForm.addEventListener("reset", (event) => {
       event.preventDefault();
-      nameInput.value = currentUser.full_name;
+      nameInput.value = profile.full_name;
       fields.forEach((field) => setFieldError(field.input, ""));
     });
   }
@@ -128,9 +205,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }, delay);
     newPasswordInput.addEventListener("input", revalidateConfirm);
 
-    passwordForm.addEventListener("submit", (event) => {
-      event.preventDefault(); // No backend yet (Deliverable 1).
-      validateAllFields(fields);
+    passwordForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validateAllFields(fields)) return;
+
+      fields.forEach((field) => setFieldError(field.input, ""));
+
+      try {
+        const { response, data } = await sendJson(
+          "PUT",
+          "/api/users/me/password",
+          {
+            current_password: currentPasswordInput.value,
+            new_password: newPasswordInput.value,
+            confirm_new_password: confirmNewPasswordInput.value,
+          },
+        );
+
+        if (response.ok) {
+          // The server issued a new session cookie; the browser has already
+          // swapped it in, so the user stays signed in here and nowhere else.
+          passwordForm.reset();
+          notifySuccess("Password updated.");
+          return;
+        }
+
+        if (response.status === 401) {
+          window.location.href = "/login";
+        } else if (data.fields) {
+          showServerErrors(data.fields);
+        } else {
+          notifyError(data.error ?? "Something went wrong. Please try again.");
+        }
+      } catch (error) {
+        console.error(error);
+        notifyError(NETWORK_ERROR);
+      }
     });
   }
 });
