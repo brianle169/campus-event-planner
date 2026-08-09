@@ -16,7 +16,7 @@
   "main": "app.js",
   "scripts": {
     "test": "npm run test",
-    "dev": "nodemon server.js",
+    "dev": "start http://localhost:3000 && nodemon server.js",
     "start": "node server.js",
     "db:setup": "node db/migrate.js",
     "db:seed": "node db/seed.js",
