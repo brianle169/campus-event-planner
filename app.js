@@ -6,12 +6,18 @@ import { fileURLToPath } from "node:url";
 import config from "./config/env.js";
 import db from "./db/connection.js";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
-import { requirePage, redirectIfAuthed } from "./middleware/auth.js";
+import {
+  requireAuth,
+  requireRole,
+  requirePage,
+  redirectIfAuthed,
+} from "./middleware/auth.js";
 
 const SqliteStore = SqliteStoreFactory(session);
 
@@ -67,19 +73,13 @@ app.get("/register", redirectIfAuthed, (req, res) => {
   res.sendFile(join(config.projectRoot, "views/public/register.html"));
 });
 
-// Gate every page under these prefixes in one place, so a page added later is
-// protected by default rather than by remembering to add a guard to it.
-// requirePage redirects; requireRole (JSON) stays on the /api/* routes below.
 app.use("/student", requirePage("student"));
 app.use("/admin", requirePage("admin"));
 
 // TEMPORARY: serve these views by filename, because the views and the page
 // scripts still link to each other relatively ("events.html",
 // "edit-event.html?id=3"). Replace with one explicit route per page — like the
-// public pages above — once those links move to clean URLs. Deferred for now so
-// the rename doesn't collide with the page work in flight on other branches.
-// Note this serves *any* file placed in these directories, not just the pages
-// listed below; the guards above are what keep it role-restricted.
+// public pages above — once those links move to clean URLs.
 app.use("/student", express.static(join(config.projectRoot, "views/student")));
 app.use("/admin", express.static(join(config.projectRoot, "views/admin")));
 
@@ -93,12 +93,28 @@ app.get("/admin/dashboard", (req, res) => {
   res.sendFile(join(config.projectRoot, "views/admin/admin-dashboard.html"));
 });
 
-// Map the corresponding routes to the API paths
+// Map the corresponding routes to the API paths.
 app.use("/api/auth", authRoutes);
 //app.use("/api/events", eventRoutes);
 app.use("/api/categories", categoryRoutes);
-// app.use("/api/admin", adminRoutes);
-// app.use("/api/registrations", registrationRoutes);
+
+// Managing your own account. Reads stay on GET /api/auth/me.
+app.use("/api/users", requireAuth, userRoutes);
+
+// GET /api/events can be public, in case we want to display events on public pages
+app.use("/api/events", (req, res, next) => {
+  if (req.method === "GET") return next();
+  return requireRole("admin")(req, res, next);
+});
+app.use("/api/events", eventRoutes);
+
+// Everything under /api/admin is admin-only, whatever gets added to it.
+app.use("/api/admin", requireRole("admin"), adminRoutes);
+
+// A registration always belongs to a user, so there is nothing here for an
+// anonymous caller. Restricting a student to their own registrations needs
+// the row's user_id, so that check belongs in the registration handlers.
+app.use("/api/registrations", requireAuth, registrationRoutes);
 // Fallback, in case none of the above matches.
 app.use("/api", (req, res) => {
   res.status(404).json({ error: "Not Found" });

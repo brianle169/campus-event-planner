@@ -4,6 +4,7 @@ import {
   addNewUser,
 } from "../services/authServices.js";
 import { getUserById } from "../db/repositories/userRepository.js";
+import { toPublicUser } from "../models/User.js";
 
 export function userLogIn(req, res, next) {
   // validateBody has already guaranteed both fields are present and normalized.
@@ -16,11 +17,11 @@ export function userLogIn(req, res, next) {
 
     req.session.user_id = user.user_id;
     req.session.role = user.role;
-  });
 
-  req.session.save((err) => {
-    if (err) return next(err);
-    res.json({ user, redirect: dashboardFor(user.role) });
+    req.session.save((err) => {
+      if (err) return next(err);
+      res.json({ user, redirect: dashboardFor(user.role) });
+    });
   });
 }
 
@@ -32,7 +33,7 @@ export function getCurrentUser(req, res) {
   const row = getUserById(req.session.user_id);
   if (!row) return res.json({ user: null });
 
-  const { password_hash, ...user } = row;
+  const user = toPublicUser(row);
   res.status(200).json({ user, dashboard: dashboardFor(user.role) });
 }
 

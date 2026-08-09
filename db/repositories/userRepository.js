@@ -19,11 +19,23 @@ export function addUser(full_name, email, password_hash, role) {
   return db
     .prepare(
       `INSERT INTO users (full_name, email, password_hash, role) VALUES (?, ?, ?, ?)
-      RETURNING user_id, full_name, email, role`,
+      RETURNING user_id, full_name, email, role, created_at`,
     )
     .get(full_name, email, password_hash, role);
 }
 
 // Update
+export function updateFullName(userId, full_name) {
+  return db
+    .prepare(
+      `UPDATE users SET full_name = ? WHERE user_id = ?
+      RETURNING user_id, full_name, email, role, created_at`,
+    )
+    .get(full_name, userId);
+}
 
-// Delete
+export function updatePasswordHash(userId, password_hash) {
+  return db
+    .prepare("UPDATE users SET password_hash = ? WHERE user_id = ?")
+    .run(password_hash, userId).changes;
+}
