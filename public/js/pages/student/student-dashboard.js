@@ -74,7 +74,7 @@ const renderUpcomingTable = (myRegs) => {
     card.innerHTML = `
       <div class="upcoming-event-info">
         <h3 class="upcoming-event-title">
-          <a href="event-details.html?id=${event.event_id}">${event.title}</a>
+          <a href="/student/events/${event.event_id}">${event.title}</a>
         </h3>
         <p class="upcoming-event-meta">${formatDate(event.event_date)} &middot; ${event.location}</p>
       </div>
@@ -123,7 +123,7 @@ const renderRecommended = (myRegs) => {
         <span class="event-mini-title">${event.title}</span>
         <span class="event-mini-meta">${formatDate(event.event_date)} &middot; ${event.category}</span>
       </div>
-      <a class="btn btn-outline btn-sm" href="event-details.html?id=${event.event_id}">View</a>
+      <a class="btn btn-outline btn-sm" href="/student/events/${event.event_id}">View</a>
     `;
     list.appendChild(item);
   });

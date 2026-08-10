@@ -93,7 +93,7 @@ const renderRegistrationsList = (myRegs) => {
         </p>
       </div>
       <div class="upcoming-event-actions">
-        <a href="event-details.html?id=${event.event_id}" class="btn btn-outline btn-sm">View Details</a>
+        <a href="/student/events/${event.event_id}" class="btn btn-outline btn-sm">View Details</a>
       </div>
     `;
 

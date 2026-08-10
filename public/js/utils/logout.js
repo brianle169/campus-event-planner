@@ -1,6 +1,7 @@
 // Every authenticated view ships the same sign-out confirmation modal, so the
 // request lives here instead of being copied into each page module.
 
+import { logOut } from "../api/authApi.js";
 import { notifyError, flashSuccess, NETWORK_ERROR } from "./notify.js";
 
 export function wireLogout() {
@@ -10,13 +11,9 @@ export function wireLogout() {
   confirmButton.addEventListener("click", async (event) => {
     event.preventDefault();
     try {
-      const res = await fetch("/api/auth/logout", {
-        method: "POST",
-      });
+      const { ok, data } = await logOut();
 
-      const data = await res.json();
-
-      if (!res.ok) {
+      if (!ok) {
         console.error(data.error);
         notifyError(data.error ?? "Couldn't sign you out. Please try again.");
         return;

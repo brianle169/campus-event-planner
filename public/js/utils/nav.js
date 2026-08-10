@@ -1,3 +1,5 @@
+import { fetchCurrentUser } from "../api/authApi.js";
+
 // Public pages ship the signed-out nav in their markup. This swaps it for the
 // signed-in version when there is a session, so a logged-in user visiting the
 // homepage isn't told to log in again.
@@ -10,7 +12,9 @@ export async function syncNav() {
   let dashboard = null;
 
   try {
-    ({ user, dashboard } = await (await fetch("/api/auth/me")).json());
+    const { data } = await fetchCurrentUser();
+    user = data.user;
+    dashboard = data.dashboard;
   } catch (error) {
     console.log(error);
     return;

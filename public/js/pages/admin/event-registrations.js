@@ -36,8 +36,10 @@ function buildRegistrationTableRows(registrations) {
 async function loadRegistrations() {
   if (!tableBody) return;
 
+  // ?event= preselects the filter; with no param the page lists every
+  // registration, which is how the nav links here.
   const urlParams = new URLSearchParams(window.location.search);
-  const eventId = urlParams.get('id');
+  const eventId = urlParams.get('event');
 
   tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading...</td></tr>';
 

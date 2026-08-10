@@ -24,12 +24,12 @@ function buildEventTableRows(events) {
 
       return `
       <tr>
-        <td><a href="edit-event.html?id=${event.event_id}">${event.title}</a></td>
+        <td><a href="/admin/events/${event.event_id}/edit">${event.title}</a></td>
         <td>${formattedDate}</td>
-        <td><a href="event-registrations.html?id=${event.event_id}">${event.registeredCount} / ${event.capacity}</a></td>
+        <td><a href="/admin/registrations?event=${event.event_id}">${event.registeredCount} / ${event.capacity}</a></td>
         <td>${percentCapacity}%</td>
         <td><span class="badge ${badgeClass}">${event.status}</span></td>
-        <td><a class="btn btn-outline btn-sm" href="edit-event.html">Edit</a></td>
+        <td><a class="btn btn-outline btn-sm" href="/admin/events/${event.event_id}/edit">Edit</a></td>
       </tr>
     `;
     })

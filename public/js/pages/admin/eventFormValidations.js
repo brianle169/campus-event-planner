@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     form.dataset.valid = 'true';
-    setTimeout(() => window.location.href = 'manage-events.html', 800);
+    setTimeout(() => window.location.href = '/admin/events', 800);
   });
   
   const deleteBtn = document.querySelector('.btn-danger[data-toast="Event deleted"]');
   if (deleteBtn) {
     deleteBtn.addEventListener('click', () => {
-      setTimeout(() => window.location.href = 'manage-events.html', 800);
+      setTimeout(() => window.location.href = '/admin/events', 800);
     });
   }
 });

@@ -127,7 +127,7 @@ const buildEventCard = (event) => {
       <span class="event-card-category">${event.category}</span>
       <span class="badge ${statusBadge.className}">${statusBadge.label}</span>
     </div>
-    <h3 class="event-card-title"><a href="event-details.html?id=${event.event_id}">${event.title}</a></h3>
+    <h3 class="event-card-title"><a href="/student/events/${event.event_id}">${event.title}</a></h3>
     <p class="event-card-description">${event.description}</p>
     <ul class="event-card-meta">
       <li>${formatDate(event.event_date)} &middot; ${formatTime(event.start_time)}&ndash;${formatTime(event.end_time)}</li>
