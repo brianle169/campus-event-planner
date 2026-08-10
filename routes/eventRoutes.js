@@ -1,19 +1,25 @@
 import { Router } from "express";
 import { filterableEvents, getEvent, createEvent, updateEvent, changeStatus, deleteEvent } from "../controllers/eventController.js";
-import { requireAuth, requireRole } from "../middleware/auth.js"
+import { requireAuth, requireRole } from "../middleware/auth.js";
+import { validationRules, validate } from "../middleware/validate.js";
+
 
 const eventRoutes = Router();
 
 eventRoutes.get("/", filterableEvents);
 
-eventRoutes.get("/:id", getEvent);
+eventRoutes.get("/:id", validate(validationRules.eventId), getEvent);
 
-eventRoutes.post("/", requireAuth, requireRole("admin"), createEvent);
+eventRoutes.post("/", requireAuth, requireRole("admin"), validate(validationRules.title, validationRules.category,
+    validationRules.status, validationRules.event_date, validationRules.capacity, validationRules.start_time, validationRules.end_time, validationRules.location
+), createEvent);
 
-eventRoutes.put("/:id", requireAuth, requireRole("admin"), updateEvent);
+eventRoutes.put("/:id", requireAuth, requireRole("admin"), validate(validationRules.eventId, validationRules.title, validationRules.category,
+    validationRules.status, validationRules.event_date, validationRules.capacity, validationRules.start_time, validationRules.end_time, validationRules.location),
+    updateEvent);
 
-eventRoutes.patch("/:id/status", requireAuth, requireRole("admin"), changeStatus);
+eventRoutes.patch("/:id/status", requireAuth, requireRole("admin"), validate(validationRules.eventId, validationRules.status), changeStatus);
 
-eventRoutes.delete("/:id", requireAuth, requireRole("admin"), deleteEvent)
+eventRoutes.delete("/:id", requireAuth, requireRole("admin"), validate(validationRules.eventId), deleteEvent);
 
 export default eventRoutes;
