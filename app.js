@@ -53,47 +53,34 @@ app.use(
   }),
 );
 
-app.get("/", (req, res) => {
-  res.sendFile(join(config.projectRoot, "views/public/index.html"));
-});
+const sendView = (file) => (req, res) =>
+  res.sendFile(join(config.projectRoot, "views", file));
 
-app.get("/about", (req, res) => {
-  res.sendFile(join(config.projectRoot, "views/public/about.html"));
-});
+// Public pages routes
+app.get("/", sendView("public/index.html"));
+app.get("/about", sendView("public/about.html"));
+app.get("/contact", sendView("public/contact.html"));
+app.get("/login", redirectIfAuthed, sendView("public/login.html"));
+app.get("/register", redirectIfAuthed, sendView("public/register.html"));
 
-app.get("/contact", (req, res) => {
-  res.sendFile(join(config.projectRoot, "views/public/contact.html"));
-});
-
-app.get("/login", redirectIfAuthed, (req, res) => {
-  res.sendFile(join(config.projectRoot, "views/public/login.html"));
-});
-
-app.get("/register", redirectIfAuthed, (req, res) => {
-  res.sendFile(join(config.projectRoot, "views/public/register.html"));
-});
-
+// Apply guard middleware to prevent student from accessing admin pages and vice versa
 app.use("/student", requirePage("student"));
 app.use("/admin", requirePage("admin"));
 
-// TEMPORARY: serve these views by filename, because the views and the page
-// scripts still link to each other relatively ("events.html",
-// "edit-event.html?id=3"). Replace with one explicit route per page — like the
-// public pages above — once those links move to clean URLs.
-app.use("/student", express.static(join(config.projectRoot, "views/student")));
-app.use("/admin", express.static(join(config.projectRoot, "views/admin")));
+// Gated pages routes
+app.get("/student/dashboard", sendView("student/student-dashboard.html"));
+app.get("/student/profile", sendView("student/student-profile.html"));
+app.get("/student/events", sendView("student/events.html"));
+app.get("/student/events/:id", sendView("student/event-details.html"));
+app.get("/student/my-registrations", sendView("student/my-registrations.html"));
 
-app.get("/student/dashboard", (req, res) => {
-  res.sendFile(
-    join(config.projectRoot, "views/student/student-dashboard.html"),
-  );
-});
+app.get("/admin/dashboard", sendView("admin/admin-dashboard.html"));
+app.get("/admin/events", sendView("admin/manage-events.html"));
+app.get("/admin/events/new", sendView("admin/create-event.html"));
+app.get("/admin/events/:id/edit", sendView("admin/edit-event.html"));
+app.get("/admin/registrations", sendView("admin/event-registrations.html"));
 
-app.get("/admin/dashboard", (req, res) => {
-  res.sendFile(join(config.projectRoot, "views/admin/admin-dashboard.html"));
-});
-
-// Map the corresponding routes to the API paths.
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 

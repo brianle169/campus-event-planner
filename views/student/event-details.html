@@ -5,26 +5,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Event Details</title>
-  <link rel="stylesheet" href="../../public/css/style.css" />
-  <script src="../../public/js/utils/toast.js" defer></script>
-  <script src="../../public/js/pages/student/event-details.js" type="module" defer></script>
-  <script src="../../public/js/main.js" type="module" defer></script>
+  <link rel="stylesheet" href="/public/css/style.css" />
+  <script src="/public/js/utils/toast.js" defer></script>
+  <script src="/public/js/pages/student/event-details.js" type="module" defer></script>
+  <script src="/public/js/main.js" type="module" defer></script>
 </head>
 
 <body>
   <header class="site-header">
     <nav class="nav container">
-      <a class="nav-brand" href="../public/index.html">Campus Event Planner</a>
+      <a class="nav-brand" href="/">Campus Event Planner</a>
       <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
-        <img src="../../public/images/menu-svgrepo-com.png" alt="" class="nav-toggle-icon" />
+        <img src="/public/images/menu-svgrepo-com.png" alt="" class="nav-toggle-icon" />
       </button>
       <ul class="nav-links">
-        <li><a href="student-dashboard.html">Dashboard</a></li>
-        <li><a href="my-registrations.html">My events</a></li>
-        <li><a href="events.html">Browse events</a></li>
+        <li><a href="/student/dashboard">Dashboard</a></li>
+        <li><a href="/student/my-registrations">My events</a></li>
+        <li><a href="/student/events">Browse events</a></li>
       </ul>
       <div class="nav-actions">
-        <a class="btn btn-outline" href="student-profile.html">My profile</a>
+        <a class="btn btn-outline" href="/student/profile">My profile</a>
         <a class="btn btn-primary" href="#" id="signOutLink">Sign out</a>
       </div>
     </nav>
@@ -41,7 +41,7 @@
   </header>
 
   <main class="event-details-page container" id="event-details-page">
-    <a class="event-details-back" href="events.html">&larr; Back to all events</a>
+    <a class="event-details-back" href="/student/events">&larr; Back to all events</a>
 
     <section class="event-details-header">
       <div>
@@ -91,9 +91,9 @@
       <small>&copy; 2026 Smart Campus Event Planner. SOEN 287 course
         project.</small>
       <div class="footer-links">
-        <a href="../public/index.html">Home</a>
-        <a href="../public/about.html">About</a>
-        <a href="../public/contact.html">Contact</a>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
       </div>
     </div>
   </footer>

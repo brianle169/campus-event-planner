@@ -9,11 +9,13 @@ import {
   cancelRegistration,
 } from "../../utils/registrations.js";
 
-const getEventIdFromUrl = () => new URLSearchParams(window.location.search).get("id");
+// The id is the last segment of /student/events/:id.
+const getEventIdFromUrl = () =>
+  window.location.pathname.split("/").filter(Boolean).pop();
 
 const renderNotFound = () => {
   document.getElementById("event-details-page").innerHTML = `
-    <a class="event-details-back" href="events.html">&larr; Back to all events</a>
+    <a class="event-details-back" href="/student/events">&larr; Back to all events</a>
     <p class="event-details-empty">We couldn't find that event. It may have been removed.</p>
   `;
 };

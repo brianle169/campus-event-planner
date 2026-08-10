@@ -1,4 +1,6 @@
 import * as validationRules from "../../utils/inputValidation.js";
+import { fetchCurrentUser } from "../../api/authApi.js";
+import { updateMyProfile, changeMyPassword } from "../../api/usersApi.js";
 import { formatDate } from "../../utils/dateHelpers.js";
 import {
   notifySuccess,
@@ -59,16 +61,6 @@ const showServerErrors = (fields) => {
   });
 };
 
-const sendJson = async (method, url, payload) => {
-  const response = await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const data = await response.json().catch(() => ({}));
-  return { response, data };
-};
-
 // Fill the page with the signed-in user's details.
 const renderProfile = (user) => {
   const roleLabel = user.role === "student" ? "Student" : "Admin";
@@ -96,14 +88,14 @@ const renderProfile = (user) => {
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const { user } = await (await fetch("/api/auth/me")).json();
+    const { data } = await fetchCurrentUser();
     // requirePage already redirects an anonymous visitor, so this only fires
     // if the session expired between the page load and this request.
-    if (!user) {
+    if (!data.user) {
       window.location.href = "/login";
       return;
     }
-    profile = user;
+    profile = data.user;
   } catch (error) {
     console.error(error);
     notifyError(NETWORK_ERROR);
@@ -132,18 +124,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       setFieldError(nameInput, "");
 
       try {
-        const { response, data } = await sendJson("PATCH", "/api/users/me", {
+        const { ok, status, data } = await updateMyProfile({
           full_name: nameInput.value,
         });
 
-        if (response.ok) {
+        if (ok) {
           profile = data.user;
           renderProfile(profile);
           notifySuccess("Profile updated.");
           return;
         }
 
-        if (response.status === 401) {
+        if (status === 401) {
           window.location.href = "/login";
         } else if (data.fields) {
           showServerErrors(data.fields);
@@ -212,17 +204,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       fields.forEach((field) => setFieldError(field.input, ""));
 
       try {
-        const { response, data } = await sendJson(
-          "PUT",
-          "/api/users/me/password",
-          {
-            current_password: currentPasswordInput.value,
-            new_password: newPasswordInput.value,
-            confirm_new_password: confirmNewPasswordInput.value,
-          },
-        );
+        const { ok, status, data } = await changeMyPassword({
+          current_password: currentPasswordInput.value,
+          new_password: newPasswordInput.value,
+          confirm_new_password: confirmNewPasswordInput.value,
+        });
 
-        if (response.ok) {
+        if (ok) {
           // The server issued a new session cookie; the browser has already
           // swapped it in, so the user stays signed in here and nowhere else.
           passwordForm.reset();
@@ -230,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           return;
         }
 
-        if (response.status === 401) {
+        if (status === 401) {
           window.location.href = "/login";
         } else if (data.fields) {
           showServerErrors(data.fields);

@@ -1,6 +1,7 @@
 // import * as registerValidation from "./register.js";
 // import * as loginValidation from "./login.js";
 import * as validationRules from "./utils/inputValidation.js";
+import { signUp, logIn } from "./api/authApi.js";
 import { wireLogout } from "./utils/logout.js";
 import { syncNav } from "./utils/nav.js";
 import {
@@ -107,28 +108,22 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       try {
-        const res = await fetch("/api/auth/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            full_name: nameInput.value,
-            email: emailInput.value,
-            password: passwordInput.value,
-            role,
-          }),
+        const { ok, status, data } = await signUp({
+          full_name: nameInput.value,
+          email: emailInput.value,
+          password: passwordInput.value,
+          role,
         });
 
-        const data = await res.json();
-
-        if (res.ok) {
+        if (ok) {
           flashSuccess("Account created. Please sign in.");
           window.location.href = data.redirect;
           return;
         }
 
-        if (res.status === 409) {
+        if (status === 409) {
           setFieldError(emailInput, data.error);
-        } else if (res.status === 400 && data.fields) {
+        } else if (status === 400 && data.fields) {
           const inputs = {
             full_name: nameInput,
             email: emailInput,
@@ -178,18 +173,12 @@ document.addEventListener("DOMContentLoaded", () => {
       setFieldError(passwordInput, "");
 
       try {
-        const res = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: emailInput.value,
-            password: passwordInput.value,
-          }),
+        const { ok, status, data } = await logIn({
+          email: emailInput.value,
+          password: passwordInput.value,
         });
 
-        const data = await res.json();
-
-        if (res.ok) {
+        if (ok) {
           const firstName = data.user?.full_name?.split(" ")[0];
           flashSuccess(
             firstName ? `Welcome back, ${firstName}.` : "Signed in.",
@@ -198,12 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        if (res.status === 400 && data.fields) {
+        if (status === 400 && data.fields) {
           const inputs = { email: emailInput, password: passwordInput };
           Object.entries(data.fields).forEach(([field, message]) => {
             if (inputs[field]) setFieldError(inputs[field], message);
           });
-        } else if (res.status === 401) {
+        } else if (status === 401) {
           setFieldError(passwordInput, data.error ?? "Invalid credentials.");
         } else {
           notifyError(data.error ?? "Something went wrong. Please try again.");
