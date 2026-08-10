@@ -82,5 +82,6 @@ export function deleteEvent(req, res) {
         });
     }
 
-    res.status(204).json({ eventDeleted });
+    res.status(204).send();
 }
+

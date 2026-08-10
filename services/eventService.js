@@ -6,6 +6,11 @@ import { isAlreadyRegistered } from "./registrationService.js";
 // Look at status for one event, need to compare to number of registrations for same event
 export function checkStatus(user, eventId) {
     const event = findById(eventId);
+
+    if (!event) {
+        return null;
+    }
+
     const registrationCount = eventRegistrationsCount(eventId);
     return {
         ...event,
