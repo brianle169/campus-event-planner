@@ -37,9 +37,9 @@ app.use(
       config.nodeEnv === "test"
         ? undefined
         : new SqliteStore({
-            client: db,
-            expired: { clear: true, intervalMs: 900000 }, // 15 min
-          }),
+          client: db,
+          expired: { clear: true, intervalMs: 900000 }, // 15 min
+        }),
     secret: config.sessionSecret,
     resave: false,
     saveUninitialized: false,
