@@ -27,14 +27,12 @@ export function requireRole(role) {
 }
 
 // Page equivalent of requireRole. Pages are reached by browser navigation, so
-// failures redirect — a raw JSON error rendered as text is a dead end for the
+// failures redirect, a raw JSON error rendered as text is a dead end for the
 // user. Omit `role` to gate a page for any signed-in user.
 export function requirePage(role) {
   return (req, res, next) => {
     noStore(res);
     if (!req.session.user_id) return res.redirect("/login");
-    // Signed in but wrong role: send them to their own dashboard. Bouncing
-    // them to /login would wrongly suggest their session had expired.
     if (role && req.session.role !== role)
       return res.redirect(dashboardFor(req.session.role));
     next();

@@ -26,7 +26,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/public", express.static(join(config.projectRoot, "public")));
-// app.use(express.static(join(config.projectRoot, "views")));
 // This will be removed once the sampleData.js is no longer needed
 app.use("/models", express.static(join(config.projectRoot, "models")));
 

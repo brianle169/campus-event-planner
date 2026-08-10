@@ -15,7 +15,7 @@ dotenv.config({ path: join(projectRoot, ".env") });
 // Fail fast: if a required secret is missing, crash on startup with a clear
 // message instead of letting express-session silently sign cookies with the
 // string "undefined".
-const required = ["SESSION_SECRET", "PORT", "NODE_ENV"];
+const required = ["SESSION_SECRET", "PORT", "DB_PATH", "NODE_ENV"];
 const missing = required.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {
