@@ -4,13 +4,17 @@ import {
   PASSWORD_REGEX,
   NAME_REGEX,
 } from "../public/js/utils/inputValidation.js";
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 
 const ROLES = ["student", "admin"];
 
 // Shared so sign-up and the profile page's password change state the same rule.
 const PASSWORD_POLICY =
   "Password must contain at least 8 characters, at least one upper-case letter and lower-case letter, at least a number, and a special character.";
+
+// This is for the events side of stuff
+const EVENT_CATEGORIES = ["Academic workshop", "Career event", "Club activity", "Sports event", "Cultural event", "Volunteering event", "Social event", "Guest lecture", "Networking event", "Other"];
+const EVENT_STATUSES = ["open", "full", "cancelled", "completed", "disabled"];
 
 export const validationRules = {
   full_name: body("full_name")
@@ -59,6 +63,75 @@ export const validationRules = {
     .bail()
     .custom((value, { req }) => value === req.body.new_password)
     .withMessage("Passwords do not match."),
+  eventId: param("id")
+    .isInt({ min: 1 })
+    .withMessage("Event ID must be a positive integer."),
+  title: body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("Title is required."),
+  category: body("category")
+    .trim()
+    .notEmpty()
+    .withMessage("Category is required.")
+    .bail()
+    .isIn(EVENT_CATEGORIES)
+    .withMessage("Invalid category."),
+  status: body("status")
+    .trim()
+    .notEmpty()
+    .withMessage("Status is required.")
+    .bail()
+    .isIn(EVENT_STATUSES)
+    .withMessage("Invalid event status."),
+  event_date: body("event_date")
+    .trim()
+    .notEmpty()
+    .withMessage("Event date is required.")
+    .bail()
+    .isISO8601({ strict: true })
+    .withMessage("Event date must be in YYYY-MM-DD format.")
+    .bail()
+    .custom((value) => {
+      const today = new Date();
+      const date = new Date(`${value}T00:00:00`);
+
+      today.setHours(0, 0, 0, 0);
+
+      return date >= today;
+    })
+    .withMessage("Event date must be today or after today."),
+  capacity: body("capacity")
+    .notEmpty()
+    .withMessage("Capacity is required.")
+    .bail()
+    .isInt({ min: 1 })
+    .withMessage("Capacity must be greater than 0."),
+  start_time: body("start_time")
+    .trim()
+    .notEmpty()
+    .withMessage("Start time is required.")
+    .bail()
+    .matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+    .withMessage("Start time must be in HH:MM format."),
+  end_time: body("end_time")
+    .trim()
+    .notEmpty()
+    .withMessage("End time is required.")
+    .bail()
+    .matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+    .withMessage("End time must be in HH:MM format.")
+    .bail()
+    .custom((value, { req }) => {
+      if (!req.body.start_time) return true;
+
+      return value > req.body.start_time;
+    })
+    .withMessage("End time must be after start time."),
+  location: body("location")
+    .trim()
+    .notEmpty()
+    .withMessage("Location is required.")
 };
 
 export function handleValidation(req, res, next) {
