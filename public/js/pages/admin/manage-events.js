@@ -1,6 +1,8 @@
 import { fetchEvents } from '../../api/eventsApi.js';
-import { categoryOptions } from '../../data/sampleData.js';
+import { updateEventStatus, deleteEvent } from '../../api/adminApi.js';
 import { formatCategory, formatDate, getBadgeClass } from '../../utils/eventUtils.js';
+import { showConfirmModal } from '../../utils/modal.js';
+import { notifyError } from '../../utils/notify.js';
 
 const tableBody = document.querySelector('#events-table-body');
 const searchInput = document.querySelector('#search');
@@ -9,6 +11,19 @@ const statusFilter = document.querySelector('#filter-status');
 const filterForm = document.querySelector('.event-filters');
 
 let allEvents = [];
+
+const categoryOptions = [
+  { value: 'Academic workshop', label: 'Academic workshop' },
+  { value: 'Career event', label: 'Career event' },
+  { value: 'Club activity', label: 'Club activity' },
+  { value: 'Sports event', label: 'Sports event' },
+  { value: 'Cultural event', label: 'Cultural event' },
+  { value: 'Volunteering event', label: 'Volunteering event' },
+  { value: 'Social event', label: 'Social event' },
+  { value: 'Guest lecture', label: 'Guest lecture' },
+  { value: 'Networking event', label: 'Networking event' },
+  { value: 'Other', label: 'Other' },
+];
 
 function populateCategoryFilter() {
   if (!categoryFilter) return;
@@ -19,7 +34,7 @@ function populateCategoryFilter() {
   }, {});
 
   allEvents.forEach((event) => {
-    const categoryKey = formatCategory(event.category);
+    const categoryKey = event.category; // formatCategory is just mapped
     if (categoryCounts[categoryKey] !== undefined) {
       categoryCounts[categoryKey] += 1;
     }
@@ -42,7 +57,7 @@ function buildEventTableRows(events) {
     const categoryLabel = formatCategory(event.category);
     let percentCapacity = 0;
     if (event.capacity > 0) {
-      percentCapacity = Math.round((event.registeredCount / event.capacity) * 100);
+      percentCapacity = Math.round((event.registrationCount / event.capacity) * 100);
     }
 
     return `
@@ -50,17 +65,17 @@ function buildEventTableRows(events) {
         <td><a href="/admin/events/${event.event_id}/edit">${event.title}</a></td>
         <td>${categoryLabel}</td>
         <td>${formattedDate}</td>
-        <td><a href="/admin/registrations?event=${event.event_id}">${event.registeredCount} / ${event.capacity}</a></td>
+        <td><a href="/admin/registrations?event=${event.event_id}">${event.registrationCount} / ${event.capacity}</a></td>
         <td>${percentCapacity}%</td>
         <td><span class="badge ${badgeClass}">${event.status}</span></td>
         <td class="row-actions">
           <div style="margin-bottom: 5px;">
             <a class="btn btn-outline btn-sm" href="/admin/events/${event.event_id}/edit">Edit</a>
-            <button class="btn btn-sm disable-event-btn" type="button" data-id="${event.event_id}" data-toast="Event disabled" data-toast-type="success" style="background-color: gray; color: white;">Disable</button>
+            <button class="btn btn-sm disable-event-btn" type="button" data-id="${event.event_id}" style="background-color: gray; color: white;">Disable</button>
           </div>
           <div>
-            <button class="btn btn-danger btn-sm cancel-event-btn" type="button" data-id="${event.event_id}" data-toast="Event cancelled" data-toast-type="success">Cancel</button>
-            <button class="btn btn-danger btn-sm delete-event-btn" type="button" data-id="${event.event_id}" data-toast="Event deleted" data-toast-type="error">Delete</button>
+            <button class="btn btn-danger btn-sm cancel-event-btn" type="button" data-id="${event.event_id}">Cancel</button>
+            <button class="btn btn-danger btn-sm delete-event-btn" type="button" data-id="${event.event_id}">Delete</button>
           </div>
         </td>
       </tr>
@@ -111,30 +126,57 @@ filterForm?.addEventListener('reset', () => {
     renderEvents();
   }, 0);
 });
-tableBody?.addEventListener('click', (event) => {
+tableBody?.addEventListener('click', async (event) => {
   const deleteBtn = event.target.closest('.delete-event-btn');
   if (deleteBtn) {
+    const confirmed = await showConfirmModal("Are you sure you want to permanently delete this event? This action cannot be undone.", "Delete", "btn-danger");
+    if (!confirmed) return;
+    
     const id = deleteBtn.dataset.id;
-    allEvents = allEvents.filter(e => e.event_id !== id);
-    renderEvents();
+    const res = await deleteEvent(id);
+    if (res.ok) {
+        allEvents = allEvents.filter(e => e.event_id != id);
+        renderEvents();
+        notifySuccess("Event deleted");
+    } else {
+        notifyError(res.data?.error || "Failed to delete event");
+    }
     return;
   }
   
   const disableBtn = event.target.closest('.disable-event-btn');
   if (disableBtn) {
+    const confirmed = await showConfirmModal("Are you sure you want to disable this event?", "Disable", "btn-outline");
+    if (!confirmed) return;
+    
     const id = disableBtn.dataset.id;
-    const evt = allEvents.find(e => e.event_id === id);
-    if (evt) evt.status = 'disabled';
-    renderEvents();
+    const res = await updateEventStatus(id, 'disabled');
+    if (res.ok) {
+        const evt = allEvents.find(e => e.event_id == id);
+        if (evt) evt.status = 'disabled';
+        renderEvents();
+        notifySuccess("Event disabled");
+    } else {
+        notifyError(res.data?.error || "Failed to disable event");
+    }
     return;
   }
 
   const cancelBtn = event.target.closest('.cancel-event-btn');
   if (cancelBtn) {
+    const confirmed = await showConfirmModal("Are you sure you want to cancel this event?", "Cancel event", "btn-danger");
+    if (!confirmed) return;
+    
     const id = cancelBtn.dataset.id;
-    const evt = allEvents.find(e => e.event_id === id);
-    if (evt) evt.status = 'cancelled';
-    renderEvents();
+    const res = await updateEventStatus(id, 'cancelled');
+    if (res.ok) {
+        const evt = allEvents.find(e => e.event_id == id);
+        if (evt) evt.status = 'cancelled';
+        renderEvents();
+        notifySuccess("Event cancelled");
+    } else {
+        notifyError(res.data?.error || "Failed to cancel event");
+    }
     return;
   }
 });

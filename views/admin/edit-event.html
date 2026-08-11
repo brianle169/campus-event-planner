@@ -37,8 +37,17 @@
           <a href="#" class="btn btn-outline" id="noButton">No</a>
         </div>
       </div>
-    </div>
   </header>
+
+  <div class="modal" id="confirmModal">
+    <div class="modal-content">
+      <p id="confirmModalText">Are you sure?</p>
+      <div class="modal-buttons">
+        <a href="#" class="btn btn-primary" id="confirm-yes">Yes</a>
+        <a href="#" class="btn btn-outline" id="confirm-no">No</a>
+      </div>
+    </div>
+  </div>
 
   <main class="admin container">
     <section class="admin-page-header">
@@ -51,7 +60,7 @@
       </div>
     </section>
 
-    <form class="event-form" data-toast="Changes saved" novalidate>
+    <form class="event-form" novalidate>
       <div class="event-form-grid">
         <div class="event-form-field event-form-field--full">
           <label for="title">Event title</label>
@@ -69,16 +78,16 @@
         <div class="event-form-field">
           <label for="category">Category</label>
           <select id="category" name="category" required>
-            <option value="academic">Academic workshop</option>
-            <option value="career" selected>Career event</option>
-            <option value="club">Club activity</option>
-            <option value="sports">Sports event</option>
-            <option value="cultural">Cultural event</option>
-            <option value="volunteering">Volunteering event</option>
-            <option value="social">Social event</option>
-            <option value="lecture">Guest lecture</option>
-            <option value="networking">Networking event</option>
-            <option value="other">Other</option>
+            <option value="Academic workshop">Academic workshop</option>
+            <option value="Career event" selected>Career event</option>
+            <option value="Club activity">Club activity</option>
+            <option value="Sports event">Sports event</option>
+            <option value="Cultural event">Cultural event</option>
+            <option value="Volunteering event">Volunteering event</option>
+            <option value="Social event">Social event</option>
+            <option value="Guest lecture">Guest lecture</option>
+            <option value="Networking event">Networking event</option>
+            <option value="Other">Other</option>
           </select>
           <span class="field-error" id="category-error"></span>
         </div>
@@ -96,7 +105,7 @@
 
         <div class="event-form-field">
           <label for="date">Date</label>
-          <input type="date" id="date" name="date" value="2026-08-04" required />
+          <input type="date" id="date" name="date" value="2026-08-30" required />
           <span class="field-error" id="date-error"></span>
         </div>
 
@@ -131,7 +140,7 @@
       </div>
 
       <div class="event-form-actions event-form-actions--edit">
-        <button class="btn btn-danger" type="button" data-toast="Event deleted" data-toast-type="error">
+        <button class="btn btn-danger" type="button" id="delete-event-btn">
           Delete event
         </button>
         <div class="event-form-actions-right">
