@@ -1,6 +1,6 @@
 import { fetchEvents, fetchRegistrations } from "../../api/eventsApi.js";
+import { getAdminStats, getStudentStats } from "../../api/adminApi.js";
 import { formatDate, getBadgeClass } from "../../utils/eventUtils.js";
-import { getEventById } from "../../data/sampleData.js";
 
 const tableBody = document.querySelector("#recent-events-body");
 const totalEventsValue = document.querySelector("#total-events-value");
@@ -18,7 +18,7 @@ function buildEventTableRows(events) {
       let percentCapacity = 0;
       if (event.capacity > 0) {
         percentCapacity = Math.round(
-          (event.registeredCount / event.capacity) * 100,
+          (event.registrationCount / event.capacity) * 100,
         );
       }
 
@@ -26,7 +26,7 @@ function buildEventTableRows(events) {
       <tr>
         <td><a href="/admin/events/${event.event_id}/edit">${event.title}</a></td>
         <td>${formattedDate}</td>
-        <td><a href="/admin/registrations?event=${event.event_id}">${event.registeredCount} / ${event.capacity}</a></td>
+        <td><a href="/admin/registrations?event=${event.event_id}">${event.registrationCount} / ${event.capacity}</a></td>
         <td>${percentCapacity}%</td>
         <td><span class="badge ${badgeClass}">${event.status}</span></td>
         <td><a class="btn btn-outline btn-sm" href="/admin/events/${event.event_id}/edit">Edit</a></td>
@@ -54,7 +54,7 @@ function renderSummaryCards(events) {
 
   const fullEvents = events.filter((event) => event.status === "full");
   const totalRegistrations = events.reduce(
-    (sum, event) => sum + Number(event.registeredCount || 0),
+    (sum, event) => sum + Number(event.registrationCount || 0),
     0,
   );
 
@@ -69,22 +69,23 @@ function renderSummaryCards(events) {
 const totalAttendanceValue = document.querySelector("#total-attendance-value");
 
 async function renderAttendanceStat() {
-  const registrations = await fetchRegistrations();
-  const totalAttendance = registrations.filter(
-    (r) => r.status === "attended",
-  ).length;
-  if (totalAttendanceValue) {
-    totalAttendanceValue.textContent = totalAttendance;
+  const res = await getStudentStats();
+  if (res.ok && res.data) {
+    const attendedObj = res.data.registrationsByStatus.find(s => s.status === 'attended');
+    if (totalAttendanceValue) {
+      totalAttendanceValue.textContent = attendedObj ? attendedObj.count : 0;
+    }
   }
 }
 
-const computePopularCategories = (registrations, limit = 8) => {
+const computePopularCategories = (registrations, events, limit = 8) => {
   const counts = new Map();
 
   registrations
     .filter((r) => r.status !== "cancelled")
     .forEach((r) => {
-      const category = getEventById(r.event_id)?.category || "Other";
+      const event = events.find(e => e.event_id == r.event_id);
+      const category = event?.category || "Other";
       counts.set(category, (counts.get(category) || 0) + 1);
     });
 
@@ -94,12 +95,12 @@ const computePopularCategories = (registrations, limit = 8) => {
     .slice(0, limit);
 };
 
-const renderPopularCategories = (registrations) => {
+const renderPopularCategories = (registrations, events) => {
   const list = document.getElementById("category-list");
   if (!list) return;
   list.innerHTML = "";
 
-  const topCategories = computePopularCategories(registrations);
+  const topCategories = computePopularCategories(registrations, events);
   console.log("Top Categories:", topCategories);
 
   if (topCategories.length === 0) {
@@ -139,7 +140,7 @@ async function renderDashboard() {
   tableBody.innerHTML = buildEventTableRows(recentEvents);
   renderSummaryCards(events);
   renderAttendanceStat();
-  renderPopularCategories(await fetchRegistrations());
+  renderPopularCategories(await fetchRegistrations(), events);
 }
 
 renderDashboard();

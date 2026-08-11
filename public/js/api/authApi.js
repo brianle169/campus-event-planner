@@ -14,6 +14,12 @@ export function logIn({ email, password }) {
   return post("/api/auth/login", { email, password });
 }
 
+
+export async function getCurrentUser() {
+  const res = await get("/api/auth/me");
+  return res.data?.user;
+}
+
 export function logOut() {
   return post("/api/auth/logout");
 }

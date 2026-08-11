@@ -1,21 +1,16 @@
-// Mock a backend api call to fetch events data, this will be replaced with a real API call in the future
-import { events as sampleEvents } from '../data/sampleData.js';
-import { normalizeEvent } from '../utils/eventUtils.js';
+import { get } from "./client.js";
 
 export async function fetchEvents() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(sampleEvents.map(normalizeEvent));
-    }, 400);
-  });
+  const res = await get("/api/events");
+  return res.data?.events || [];
 }
 
-import { registrations as sampleRegistrations } from '../data/sampleData.js';
+export async function getEvent(eventId) {
+  const res = await get(`/api/events/${eventId}`);
+  return res.data?.event;
+}
 
 export async function fetchRegistrations() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([...sampleRegistrations]);
-    }, 400);
-  });
+  const res = await get("/api/admin/registrations");
+  return res.data || [];
 }

@@ -37,6 +37,6 @@ export function normalizeEvent(event = {}) {
   return {
     ...event,
     capacity: Number(event.capacity ?? 0),
-    registeredCount: Number(event.registeredCount ?? 0),
+    registrationCount: Number(event.registrationCount ?? event.registeredCount ?? 0),
   };
 }
