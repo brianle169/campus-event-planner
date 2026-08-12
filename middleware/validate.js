@@ -14,7 +14,7 @@ const PASSWORD_POLICY =
 
 // This is for the events side of stuff
 const EVENT_CATEGORIES = ["Academic workshop", "Career event", "Club activity", "Sports event", "Cultural event", "Volunteering event", "Social event", "Guest lecture", "Networking event", "Other"];
-const EVENT_STATUSES = ["open", "full", "cancelled", "completed", "disabled"];
+const EVENT_STATUSES = ["open", "cancelled", "completed", "disabled"];
 
 export const validationRules = {
   full_name: body("full_name")

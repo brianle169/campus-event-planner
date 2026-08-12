@@ -15,6 +15,8 @@ export function checkStatus(user, eventId) {
     return {
         ...event,
         registrationCount: registrationCount.count,
+        dbStatus: event.status,
+        status: getRuntimeStatus(event, registrationCount.count),
         runTimeStatus: getRuntimeStatus(event, registrationCount.count),
         registrable: isRegistrable(event, registrationCount.count, user)
     }
@@ -30,6 +32,8 @@ export function checkEventsStatus(filters = {}, user) {
         return {
             ...event,
             registrationCount: registrationCount.count,
+            dbStatus: event.status,
+            status: getRuntimeStatus(event, registrationCount.count),
             runTimeStatus: getRuntimeStatus(event, registrationCount.count),
             registrable: isRegistrable(event, registrationCount.count, user)
         };
