@@ -1,27 +1,18 @@
-import {
-  currentUser,
-  events,
-  registrations,
-  getEventById,
-} from "../../data/sampleData.js";
+import { fetchCurrentUser } from "../../api/authApi.js";
+import { fetchEvents } from "../../api/eventsApi.js";
+import { fetchMyRegistrations, cancelRegistration as cancelApiRegistration } from "../../api/registrationsApi.js";
 import { isUpcoming, formatDate } from "../../utils/dateHelpers.js";
-import {
-  REGISTRATION_STATUS_BADGES,
-  cancelRegistration as cancelRegistrationById,
-} from "../../utils/registrations.js";
 
-const myRegistrations = () =>
-  registrations
-    .filter((registration) => registration.user_id === currentUser.user_id)
-    .map((registration) => ({
-      ...registration,
-      event: getEventById(registration.event_id),
-    }));
+const state = {
+  user: null,
+  events: [],
+  registrations: [],
+};
 
 const computeStats = (myRegs) => ({
   totalRegistered: myRegs.filter((r) => r.status !== "cancelled").length,
   upcoming: myRegs.filter(
-    (r) => r.status === "registered" && isUpcoming(r.event.event_date),
+    (r) => r.status === "registered" && isUpcoming(r.event_date),
   ).length,
   attended: myRegs.filter((r) => r.status === "attended").length,
   cancelled: myRegs.filter((r) => r.status === "cancelled").length,
@@ -29,19 +20,19 @@ const computeStats = (myRegs) => ({
 
 const renderGreeting = () => {
   const el = document.getElementById("dashboard-greeting");
-  const nameSplit = currentUser.full_name.split(" ");
+  if (!el || !state.user) return;
+  const nameSplit = state.user.full_name.split(" ");
   const firstName = nameSplit.reduce((acc, val, index, arr) => {
     if (index === arr.length - 1 && val.length <= 3) {
       return acc;
     }
     return acc + (acc ? " " : "") + val;
   }, "");
-  if (el) el.textContent = `Welcome back, ${firstName}`;
+  el.textContent = `Welcome back, ${firstName}`;
 };
 
 const renderStats = (stats) => {
-  document.getElementById("stat-total-registered").textContent =
-    stats.totalRegistered;
+  document.getElementById("stat-total-registered").textContent = stats.totalRegistered;
   document.getElementById("stat-upcoming").textContent = stats.upcoming;
   document.getElementById("stat-attended").textContent = stats.attended;
   document.getElementById("stat-cancelled").textContent = stats.cancelled;
@@ -52,10 +43,8 @@ const renderUpcomingTable = (myRegs) => {
   grid.innerHTML = "";
 
   const upcoming = myRegs
-    .filter((r) => r.status === "registered" && isUpcoming(r.event.event_date))
-    .sort(
-      (a, b) => new Date(a.event.event_date) - new Date(b.event.event_date),
-    );
+    .filter((r) => r.status === "registered" && isUpcoming(r.event_date))
+    .sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
 
   if (upcoming.length === 0) {
     const empty = document.createElement("p");
@@ -66,20 +55,21 @@ const renderUpcomingTable = (myRegs) => {
   }
 
   upcoming.forEach((registration) => {
-    const { event } = registration;
-    const badge = REGISTRATION_STATUS_BADGES[registration.status];
+    const event = state.events.find((item) => item.event_id === registration.event_id) || {};
+    const badgeClass = registration.status === "registered" ? "badge-open" : "badge-cancelled";
+    const badgeLabel = registration.status === "registered" ? "Registered" : registration.status;
 
     const card = document.createElement("article");
     card.className = "upcoming-event-card";
     card.innerHTML = `
       <div class="upcoming-event-info">
         <h3 class="upcoming-event-title">
-          <a href="/student/events/${event.event_id}">${event.title}</a>
+          <a href="/student/events/${event.event_id ?? registration.event_id}">${event.title ?? "Event"}</a>
         </h3>
-        <p class="upcoming-event-meta">${formatDate(event.event_date)} &middot; ${event.location}</p>
+        <p class="upcoming-event-meta">${formatDate(event.event_date ?? registration.event_date)} &middot; ${event.location ?? "TBD"}</p>
       </div>
       <div class="upcoming-event-actions">
-        <span class="badge ${badge.className}">${badge.label}</span>
+        <span class="badge ${badgeClass}">${badgeLabel}</span>
       </div>
     `;
 
@@ -87,9 +77,12 @@ const renderUpcomingTable = (myRegs) => {
     cancelBtn.className = "btn btn-danger btn-sm";
     cancelBtn.type = "button";
     cancelBtn.textContent = "Cancel";
-    cancelBtn.addEventListener("click", () => {
-      cancelRegistrationById(registration.registration_id);
-      renderDashboard();
+    cancelBtn.addEventListener("click", async () => {
+      const res = await cancelApiRegistration(registration.registration_id);
+      if (res.ok) {
+        state.registrations = await fetchMyRegistrations();
+        renderDashboard();
+      }
     });
     card.querySelector(".upcoming-event-actions").appendChild(cancelBtn);
 
@@ -105,7 +98,7 @@ const renderRecommended = (myRegs) => {
     myRegs.filter((r) => r.status !== "cancelled").map((r) => r.event_id),
   );
 
-  const suggestions = events
+  const suggestions = state.events
     .filter(
       (event) =>
         event.status === "open" &&
@@ -135,7 +128,8 @@ const computeTopCategories = (myRegs, limit = 3) => {
   myRegs
     .filter((r) => r.status !== "cancelled")
     .forEach((r) => {
-      const category = r.event.category || "Other";
+      const event = state.events.find((item) => item.event_id === r.event_id) || {};
+      const category = event.category || "Other";
       counts.set(category, (counts.get(category) || 0) + 1);
     });
 
@@ -160,8 +154,6 @@ const renderCategoryStats = (myRegs) => {
     return;
   }
 
-  const maxCount = topCategories[0].count;
-
   topCategories.forEach((entry, index) => {
     const item = document.createElement("li");
     item.className = "category-stat-item";
@@ -179,7 +171,7 @@ const renderCategoryStats = (myRegs) => {
 };
 
 function renderDashboard() {
-  const myRegs = myRegistrations();
+  const myRegs = state.registrations;
   renderGreeting();
   renderStats(computeStats(myRegs));
   renderUpcomingTable(myRegs);
@@ -187,4 +179,19 @@ function renderDashboard() {
   renderCategoryStats(myRegs);
 }
 
-document.addEventListener("DOMContentLoaded", renderDashboard);
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const [userResponse, events, registrations] = await Promise.all([
+      fetchCurrentUser(),
+      fetchEvents(),
+      fetchMyRegistrations(),
+    ]);
+    state.user = userResponse.data?.user ?? null;
+    state.events = events;
+    state.registrations = registrations;
+  } catch (error) {
+    console.error(error);
+  }
+
+  renderDashboard();
+});

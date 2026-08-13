@@ -1,6 +1,5 @@
 // reusable utility functions for event management
 
-import { formatCategoryValue } from '../data/sampleData.js';
 import { formatTime as formatTimeFromDateHelpers } from './dateHelpers.js';
 
 export function formatDate(dateString) {
@@ -30,7 +29,7 @@ export function getBadgeClass(status) {
 }
 
 export function formatCategory(category) {
-  return formatCategoryValue(category);
+  return String(category || "Other").trim() || "Other";
 }
 
 export function normalizeEvent(event = {}) {
