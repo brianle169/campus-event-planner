@@ -9,7 +9,10 @@
 // their NETWORK_ERROR toast are for.
 
 async function request(method, path, payload) {
-  const options = { method };
+  const options = {
+    method,
+    credentials: "same-origin",
+  };
 
   // Sending `undefined` as a body would still set a Content-Type the server
   // has no use for, so bodyless verbs (GET, and POST /logout) skip both.
