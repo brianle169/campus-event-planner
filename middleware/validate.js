@@ -131,7 +131,16 @@ export const validationRules = {
   location: body("location")
     .trim()
     .notEmpty()
-    .withMessage("Location is required.")
+    .withMessage("Location is required."),
+    registrationId: param("id")
+    .isInt({ min: 1 })
+    .withMessage("Registration ID must be a positive integer."),
+  event_id: body("event_id")
+    .notEmpty()
+    .withMessage("Event ID is required.")
+    .bail()
+    .isInt({ min: 1 })
+    .withMessage("Event ID must be a positive integer."),
 };
 
 export function handleValidation(req, res, next) {
