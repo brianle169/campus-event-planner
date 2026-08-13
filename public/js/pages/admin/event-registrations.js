@@ -3,6 +3,7 @@ import { updateAttendance } from '../../api/adminApi.js';
 import { formatDate } from '../../utils/eventUtils.js';
 import { showConfirmModal } from '../../utils/modal.js';
 import { notifyError } from '../../utils/notify.js';
+import { requireAuth } from '../../utils/authGuard.js';
 
 const tableBody = document.querySelector('#registrations-table-body');
 const eventTitle = document.querySelector('#event-title');
@@ -120,4 +121,8 @@ tableBody?.addEventListener('change', async (event) => {
   }
 });
 
-loadRegistrations();
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await requireAuth({ allowedRoles: ['admin'] });
+  if (!user) return;
+  loadRegistrations();
+});

@@ -3,6 +3,7 @@ import { updateEventStatus, deleteEvent } from '../../api/adminApi.js';
 import { formatCategory, formatDate, getBadgeClass } from '../../utils/eventUtils.js';
 import { showConfirmModal } from '../../utils/modal.js';
 import { notifyError } from '../../utils/notify.js';
+import { requireAuth } from '../../utils/authGuard.js';
 
 const tableBody = document.querySelector('#events-table-body');
 const searchInput = document.querySelector('#search');
@@ -190,4 +191,8 @@ statusFilter?.addEventListener('change', () => {
   renderEvents();
 });
 
-loadEvents();
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await requireAuth({ allowedRoles: ['admin'] });
+  if (!user) return;
+  loadEvents();
+});

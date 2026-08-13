@@ -2,6 +2,7 @@ import { fetchCurrentUser } from "../../api/authApi.js";
 import { fetchEvents } from "../../api/eventsApi.js";
 import { fetchMyRegistrations, cancelRegistration } from "../../api/registrationsApi.js";
 import { formatDate } from "../../utils/dateHelpers.js";
+import { requireAuth } from "../../utils/authGuard.js";
 
 const state = {
   user: null,
@@ -107,6 +108,9 @@ function renderMyRegistrationsPage() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const user = await requireAuth({ allowedRoles: ["student"] });
+  if (!user) return;
+
   try {
     const [userResponse, events, registrations] = await Promise.all([
       fetchCurrentUser(),

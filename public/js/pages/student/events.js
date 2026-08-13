@@ -7,6 +7,7 @@ import {
 import { fetchCurrentUser } from "../../api/authApi.js";
 import { isUpcoming, formatDate, formatTime } from "../../utils/dateHelpers.js";
 import { validateDateRange } from "../../utils/inputValidation.js";
+import { requireAuth } from "../../utils/authGuard.js";
 
 const state = {
   currentUser: null,
@@ -211,7 +212,10 @@ const attachFilterListeners = () => {
   });
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const user = await requireAuth({ allowedRoles: ["student"] });
+  if (!user) return;
+
   populateFilterOptions();
   attachFilterListeners();
   renderEvents();

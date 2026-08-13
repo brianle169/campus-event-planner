@@ -1,6 +1,7 @@
 import { getEvent } from "../../api/eventsApi.js";
 import { fetchMyRegistrations, registerForEvent as registerForApiEvent, cancelRegistration as cancelApiRegistration } from "../../api/registrationsApi.js";
 import { isUpcoming, formatDate, formatTime } from "../../utils/dateHelpers.js";
+import { requireAuth } from "../../utils/authGuard.js";
 
 const state = {
   event: null,
@@ -101,6 +102,9 @@ function renderEvent(event) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const user = await requireAuth({ allowedRoles: ["student"] });
+  if (!user) return;
+
   try {
     state.myRegistrations = await fetchMyRegistrations();
     const event = await getEvent(getEventIdFromUrl());

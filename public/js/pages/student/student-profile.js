@@ -2,6 +2,7 @@ import * as validationRules from "../../utils/inputValidation.js";
 import { fetchCurrentUser } from "../../api/authApi.js";
 import { updateMyProfile, changeMyPassword } from "../../api/usersApi.js";
 import { formatDate } from "../../utils/dateHelpers.js";
+import { requireAuth } from "../../utils/authGuard.js";
 import {
   notifySuccess,
   notifyError,
@@ -87,10 +88,11 @@ const renderProfile = (user) => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const user = await requireAuth({ allowedRoles: ["student"] });
+  if (!user) return;
+
   try {
     const { data } = await fetchCurrentUser();
-    // requirePage already redirects an anonymous visitor, so this only fires
-    // if the session expired between the page load and this request.
     if (!data.user) {
       window.location.href = "/login";
       return;
