@@ -1,6 +1,7 @@
 import { fetchEvents, fetchRegistrations } from "../../api/eventsApi.js";
 import { getAdminStats, getStudentStats } from "../../api/adminApi.js";
 import { formatDate, getBadgeClass } from "../../utils/eventUtils.js";
+import { requireAuth } from "../../utils/authGuard.js";
 
 const tableBody = document.querySelector("#recent-events-body");
 const totalEventsValue = document.querySelector("#total-events-value");
@@ -143,4 +144,8 @@ async function renderDashboard() {
   renderPopularCategories(await fetchRegistrations(), events);
 }
 
-renderDashboard();
+document.addEventListener("DOMContentLoaded", async () => {
+  const user = await requireAuth({ allowedRoles: ["admin"] });
+  if (!user) return;
+  renderDashboard();
+});
