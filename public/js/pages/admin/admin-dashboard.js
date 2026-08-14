@@ -14,7 +14,7 @@ const fullEventsValue = document.querySelector("#full-events-value");
 function buildEventTableRows(events) {
   return events
     .map((event) => {
-      const badgeClass = getBadgeClass(event.status);
+      const badgeClass = getBadgeClass(event.runTimeStatus);
       const formattedDate = formatDate(event.event_date);
       let percentCapacity = 0;
       if (event.capacity > 0) {
@@ -29,7 +29,7 @@ function buildEventTableRows(events) {
         <td>${formattedDate}</td>
         <td><a href="/admin/registrations?event=${event.event_id}">${event.registrationCount} / ${event.capacity}</a></td>
         <td>${percentCapacity}%</td>
-        <td><span class="badge ${badgeClass}">${event.status}</span></td>
+        <td><span class="badge ${badgeClass}">${event.runTimeStatus}</span></td>
         <td><a class="btn btn-outline btn-sm" href="/admin/events/${event.event_id}/edit">Edit</a></td>
       </tr>
     `;
@@ -49,11 +49,11 @@ function renderSummaryCards(events) {
     const eventDate = new Date(event.event_date);
     return (
       eventDate >= startOfToday &&
-      !["cancelled", "completed"].includes(event.status)
+      !["cancelled", "completed"].includes(event.runTimeStatus)
     );
   });
 
-  const fullEvents = events.filter((event) => event.status === "full");
+  const fullEvents = events.filter((event) => event.runTimeStatus === "full");
   const totalRegistrations = events.reduce(
     (sum, event) => sum + Number(event.registrationCount || 0),
     0,

@@ -53,7 +53,7 @@ function populateCategoryFilter() {
 
 function buildEventTableRows(events) {
   return events.map((event) => {
-    const badgeClass = getBadgeClass(event.status);
+    const badgeClass = getBadgeClass(event.runTimeStatus);
     const formattedDate = formatDate(event.event_date);
     const categoryLabel = formatCategory(event.category);
     let percentCapacity = 0;
@@ -68,7 +68,7 @@ function buildEventTableRows(events) {
         <td>${formattedDate}</td>
         <td><a href="/admin/registrations?event=${event.event_id}">${event.registrationCount} / ${event.capacity}</a></td>
         <td>${percentCapacity}%</td>
-        <td><span class="badge ${badgeClass}">${event.status}</span></td>
+        <td><span class="badge ${badgeClass}">${event.runTimeStatus}</span></td>
         <td class="row-actions">
           <div style="margin-bottom: 5px;">
             <a class="btn btn-outline btn-sm" href="/admin/events/${event.event_id}/edit">Edit</a>
@@ -92,7 +92,7 @@ function getFilteredEvents() {
   return allEvents.filter((event) => {
     const titleMatch = event.title.toLowerCase().includes(query);
     const categoryMatch = !selectedCategory || formatCategory(event.category) === selectedCategory;
-    const statusMatch = !selectedStatus || event.status === selectedStatus;
+    const statusMatch = !selectedStatus || event.runTimeStatus === selectedStatus;
 
     return titleMatch && categoryMatch && statusMatch;
   });
@@ -154,7 +154,11 @@ tableBody?.addEventListener('click', async (event) => {
     const res = await updateEventStatus(id, 'disabled');
     if (res.ok) {
         const evt = allEvents.find(e => e.event_id == id);
-        if (evt) evt.status = 'disabled';
+        if (evt) {
+          evt.status = 'disabled';
+          evt.dbStatus = 'disabled';
+          evt.runTimeStatus = 'disabled';
+        }
         renderEvents();
         notifySuccess("Event disabled");
     } else {
@@ -172,7 +176,11 @@ tableBody?.addEventListener('click', async (event) => {
     const res = await updateEventStatus(id, 'cancelled');
     if (res.ok) {
         const evt = allEvents.find(e => e.event_id == id);
-        if (evt) evt.status = 'cancelled';
+        if (evt) {
+          evt.status = 'cancelled';
+          evt.dbStatus = 'cancelled';
+          evt.runTimeStatus = 'cancelled';
+        }
         renderEvents();
         notifySuccess("Event cancelled");
     } else {

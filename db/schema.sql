@@ -39,11 +39,13 @@ CREATE TABLE IF NOT EXISTS registrations (
   attended          INTEGER NOT NULL DEFAULT 0 CHECK (attended IN (0, 1))
 );
 
--- A student can only have one *active* (non-cancelled) registration per
--- event, but can register again after cancelling a previous one.
-CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_active_registration
-  ON registrations(user_id, event_id)
-  WHERE status != 'cancelled';
+-- A student has at most one registration row per event, ever: registering
+-- again after cancelling flips the existing row back to 'registered'
+-- instead of inserting a new one, so this is a straight unique constraint.
+-- (Superseded index from when re-registering inserted a new row per attempt.)
+DROP INDEX IF EXISTS idx_unique_active_registration;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_registration
+  ON registrations(user_id, event_id);
 
 -- Indexes for the lookups the app will run constantly (filtering events,
 -- pulling a user's registrations, counting registrations per event).

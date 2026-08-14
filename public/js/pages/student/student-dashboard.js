@@ -16,7 +16,6 @@ const computeStats = (myRegs) => ({
     (r) => r.status === "registered" && isUpcoming(r.event_date),
   ).length,
   attended: myRegs.filter((r) => r.status === "attended").length,
-  cancelled: myRegs.filter((r) => r.status === "cancelled").length,
 });
 
 const renderGreeting = () => {
@@ -36,7 +35,6 @@ const renderStats = (stats) => {
   document.getElementById("stat-total-registered").textContent = stats.totalRegistered;
   document.getElementById("stat-upcoming").textContent = stats.upcoming;
   document.getElementById("stat-attended").textContent = stats.attended;
-  document.getElementById("stat-cancelled").textContent = stats.cancelled;
 };
 
 const renderUpcomingTable = (myRegs) => {
@@ -102,7 +100,7 @@ const renderRecommended = (myRegs) => {
   const suggestions = state.events
     .filter(
       (event) =>
-        event.status === "open" &&
+        event.runTimeStatus === "open" &&
         isUpcoming(event.event_date) &&
         !registeredEventIds.has(event.event_id),
     )
