@@ -20,7 +20,7 @@ This project is done as of the requirements of the course SOEN 287: Web Programm
 2. Clinton Tran - 40284879
 3. Heritier Luc Minani - 40202468
 4. Arda Duman - 40341383
-5. Tarek Kiared
+5. Tarek Kiared - 40337704
 
 ---
 
