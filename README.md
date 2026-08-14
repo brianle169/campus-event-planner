@@ -135,11 +135,8 @@ Worth knowing so nothing reads as broken:
 
 - **Fully database-backed:** registration, login, logout, session handling,
   role-based page guards, and everything on the student profile page
-  (renaming, password change).
-- **Still rendering from fixed sample data** (`public/js/data/sampleData.js`):
-  the event lists, event details, and the admin management screens. The REST
-  endpoints these will use already exist under `/api`; connecting the
-  remaining pages to them is the next piece of work.
+  (renaming, password change), the event lists, event details, and the admin management screens. The REST
+  endpoints these will use exist under `/api`.
 
 ## URL reference
 
@@ -237,3 +234,125 @@ A few things that matter for teammates but not for markers:
 - Push your changes to your branch
 - Open a pull request into `main` and request a review from another
   teammate
+
+---
+
+# User Guide
+### Students
+##### How to register
+1. To register, click on the Sign up button in the top corner right of the home page.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%201.png)
+
+Figure 1. Visual of homepage along with indication of Sign up button’s location
+
+2. Fill in all the necessary registration fields in the form to create an account. Once done, click the ***Sign Up*** button to access the website’s services.
+
+##### How to log in
+1. To register, click on the ***Login*** button in the top corner right of the home page
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%202.png)
+
+Figure 2. Visual of homepage along with indication of ***Login*** button’s location
+
+2. Fill the fields with your credentials to access your account. Once done, click the button ***Sign In***.
+
+##### How to browse events
+1. Click on the ***Browse events*** button to view all events in a new page.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%203.png)
+
+Figure 3. Visual of student dashboard and button to browse events
+
+##### How to view event details
+1. To view event details, simply click on the event name. This will bring you to a new page.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%204.png)
+
+Figure 4. Visual of student dashboard and button to view event details
+
+
+##### How to register for an event
+1. To register, simply click on the ***Register*** button of any available event.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%205.png)
+
+Figure 5. Visual of Browse events page and button to register
+
+
+##### How to cancel registration
+1. To cancel registration, simply click on the ***Cancel*** button of any available event.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%206.png)
+
+Figure 6. Visual of events page and button to cancel
+
+
+##### How to view upcoming events
+1. Simply stay on the student dashboard to observe upcoming events.
+___
+### Admins
+##### How to log in as admin
+1. To register, click on the ***Login*** button in the top corner right of the home page
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%207.png)
+
+Figure 7. Visual of homepage along with indication of Login button’s location
+
+
+2. Fill in the fields with your credentials to access your account. Once done, click the button ***Sign In***.
+
+##### How to create an event
+1. Click on the ***Create Event*** button.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%208.png)
+
+Figure 8. Visual of admin dashboard along with indication of ***Create Event*** button’s location
+
+
+2. Complete all fields with the event’s information and click ***Create Event*** at the bottom.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%209.png)
+
+Figure 9. Visual of form to create event along with indication of ***Create Event*** button’s location
+
+
+##### How to edit an event
+1. Click on the ***Manage Events*** button.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%2010.png)
+
+Figure 10. Visual of admin dashboard along with indication of ***Manage Events*** button’s location
+
+2. Search for the desired event and click ***Edit*** to change information
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%2011.png)
+
+Figure 11. Visual of event management page and indication of ***Edit*** button’s location
+
+
+##### How to cancel or disable an event
+1. Click on the ***Cancel*** or ***Disable*** button as seen in *Figure 11*.
+
+
+##### How to view registrations
+1. Click on the ***Registrations*** button.
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%2012.png)
+
+Figure 12. Visual of admin dashboard along with indication of Registrations button’s location
+
+
+
+##### How to mark attendance
+1. Click on the ***Registrations*** button from **How to view** registrations.
+
+2. Simply click on the ***Attended*** button for confirmation
+
+![image alt](https://github.com/brianle169/campus-event-planner/blob/f7267e21bb2a55c2cfc97777924091d26607c7e3/User%20guide%20images/Figure%2013.png)
+
+Figure 13. Visual of Registrations page
+
+
+##### How to view event statistics
+1. Simply click on the ***Manage Events*** button to view them.
