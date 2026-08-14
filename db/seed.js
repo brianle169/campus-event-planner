@@ -4,7 +4,7 @@
 // - Categories (10)
 // - Demo admin account
 // - Demo student account
-// - Sample events (8)
+// - Sample events (11)
 //
 // Run with: npm run db:seed
 
@@ -129,7 +129,40 @@ const events = [
     "19:00",
     "Webster Library",
     6,
-    "full",
+    "open",
+  ],
+  [
+    "1-on-1 Resume Review",
+    "A quick one-on-one resume review slot with Career Services.",
+    "Career event",
+    "2026-08-19",
+    "09:00",
+    "09:30",
+    "Hall Building",
+    1,
+    "open",
+  ],
+  [
+    "Grad Study Room Reservation",
+    "Reserve a quiet study room slot for grad students, limited seats.",
+    "Academic workshop",
+    "2026-08-21",
+    "14:00",
+    "16:00",
+    "Webster Library",
+    2,
+    "open",
+  ],
+  [
+    "Board Game Night: Duo Table",
+    "A cozy two-seat table for board games, first come first served.",
+    "Social event",
+    "2026-08-23",
+    "19:00",
+    "21:00",
+    "Hall Building",
+    2,
+    "open",
   ],
   [
     "Orientation Mixer",
