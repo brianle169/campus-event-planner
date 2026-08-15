@@ -1,4 +1,5 @@
 import db from "../connection.js";
+import { todayLocalDate } from "../shared/dateUtils.js";
 
 const findEventRegistrationsCount = db.prepare(
   "SELECT COUNT(*) as count FROM registrations WHERE event_id =? AND status != 'cancelled'",
@@ -22,9 +23,10 @@ export function findActiveRegistration(userId, eventId) {
 
 const findRegistrationsByEventIdStatement = db.prepare(`
     SELECT r.registration_id, r.user_id, r.event_id, r.registration_date, r.status, r.attended,
-           u.full_name, u.email
+           u.full_name, u.email, e.event_date, e.end_time
     FROM registrations r
     JOIN users u ON r.user_id = u.user_id
+    JOIN events e ON r.event_id = e.event_id
     WHERE r.event_id = ?
 `);
 
@@ -44,9 +46,10 @@ export function updateAttendanceStatus(registrationId, status, attended) {
 
 const findAllRegistrationsStatement = db.prepare(`
     SELECT r.registration_id, r.user_id, r.event_id, r.registration_date, r.status, r.attended,
-           u.full_name, u.email
+           u.full_name, u.email, e.event_date, e.end_time
     FROM registrations r
     JOIN users u ON r.user_id = u.user_id
+    JOIN events e ON r.event_id = e.event_id
 `);
 
 export function findAllRegistrations() {
@@ -102,7 +105,7 @@ export const registerForEvent = db.transaction((userId, eventId) => {
   if (event.status !== "open") return { outcome: "not_open" };
 
   // Same local-date comparison eventService uses for `registrable`.
-  if (event.event_date < new Date().toISOString().slice(0, 10)) {
+  if (event.event_date < todayLocalDate()) {
     return { outcome: "past" };
   }
 
@@ -138,3 +141,33 @@ const cancelStatement = db.prepare(`
 export function cancel(id) {
   return cancelStatement.run(id);
 }
+
+const findPastRegisteredStatement = db.prepare(`
+    SELECT r.registration_id, e.event_date, e.end_time
+    FROM registrations r
+    JOIN events e ON r.event_id = e.event_id
+    WHERE r.status = 'registered'
+`);
+
+const markMissedStatement = db.prepare(
+  "UPDATE registrations SET status = 'missed' WHERE registration_id = ?",
+);
+
+// Persists the "missed" transition: a registered row whose event has ended
+// with no attendance ever recorded becomes 'missed' in the database
+export const markPastRegistrationsAsMissed = db.transaction(() => {
+  const now = new Date();
+  let updated = 0;
+
+  for (const row of findPastRegisteredStatement.all()) {
+    const eventEnd = new Date(
+      `${row.event_date}T${row.end_time || "23:59"}:00`,
+    );
+    if (eventEnd < now) {
+      markMissedStatement.run(row.registration_id);
+      updated++;
+    }
+  }
+
+  return updated;
+});

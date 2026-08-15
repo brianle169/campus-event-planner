@@ -5,6 +5,7 @@ import {
   NAME_REGEX,
 } from "../public/js/utils/inputValidation.js";
 import { body, param, validationResult } from "express-validator";
+import { findAll as findAllCategories } from "../db/repositories/categoryRepository.js";
 
 const ROLES = ["student", "admin"];
 
@@ -13,7 +14,6 @@ const PASSWORD_POLICY =
   "Password must contain at least 8 characters, at least one upper-case letter and lower-case letter, at least a number, and a special character.";
 
 // This is for the events side of stuff
-const EVENT_CATEGORIES = ["Academic workshop", "Career event", "Club activity", "Sports event", "Cultural event", "Volunteering event", "Social event", "Guest lecture", "Networking event", "Other"];
 const EVENT_STATUSES = ["open", "cancelled", "completed", "disabled"];
 
 export const validationRules = {
@@ -66,16 +66,15 @@ export const validationRules = {
   eventId: param("id")
     .isInt({ min: 1 })
     .withMessage("Event ID must be a positive integer."),
-  title: body("title")
-    .trim()
-    .notEmpty()
-    .withMessage("Title is required."),
+  title: body("title").trim().notEmpty().withMessage("Title is required."),
   category: body("category")
     .trim()
     .notEmpty()
     .withMessage("Category is required.")
     .bail()
-    .isIn(EVENT_CATEGORIES)
+    .custom((value) =>
+      findAllCategories().some((c) => c.category_name === value),
+    )
     .withMessage("Invalid category."),
   status: body("status")
     .trim()
@@ -84,14 +83,17 @@ export const validationRules = {
     .bail()
     .isIn(EVENT_STATUSES)
     .withMessage("Invalid event status."),
-  event_date: body("event_date")
+  // Format/required check shared by both create and edit.
+  event_date_format: body("event_date")
     .trim()
     .notEmpty()
     .withMessage("Event date is required.")
     .bail()
     .isISO8601({ strict: true })
-    .withMessage("Event date must be in YYYY-MM-DD format.")
-    .bail()
+    .withMessage("Event date must be in YYYY-MM-DD format."),
+  // Creation only, editing an event whose date has already passed (for example to
+  // fix a typo on a completed event) must be allowed.
+  event_date_not_past: body("event_date")
     .custom((value) => {
       const today = new Date();
       const date = new Date(`${value}T00:00:00`);
@@ -132,7 +134,7 @@ export const validationRules = {
     .trim()
     .notEmpty()
     .withMessage("Location is required."),
-    registrationId: param("id")
+  registrationId: param("id")
     .isInt({ min: 1 })
     .withMessage("Registration ID must be a positive integer."),
   event_id: body("event_id")

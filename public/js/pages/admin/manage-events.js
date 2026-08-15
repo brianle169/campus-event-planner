@@ -1,8 +1,9 @@
 import { fetchEvents } from '../../api/eventsApi.js';
 import { updateEventStatus, deleteEvent } from '../../api/adminApi.js';
+import { fetchCategories } from '../../api/categoriesApi.js';
 import { formatCategory, formatDate, getBadgeClass } from '../../utils/eventUtils.js';
 import { showConfirmModal } from '../../utils/modal.js';
-import { notifyError } from '../../utils/notify.js';
+import { notifyError, notifySuccess } from '../../utils/notify.js';
 import { requireAuth } from '../../utils/authGuard.js';
 
 const tableBody = document.querySelector('#events-table-body');
@@ -13,24 +14,13 @@ const filterForm = document.querySelector('.event-filters');
 
 let allEvents = [];
 
-const categoryOptions = [
-  { value: 'Academic workshop', label: 'Academic workshop' },
-  { value: 'Career event', label: 'Career event' },
-  { value: 'Club activity', label: 'Club activity' },
-  { value: 'Sports event', label: 'Sports event' },
-  { value: 'Cultural event', label: 'Cultural event' },
-  { value: 'Volunteering event', label: 'Volunteering event' },
-  { value: 'Social event', label: 'Social event' },
-  { value: 'Guest lecture', label: 'Guest lecture' },
-  { value: 'Networking event', label: 'Networking event' },
-  { value: 'Other', label: 'Other' },
-];
-
-function populateCategoryFilter() {
+async function populateCategoryFilter() {
   if (!categoryFilter) return;
 
-  const categoryCounts = categoryOptions.reduce((counts, { value }) => {
-    counts[value] = 0;
+  const categories = await fetchCategories();
+
+  const categoryCounts = categories.reduce((counts, { category_name }) => {
+    counts[category_name] = 0;
     return counts;
   }, {});
 
@@ -43,10 +33,10 @@ function populateCategoryFilter() {
 
   categoryFilter.innerHTML = '<option value="">All categories</option>';
 
-  categoryOptions.forEach(({ value, label }) => {
+  categories.forEach(({ category_name }) => {
     const option = document.createElement('option');
-    option.value = value;
-    option.textContent = `${label} (${categoryCounts[value] || 0})`;
+    option.value = category_name;
+    option.textContent = `${category_name} (${categoryCounts[category_name] || 0})`;
     categoryFilter.appendChild(option);
   });
 }
@@ -118,7 +108,7 @@ async function loadEvents() {
 
   const events = await fetchEvents();
   allEvents = events;
-  populateCategoryFilter();
+  await populateCategoryFilter();
   renderEvents();
 }
 

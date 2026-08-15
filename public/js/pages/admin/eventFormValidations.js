@@ -16,8 +16,27 @@ const validateField = (input) => {
 import { createEvent, updateEvent, deleteEvent } from '../../api/adminApi.js';
 import { getCurrentUser } from '../../api/authApi.js';
 import { getEvent } from '../../api/eventsApi.js';
+import { fetchCategories } from '../../api/categoriesApi.js';
 import { showConfirmModal } from '../../utils/modal.js';
 import { notifyError, notifySuccess } from '../../utils/notify.js';
+
+const populateCategorySelect = async () => {
+  const select = document.getElementById('category');
+  if (!select) return;
+
+  const previousValue = select.value;
+  const categories = await fetchCategories();
+
+  select.innerHTML = '<option value="" disabled selected>Select a category</option>';
+  categories.forEach(({ category_name }) => {
+    const option = document.createElement('option');
+    option.value = category_name;
+    option.textContent = category_name;
+    select.appendChild(option);
+  });
+
+  if (previousValue) select.value = previousValue;
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
   const form = document.querySelector('form.event-form');
@@ -28,6 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const eventId = isEdit ? pathParts[3] : null;
 
   try {
+    await populateCategorySelect();
+
     const user = await getCurrentUser();
     if (user && user.full_name) {
       const orgInput = document.getElementById('organizer');

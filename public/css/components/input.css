@@ -33,3 +33,7 @@ input[type="date"] {
   color: var(--color-danger);
   font-size: 0.85rem;
 }
+
+input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}

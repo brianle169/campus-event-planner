@@ -4,11 +4,13 @@ import {
   createEvent,
   update,
   setStatus,
-  removeId,
+  removeEvent,
 } from "../db/repositories/eventRepository.js";
 import { findAll as findAllCategories } from "../db/repositories/categoryRepository.js";
 import { eventRegistrationsCount } from "../db/repositories/registrationRepository.js";
 import { isAlreadyRegistered } from "./registrationService.js";
+import { httpError } from "./shared/httpError.js";
+import { todayLocalDate } from "../db/shared/dateUtils.js";
 
 // Look at status for one event, need to compare to number of registrations for same event
 export function checkStatus(user, eventId) {
@@ -82,7 +84,7 @@ function isRegistrable(event, registrationCount, user) {
     return false;
   }
 
-  if (event.event_date < new Date().toISOString().slice(0, 10)) {
+  if (event.event_date < todayLocalDate()) {
     return false;
   }
 
@@ -102,5 +104,23 @@ export function changeEventStatus(eventId, data) {
 }
 
 export function deleteEventService(eventId) {
-  return removeId(eventId);
+  const event = findById(eventId);
+  if (!event) {
+    throw httpError("Event not found.", 404);
+  }
+
+  // This is just a design choice, we will only allow event deletion if such
+  // event has no ACTIVE registrations
+  const result = removeEvent(eventId);
+
+  if (result.outcome === "blocked") {
+    throw httpError(
+      "This event has registrations and can't be deleted. Cancel or disable it instead.",
+      409,
+    );
+  }
+
+  if (result.outcome === "not_found") {
+    throw httpError("Event not found.", 404);
+  }
 }

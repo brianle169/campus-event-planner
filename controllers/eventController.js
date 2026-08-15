@@ -74,13 +74,7 @@ export function changeStatus(req, res) {
 
 export function deleteEvent(req, res) {
     const eventId = Number(req.params.id);
-    const eventDeleted = deleteEventService(eventId);
-
-    if (!eventDeleted) {
-        return res.status(400).json({
-            error: "Event could not be deleted."
-        });
-    }
+    deleteEventService(eventId);
 
     res.status(204).send();
 }
