@@ -230,9 +230,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = await requireAuth({ allowedRoles: ["student"] });
   if (!user) return;
 
-  state.currentUser = user;
-  state.events = await fetchEvents();
-  state.myRegistrations = await fetchMyRegistrations();
+  try {
+    const [userResponse, events, registrations] = await Promise.all([
+      fetchCurrentUser(),
+      fetchEvents(),
+      fetchMyRegistrations(),
+    ]);
+    state.currentUser = userResponse.data?.user ?? user;
+    state.events = events;
+    state.myRegistrations = registrations;
+  } catch (error) {
+    console.error("Failed to load events or registrations", error);
+  }
 
   populateFilterOptions();
   attachFilterListeners();
