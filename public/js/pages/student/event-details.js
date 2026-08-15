@@ -91,7 +91,7 @@ function renderEvent(event) {
   document.getElementById("detail-time").textContent =
     `${formatTime(event.start_time)} – ${formatTime(event.end_time)}`;
   document.getElementById("detail-location").textContent = event.location;
-  document.getElementById("detail-organizer").textContent = `Organizer ${event.organizer_id ?? "TBD"}`;
+  document.getElementById("detail-organizer").textContent = event.organizer_name ?? "TBD";
   document.getElementById("detail-seats").textContent =
     `${Number(event.registrationCount || 0)} / ${event.capacity}`;
 

@@ -52,13 +52,17 @@ const populateFilterOptions = () => {
 
   const organizerSelect = document.getElementById("filter-organizer");
   organizerSelect.innerHTML = '<option value="">All admins</option>';
-  [...new Set(state.events.map((event) => event.organizer_id))]
-    .filter(Boolean)
-    .sort()
-    .forEach((organizerId) => {
+  const organizers = new Map(
+    state.events
+      .filter((event) => event.organizer_id)
+      .map((event) => [event.organizer_id, event.organizer_name]),
+  );
+  [...organizers.entries()]
+    .sort((a, b) => a[1].localeCompare(b[1]))
+    .forEach(([organizerId, organizerName]) => {
       const option = document.createElement("option");
       option.value = organizerId;
-      option.textContent = `Organizer ${organizerId}`;
+      option.textContent = organizerName;
       organizerSelect.appendChild(option);
     });
 };
@@ -154,7 +158,7 @@ const buildEventCard = (event) => {
       <li>${formatDate(event.event_date)} &middot; ${formatTime(event.start_time)}&ndash;${formatTime(event.end_time)}</li>
       <li>${event.location}</li>
       <li>${event.registrationCount ?? 0} / ${event.capacity} registered</li>
-      <li>Hosted by organizer ${event.organizer_id ?? "TBD"}</li>
+      <li>Hosted by ${event.organizer_name ?? "TBD"}</li>
     </ul>
     <div class="event-card-actions"></div>
   `;

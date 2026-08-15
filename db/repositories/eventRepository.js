@@ -1,15 +1,25 @@
 import db from "../connection.js";
 
-const findByIdStatement = db.prepare(
-    "SELECT * FROM events WHERE event_id =?",
-);
+// Only pull the organizer's name out of users, never the whole row — this
+// query backs a public endpoint and users also holds password_hash.
+const findByIdStatement = db.prepare(`
+    SELECT e.*, u.full_name AS organizer_name
+    FROM events e
+    JOIN users u ON u.user_id = e.organizer_id
+    WHERE e.event_id = ?
+`);
 
 export function findById(id) {
     return findByIdStatement.get(id);
 }
 
 export function findAll(filters = {}) {
-    let query = "SELECT * FROM events WHERE 1 = 1";
+    let query = `
+        SELECT e.*, u.full_name AS organizer_name
+        FROM events e
+        JOIN users u ON u.user_id = e.organizer_id
+        WHERE 1 = 1
+    `;
     const values = [];
 
     if (filters.title) {
