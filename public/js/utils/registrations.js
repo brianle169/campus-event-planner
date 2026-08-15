@@ -1,10 +1,5 @@
-import { Registration } from "../../../models/Registration.js";
-import {
-  currentUser,
-  registrations,
-  getEventById,
-  getRegistrationCountForEvent,
-} from "../data/sampleData.js";
+import { fetchCurrentUser } from "../api/authApi.js";
+import { fetchMyRegistrations, registerForEvent as registerForApiEvent, cancelRegistration as cancelApiRegistration } from "../api/registrationsApi.js";
 
 export const EVENT_STATUS_BADGES = {
   open: { label: "Open", className: "badge-open" },
@@ -21,49 +16,34 @@ export const REGISTRATION_STATUS_BADGES = {
   cancelled: { label: "Cancelled", className: "badge-cancelled" },
 };
 
-export const getMyRegistrationForEvent = (eventId) =>
-  registrations.find(
-    (r) =>
-      r.user_id === currentUser.user_id &&
-      r.event_id === eventId &&
-      r.status !== "cancelled",
+export const getMyRegistrationForEvent = async (eventId) => {
+  const registrations = await fetchMyRegistrations();
+  return registrations.find(
+    (r) => Number(r.event_id) === Number(eventId) && r.status !== "cancelled",
   );
-
-export const isRegisteredByCurrentUser = (eventId) =>
-  Boolean(getMyRegistrationForEvent(eventId));
-
-export const isEventFull = (event) =>
-  event.status === "full" ||
-  getRegistrationCountForEvent(event.event_id) >= event.capacity;
-
-export const registerForEvent = (eventId) => {
-  const event = getEventById(eventId);
-  const registrationDate = new Date().toISOString().slice(0, 10);
-  const registration = new Registration(
-    `reg-${Date.now()}`,
-    currentUser.user_id,
-    eventId,
-    registrationDate,
-    "registered",
-    false,
-  );
-  registrations.push(registration);
-
-  if (typeof showToast === "function") {
-    showToast(`Registered for ${event.title}`, "success");
-  }
-  return registration;
 };
 
-export const cancelRegistration = (registrationId) => {
-  const registration = registrations.find(
-    (r) => r.registration_id === registrationId,
-  );
-  if (!registration) return null;
+export const isRegisteredByCurrentUser = async (eventId) =>
+  Boolean(await getMyRegistrationForEvent(eventId));
 
-  registration.status = "cancelled";
-  if (typeof showToast === "function") {
+export const isEventFull = (event) =>
+  event.runTimeStatus === "full" || Number(event.registrationCount || 0) >= Number(event.capacity || 0);
+
+export const registerForEvent = async (eventId) => {
+  const currentUser = await fetchCurrentUser();
+  if (!currentUser || !currentUser.data?.user) return null;
+
+  const response = await registerForApiEvent(eventId);
+  if (response.ok && typeof showToast === "function") {
+    showToast("Registered successfully", "success");
+  }
+  return response;
+};
+
+export const cancelRegistration = async (registrationId) => {
+  const response = await cancelApiRegistration(registrationId);
+  if (response.ok && typeof showToast === "function") {
     showToast("Registration cancelled", "error");
   }
-  return registration;
+  return response;
 };
