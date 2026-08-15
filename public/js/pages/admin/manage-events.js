@@ -1,8 +1,9 @@
 import { fetchEvents } from '../../api/eventsApi.js';
 import { updateEventStatus, deleteEvent } from '../../api/adminApi.js';
+import { fetchCategories } from '../../api/categoriesApi.js';
 import { formatCategory, formatDate, getBadgeClass } from '../../utils/eventUtils.js';
 import { showConfirmModal } from '../../utils/modal.js';
-import { notifyError } from '../../utils/notify.js';
+import { notifyError, notifySuccess } from '../../utils/notify.js';
 import { requireAuth } from '../../utils/authGuard.js';
 
 const tableBody = document.querySelector('#events-table-body');
@@ -13,24 +14,13 @@ const filterForm = document.querySelector('.event-filters');
 
 let allEvents = [];
 
-const categoryOptions = [
-  { value: 'Academic workshop', label: 'Academic workshop' },
-  { value: 'Career event', label: 'Career event' },
-  { value: 'Club activity', label: 'Club activity' },
-  { value: 'Sports event', label: 'Sports event' },
-  { value: 'Cultural event', label: 'Cultural event' },
-  { value: 'Volunteering event', label: 'Volunteering event' },
-  { value: 'Social event', label: 'Social event' },
-  { value: 'Guest lecture', label: 'Guest lecture' },
-  { value: 'Networking event', label: 'Networking event' },
-  { value: 'Other', label: 'Other' },
-];
-
-function populateCategoryFilter() {
+async function populateCategoryFilter() {
   if (!categoryFilter) return;
 
-  const categoryCounts = categoryOptions.reduce((counts, { value }) => {
-    counts[value] = 0;
+  const categories = await fetchCategories();
+
+  const categoryCounts = categories.reduce((counts, { category_name }) => {
+    counts[category_name] = 0;
     return counts;
   }, {});
 
@@ -43,17 +33,17 @@ function populateCategoryFilter() {
 
   categoryFilter.innerHTML = '<option value="">All categories</option>';
 
-  categoryOptions.forEach(({ value, label }) => {
+  categories.forEach(({ category_name }) => {
     const option = document.createElement('option');
-    option.value = value;
-    option.textContent = `${label} (${categoryCounts[value] || 0})`;
+    option.value = category_name;
+    option.textContent = `${category_name} (${categoryCounts[category_name] || 0})`;
     categoryFilter.appendChild(option);
   });
 }
 
 function buildEventTableRows(events) {
   return events.map((event) => {
-    const badgeClass = getBadgeClass(event.status);
+    const badgeClass = getBadgeClass(event.runTimeStatus);
     const formattedDate = formatDate(event.event_date);
     const categoryLabel = formatCategory(event.category);
     let percentCapacity = 0;
@@ -68,7 +58,7 @@ function buildEventTableRows(events) {
         <td>${formattedDate}</td>
         <td><a href="/admin/registrations?event=${event.event_id}">${event.registrationCount} / ${event.capacity}</a></td>
         <td>${percentCapacity}%</td>
-        <td><span class="badge ${badgeClass}">${event.status}</span></td>
+        <td><span class="badge ${badgeClass}">${event.runTimeStatus}</span></td>
         <td class="row-actions">
           <div style="margin-bottom: 5px;">
             <a class="btn btn-outline btn-sm" href="/admin/events/${event.event_id}/edit">Edit</a>
@@ -92,7 +82,7 @@ function getFilteredEvents() {
   return allEvents.filter((event) => {
     const titleMatch = event.title.toLowerCase().includes(query);
     const categoryMatch = !selectedCategory || formatCategory(event.category) === selectedCategory;
-    const statusMatch = !selectedStatus || event.status === selectedStatus;
+    const statusMatch = !selectedStatus || event.runTimeStatus === selectedStatus;
 
     return titleMatch && categoryMatch && statusMatch;
   });
@@ -118,7 +108,7 @@ async function loadEvents() {
 
   const events = await fetchEvents();
   allEvents = events;
-  populateCategoryFilter();
+  await populateCategoryFilter();
   renderEvents();
 }
 
@@ -154,7 +144,11 @@ tableBody?.addEventListener('click', async (event) => {
     const res = await updateEventStatus(id, 'disabled');
     if (res.ok) {
         const evt = allEvents.find(e => e.event_id == id);
-        if (evt) evt.status = 'disabled';
+        if (evt) {
+          evt.status = 'disabled';
+          evt.dbStatus = 'disabled';
+          evt.runTimeStatus = 'disabled';
+        }
         renderEvents();
         notifySuccess("Event disabled");
     } else {
@@ -172,7 +166,11 @@ tableBody?.addEventListener('click', async (event) => {
     const res = await updateEventStatus(id, 'cancelled');
     if (res.ok) {
         const evt = allEvents.find(e => e.event_id == id);
-        if (evt) evt.status = 'cancelled';
+        if (evt) {
+          evt.status = 'cancelled';
+          evt.dbStatus = 'cancelled';
+          evt.runTimeStatus = 'cancelled';
+        }
         renderEvents();
         notifySuccess("Event cancelled");
     } else {

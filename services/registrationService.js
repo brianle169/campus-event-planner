@@ -4,6 +4,7 @@ import {
     findById,
     registerForEvent,
     cancel,
+    markPastRegistrationsAsMissed,
 } from "../db/repositories/registrationRepository.js";
 import { httpError } from "./shared/httpError.js";
 
@@ -12,7 +13,14 @@ export function isAlreadyRegistered(userId, eventId) {
 }
 
 export function myRegistrations(userId) {
+    markPastRegistrationsAsMissed();
     return findByUser(userId);
+}
+
+// Shared with adminService so the roster/all-registrations views are just as
+// caught up before they read the table.
+export function syncMissedRegistrations() {
+    markPastRegistrationsAsMissed();
 }
 
 export function register(userId, eventId) {
@@ -37,6 +45,9 @@ export function register(userId, eventId) {
 }
 
 export function cancelRegistration(userId, registrationId) {
+    // Bring the persisted status up to date first so a registration whose
+    // event just ended is correctly seen as "missed", not "registered".
+    markPastRegistrationsAsMissed();
     const registration = findById(registrationId);
 
     if (!registration || registration.user_id !== userId) {
@@ -44,12 +55,13 @@ export function cancelRegistration(userId, registrationId) {
     }
 
     if (registration.status !== "registered") {
-        throw httpError(
+        const message =
             registration.status === "cancelled"
                 ? "This registration is already cancelled."
-                : "This registration can no longer be cancelled.",
-            409,
-        );
+                : registration.status === "missed"
+                    ? "This event has already taken place."
+                    : "This registration can no longer be cancelled.";
+        throw httpError(message, 409);
     }
 
     cancel(registrationId);

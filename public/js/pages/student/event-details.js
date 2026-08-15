@@ -2,6 +2,7 @@ import { getEvent } from "../../api/eventsApi.js";
 import { fetchMyRegistrations, registerForEvent as registerForApiEvent, cancelRegistration as cancelApiRegistration } from "../../api/registrationsApi.js";
 import { isUpcoming, formatDate, formatTime } from "../../utils/dateHelpers.js";
 import { requireAuth } from "../../utils/authGuard.js";
+import { EVENT_STATUS_BADGES } from "../../utils/registrations.js";
 
 const state = {
   event: null,
@@ -57,12 +58,12 @@ const renderRegistrationState = async (event) => {
   const registerBtn = document.createElement("button");
   registerBtn.type = "button";
 
-  if (event.status !== "open" || !isUpcoming(event.event_date)) {
+  if (event.runTimeStatus !== "open" || !isUpcoming(event.event_date)) {
     registerBtn.className = "btn btn-outline";
     registerBtn.disabled = true;
-    registerBtn.textContent = isUpcoming(event.event_date)
-      ? event.status
-      : "Past event";
+    registerBtn.textContent = !isUpcoming(event.event_date)
+      ? "Past event"
+      : EVENT_STATUS_BADGES[event.runTimeStatus]?.label ?? event.runTimeStatus;
   } else if (Number(event.registrationCount || 0) >= Number(event.capacity || 0)) {
     registerBtn.className = "btn btn-outline";
     registerBtn.disabled = true;
@@ -90,13 +91,13 @@ function renderEvent(event) {
   document.getElementById("detail-time").textContent =
     `${formatTime(event.start_time)} – ${formatTime(event.end_time)}`;
   document.getElementById("detail-location").textContent = event.location;
-  document.getElementById("detail-organizer").textContent = `Organizer ${event.organizer_id ?? "TBD"}`;
+  document.getElementById("detail-organizer").textContent = event.organizer_name ?? "TBD";
   document.getElementById("detail-seats").textContent =
     `${Number(event.registrationCount || 0)} / ${event.capacity}`;
 
   const statusEl = document.getElementById("detail-status-badge");
-  statusEl.textContent = String(event.status || "open");
-  statusEl.className = `badge ${event.status === "open" ? "badge-open" : "badge-cancelled"}`;
+  statusEl.textContent = String(event.runTimeStatus || "open");
+  statusEl.className = `badge ${event.runTimeStatus === "open" ? "badge-open" : "badge-cancelled"}`;
 
   renderRegistrationState(event);
 }

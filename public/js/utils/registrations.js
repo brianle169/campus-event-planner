@@ -27,7 +27,7 @@ export const isRegisteredByCurrentUser = async (eventId) =>
   Boolean(await getMyRegistrationForEvent(eventId));
 
 export const isEventFull = (event) =>
-  event.status === "full" || Number(event.registrationCount || 0) >= Number(event.capacity || 0);
+  event.runTimeStatus === "full" || Number(event.registrationCount || 0) >= Number(event.capacity || 0);
 
 export const registerForEvent = async (eventId) => {
   const currentUser = await fetchCurrentUser();
